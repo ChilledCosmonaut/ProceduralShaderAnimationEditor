@@ -247,6 +247,29 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
+    "m_ObjectId": "64c5be5c00774bca878d3cbe2df94898",
+    "m_Id": 972156641,
+    "m_DisplayName": "boundingOrigin",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_boundingOrigin",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.Rendering.HighDefinition.ShaderGraph.HDTarget",
     "m_ObjectId": "650dfe33920742b28670653925bf946c",
     "m_ActiveSubTarget": {
@@ -408,6 +431,15 @@
             "m_Id": "6eb58e64fae7439cbc062653ca1247b5"
         },
         {
+            "m_Id": "64c5be5c00774bca878d3cbe2df94898"
+        },
+        {
+            "m_Id": "a9ce4b3c3cad4fbda8f65f2c8a305f41"
+        },
+        {
+            "m_Id": "8664a7ed184e49299ce52b89ce42bb53"
+        },
+        {
             "m_Id": "2f60a8d3668143b7b1772ec7fb765d88"
         },
         {
@@ -423,13 +455,37 @@
     },
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"c9318c5379b247542a013a15017767b3\",\n        \"type\": 3\n    }\n}",
     "m_PropertyGuids": [
-        "4bbd8152-a4a0-46b7-913e-ab3f2c61849f"
+        "4bbd8152-a4a0-46b7-913e-ab3f2c61849f",
+        "e61cd3f2-4683-437a-a208-3d473273aadb",
+        "036c93da-28d8-4390-a198-ffcc36d952be",
+        "13e8736f-cf53-426a-898e-c9e1b1c01285"
     ],
     "m_PropertyIds": [
-        -1390052785
+        -1390052785,
+        972156641,
+        844233365,
+        895087108
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DInputMaterialSlot",
+    "m_ObjectId": "8664a7ed184e49299ce52b89ce42bb53",
+    "m_Id": 895087108,
+    "m_DisplayName": "AnimationTexture",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_AnimationTexture",
+    "m_StageCapability": 3,
+    "m_BareResource": false,
+    "m_Texture": {
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"10cc0705811c6c049aa4c4bf6673d32e\",\"type\":3}}",
+        "m_Guid": ""
+    },
+    "m_DefaultType": 0
 }
 
 {
@@ -559,6 +615,29 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Position"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
+    "m_ObjectId": "a9ce4b3c3cad4fbda8f65f2c8a305f41",
+    "m_Id": 844233365,
+    "m_DisplayName": "boundingScale",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_boundingScale",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_Labels": []
 }
 
 {
