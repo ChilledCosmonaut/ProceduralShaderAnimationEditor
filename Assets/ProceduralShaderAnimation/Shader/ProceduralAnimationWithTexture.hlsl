@@ -43,8 +43,8 @@ float CalculatePolynomial(float variable, uint row, uint column, Texture2D anima
 	return result;
 }
 
-float4 CalculateSineFactor(float variable, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 1};
+float4 CalculateSineFactor(float variable, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	float amplitude = animationInfo[texIndex].x;
 	texIndex.y ++;
 	float frequency = animationInfo[texIndex].x;
@@ -58,8 +58,8 @@ float4 CalculateSineFactor(float variable, uint row, Texture2D animationInfo){
 	return amplitude * sin(frequency * variable) + bias;
 }
 
-float4 CalculateSplineFactor(float variable, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 1};
+float4 CalculateSplineFactor(float variable, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	float2 firstSplinePoint = animationInfo[texIndex].xy;
 	texIndex.y ++;
 	float2 secondSplinePoint = animationInfo[texIndex].xy;
@@ -72,15 +72,15 @@ float4 CalculateSplineFactor(float variable, uint row, Texture2D animationInfo){
 	return CalculateSpline(validVariable, firstSplinePoint, secondSplinePoint, thirdSplinePoint, fourthSplinePoint);
 }
 
-float4 CalculatePolynomialFactor(float variable, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 1};
+float4 CalculatePolynomialFactor(float variable, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	
 	float validVariable = max(variable, 0);
 	return CalculatePolynomial(validVariable, texIndex.x, texIndex.y, animationInfo);
 }
 
-float CalculateSplineWeight(float3 vertexPosition, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 1};
+float CalculateSplineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	float3 firstControlPoint = animationInfo[texIndex].xyz;
 	texIndex.y ++;
 	float3 secondControlPoint = animationInfo[texIndex].xyz;
@@ -98,8 +98,8 @@ float CalculateSplineWeight(float3 vertexPosition, uint row, Texture2D animation
 	return CalculateSpline(clampedLineDistance, firstSplinePoint, secondSplinePoint, thirdSplinePoint, fourthSplinePoint);
 }
 
-float CalculatPolynomialWeight(float3 vertexPosition, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 1};
+float CalculatPolynomialWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	float3 firstControlPoint = animationInfo[texIndex].xyz;
 	texIndex.y ++;
 	float3 secondControlPoint = animationInfo[texIndex].xyz;
@@ -109,8 +109,8 @@ float CalculatPolynomialWeight(float3 vertexPosition, uint row, Texture2D animat
 	return CalculatePolynomial(lineDistance, texIndex.x, texIndex.y, animationInfo);
 }
 
-float4 CalculateLineWeight(float3 vertexPosition, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 1};
+float4 CalculateLineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	float3 firstPoint = animationInfo[texIndex].xyz;
 	texIndex.y ++;
 	float firstWeight = animationInfo[texIndex].x;
@@ -133,8 +133,8 @@ float CalculateBoxWeight(float3 vertexPosition, float3 sphereOrigin, float2 prop
 	return max((sign(distanceX) * 0.5) + (sign(distanceY) * 0.5), 0); // Required to minimize dynamic thread branching
 }
 
-float4 CalculatePrimitiveWeight(float3 vertexPosition, uint row, Texture2D animationInfo){
-	uint2 texIndex = {row, 3};
+float4 CalculatePrimitiveWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
 	uint type = (uint) animationInfo[texIndex].x;
 	texIndex.y ++;
 	float3 origin = animationInfo[texIndex].xyz;
@@ -147,7 +147,60 @@ float4 CalculatePrimitiveWeight(float3 vertexPosition, uint row, Texture2D anima
 	return CalculateSphereWeight(vertexPosition, origin, (float) dimensions.x);
 }
 
-float3 DisplacedPosition(float3 currentPosition, float3 translation, float3 rotation, float3 targetScale){
+float CalculateWeigth(float3 vertexPosition, uint weightCount, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
+	float amountedWeight = 0;
+
+	for(uint weightIndex = 0; weightIndex < weightCount; weightIndex++){
+		uint type = (uint) animationInfo[texIndex].x;
+		texIndex.y++;
+
+		if(type == 1){
+			amountedWeight += CalculateLineWeight(vertexPosition, texIndex, animationInfo);
+		} 
+		else if(type == 2){
+			amountedWeight += CalculatePrimitiveWeight(vertexPosition, texIndex, animationInfo);
+		}
+		else if(type == 3){
+			amountedWeight += CalculatPolynomialWeight(vertexPosition, texIndex, animationInfo);
+		}
+		else if(type == 4){
+			amountedWeight += CalculateSplineWeight(vertexPosition, texIndex, animationInfo);
+		}
+
+		texIndex.x ++;
+	}
+	return amountedWeight;
+}
+
+float CalculateInfluence(float3 vertexPosition, float time, float offset, uint influenceCount, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
+	float amountedInfluence = 0;
+
+	for(uint influenceIndex = 0; influenceIndex < influenceCount; influenceIndex++){
+		uint type = (uint) animationInfo[texIndex].x;
+		texIndex.y++;
+		float2 variableParticipation = animationInfo[texIndex].xy;
+		texIndex.y++;
+		float variable = time * variableParticipation.x + offset * variableParticipation.y;
+
+		if(type == 1){
+			amountedInfluence += CalculateSineFactor(variable, texIndex, animationInfo);
+		} 
+		else if(type == 2){
+			amountedInfluence += CalculateSplineFactor(variable, texIndex, animationInfo);
+		}
+		else if(type == 3){
+			amountedInfluence += CalculatePolynomialFactor(variable, texIndex, animationInfo);
+		}
+
+		texIndex.x ++;
+	}
+
+	return amountedInfluence;
+}
+
+float3 DisplacedPosition(float3 currentPosition, float3 boundingScale, float3 translation, float3 rotation, float3 scale){
 	//Rotation
 	float4x4 zRotation = {
 		cos(rotation.z), -sin(rotation.z), 0, 0,
@@ -170,66 +223,17 @@ float3 DisplacedPosition(float3 currentPosition, float3 translation, float3 rota
 
 	float4x4 fullRotation = mul(zRotation, mul(yRotation, xRotation));
 
-	return (float3) mul(fullRotation, float4(currentPosition * targetScale, 0)) + translation;
+	return (float3) mul(fullRotation, float4(currentPosition * scale, 0)) + (translation * boundingScale);
 }
 
-float CalculateWeigth(float3 vertexPosition, uint weightCount, uint rowOffset, Texture2D animationInfo){
-	uint2 texIndex = {rowOffset, 2};
-	float amountedWeight = 0;
-
-	for(uint weightIndex = 0; weightIndex < weightCount; weightIndex++){
-		if(animationInfo[texIndex].x == 1){
-			amountedWeight += CalculateLineWeight(vertexPosition, texIndex.x, animationInfo);
-		} 
-		else if(animationInfo[texIndex].x == 2){
-			amountedWeight += CalculatePrimitiveWeight(vertexPosition, texIndex.x, animationInfo);
-		}
-		else if(animationInfo[texIndex].x == 3){
-			amountedWeight += CalculatPolynomialWeight(vertexPosition, texIndex.x, animationInfo);
-		}
-		else if(animationInfo[texIndex].x == 4){
-			amountedWeight += CalculateSplineWeight(vertexPosition, texIndex.x, animationInfo);
-		}
-
-		texIndex.x ++;
-	}
-	return amountedWeight;
-}
-
-float CalculateInfluence(float3 vertexPosition, float time, float offset, uint influenceCount, uint2 texOffset, Texture2D animationInfo){
-	uint2 texIndex = texOffset;
-	float amountedInfluence = 0;
-
-	for(uint influenceIndex = 0; influenceIndex < influenceCount; influenceIndex++){
-		uint type = (uint) animationInfo[texIndex].x;
-		texIndex.y++;
-		float2 variableParticipation = animationInfo[texIndex].xy;
-		texIndex.y++;
-		float variable = time * variableParticipation.x + offset * variableParticipation.y;
-
-		if(animationInfo[texIndex].x == 1){
-			amountedInfluence += CalculateSineFactor(variable, texIndex.x, animationInfo);
-		} 
-		else if(animationInfo[texIndex].x == 2){
-			amountedInfluence += CalculateSplineFactor(variable, texIndex.x, animationInfo);
-		}
-		else if(animationInfo[texIndex].x == 3){
-			amountedInfluence += CalculatePolynomialFactor(variable, texIndex.x, animationInfo);
-		}
-
-		texIndex.x ++;
-	}
-
-	return amountedInfluence;
-}
-
-
-float3 ProceduralShaderAnimation(float3 vertexPosition, float3 objectScale, float time, Texture2D animationInfo){
+void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigin, float3 boundingScale, float time, Texture2D animationInfo,  out float3 displacedVertexPosition){
 	float3 targetTranslation = {0,0,0};
 	float3 targetRotation 	 = {0,0,0};
 	float3 targetScale 		 = {1,1,1};
 
-	float3 origin = {0, 0, 0};
+	float3 scaledVertexPosition = (vertexPosition + boundingScale - boundingOrigin) / boundingScale;
+
+	float3 origin = {1, 1, 1};
 
 	uint2 texIndex = {0, 0};
 
@@ -243,35 +247,43 @@ float3 ProceduralShaderAnimation(float3 vertexPosition, float3 objectScale, floa
 	while(texIndex.x < contentLength){
 		uint transformationType = (uint) animationInfo[texIndex].x;
 		texIndex.y ++;
+
 		float3 axis = animationInfo[texIndex].xyz;
+		float3 normalizedAxis = normalize(axis);
+		float3 currentOrigin = origin - axis;
 		texIndex.y ++;
+
 		uint weightCount = (uint) animationInfo[texIndex].x;
 		texIndex.y ++;
+
 		uint influenceCount = (uint) animationInfo[texIndex].x;
+		texIndex.x ++;
+		texIndex.y = 0;
 
-		float offset = ProjectVectorOntoLineAsScalar(vertexPosition, origin, axis);
+		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, axis);
 
-		float weight = CalculateWeigth(vertexPosition, weightCount, texIndex.x, animationInfo);
-		float influence = CalculateInfluence(vertexPosition, time, offset, influenceCount, texIndex.x +  weightCount, animationInfo);
+		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+		texIndex.x += weightCount;
+		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
 
 		float weightedInfluence = weight * influence;
 
 		if(transformationType == 1){
-			targetTranslation += axis * weightedInfluence;
+			targetTranslation += normalizedAxis * weightedInfluence;
 		} 
 		else if(transformationType == 2){
-			targetRotation += axis * weightedInfluence;
+			targetRotation += normalizedAxis * weightedInfluence;
 		}
 		else if(transformationType == 3){
-			targetRotation += axis * weightedInfluence;
+			targetRotation += normalizedAxis * weightedInfluence;
 		}
 
-		texIndex.x += weightCount + influenceCount;
+		texIndex.x += influenceCount;
 		texIndex.y = 0;
 	}
 
-	float3 targetPosition = DisplacedPosition(vertexPosition, targetTranslation, targetRotation, targetScale);
+	float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
 
-	return targetPosition - vertexPosition;
+	displacedVertexPosition = vertexPosition;
 }
 #endif //MYHLSLINCLUDE_INCLUDED
