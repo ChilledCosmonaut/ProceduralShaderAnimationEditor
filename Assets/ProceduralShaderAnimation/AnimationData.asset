@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
   m_Name: AnimationData
   m_EditorClassIdentifier: 
-  animationInfo:
-    animationLength: 0
-    contentLength: 0
+  animationLength: 0
   groupInfos:
-  - transformationType: 0
-    transformationAxis: {x: 0, y: 0, z: 0}
-    weightInfos: []
-    influenceInfos: []
+  - transformationType: 1
+    transformationAxis: {x: 0, y: 1, z: 0}
+    weightInfos:
+    - {fileID: 11400000, guid: 916ef28325e0371438f9494fc191cae0, type: 2}
+    influenceInfos:
+    - {fileID: 11400000, guid: f013d5bf6e3db344d81b7eac85a31037, type: 2}
