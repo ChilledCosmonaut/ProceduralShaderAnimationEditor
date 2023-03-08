@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
   m_Name: AnimationData
   m_EditorClassIdentifier: 
-  animationLength: 0
+  animationLength: 3
   groupInfos:
   - transformationType: 1
     transformationAxis: {x: 0, y: 1, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
     weightInfos:
     - {fileID: 11400000, guid: 916ef28325e0371438f9494fc191cae0, type: 2}
     influenceInfos:

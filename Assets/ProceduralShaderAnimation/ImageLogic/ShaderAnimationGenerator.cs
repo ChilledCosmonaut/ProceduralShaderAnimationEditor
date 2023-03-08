@@ -1,39 +1,43 @@
-using System.IO;
-using UnityEditor;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    /*struct AnimationInfo
+    internal struct AnimationDataReference
     {
-        public 
-    }*/
+        public Vector3 BoundingOrigin;
+        public Vector3 BoundingScale;
+        public Texture2D AnimationTexture;
+    }
     
     public class ShaderAnimationGenerator : MonoBehaviour
     {
-        public Texture2D GenerateAnimationTexture()
+        private static readonly int BoundingOrigin = Shader.PropertyToID("_boundingOrigin");
+        private static readonly int BoundingScale = Shader.PropertyToID("_boundingScale");
+        private static readonly int AnimationTexture = Shader.PropertyToID("_AnimationTexture");
+        
+        [SerializeField] private AnimationData animationData;
+        
+        private Material _material;
+        private AnimationDataReference _animationDataReference;
+
+        private void Start()
         {
-            Texture2D tex = new(2, 1, TextureFormat.RGBAFloat, true);
+            _material = GetComponent<Renderer>().material;
+            _material.SetVector(BoundingOrigin, _animationDataReference.BoundingOrigin);
+            _material.SetVector(BoundingScale, _animationDataReference.BoundingScale);
+            _material.SetTexture(AnimationTexture, _animationDataReference.AnimationTexture);
+        }
+        
+        public void SetAnimationInfo()
+        {
+            Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;
 
-            float[] test = {0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 0.2f, 0.1f};
-
-            tex.SetPixelData(test, 0, 0); // mip 0
-            //tex.SetPixelData(data, 1, 12); // mip 1
-            //tex.filterMode = FilterMode.Point;
-            tex.Apply(updateMipmaps: false);
-
-            var image = tex.EncodeToEXR();
-
-            Debug.Log(Application.dataPath);
-            var dirPath = Application.dataPath + "/../SaveImages/";
-            if(!Directory.Exists(dirPath)) {
-                Directory.CreateDirectory(dirPath);
-            }
-            File.WriteAllBytes(dirPath + "Image" + ".exr", image);
-            
-            //GetComponent<Renderer>().sharedMaterial.mainTexture = tex;
-
-            return tex;
+            _animationDataReference = new AnimationDataReference()
+            {
+                BoundingOrigin = bounds.center,
+                BoundingScale = bounds.extents,
+                AnimationTexture = animationData.GetDataAsFloatArray()
+            };
         } 
     }
 }

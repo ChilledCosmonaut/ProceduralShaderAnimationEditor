@@ -248,9 +248,11 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		uint transformationType = (uint) animationInfo[texIndex].x;
 		texIndex.y ++;
 
-		float3 axis = animationInfo[texIndex].xyz;
-		float3 normalizedAxis = normalize(axis);
-		float3 currentOrigin = origin - axis;
+		float3 translationAxis = normalize(animationInfo[texIndex].xyz);
+		texIndex.y++;
+
+		float3 offsetAxis = animationInfo[texIndex].xyz;
+		float3 currentOrigin = origin - offsetAxis;
 		texIndex.y ++;
 
 		uint weightCount = (uint) animationInfo[texIndex].x;
@@ -260,7 +262,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		texIndex.x ++;
 		texIndex.y = 0;
 
-		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, axis);
+		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis);
 
 		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
 		texIndex.x += weightCount;
@@ -269,13 +271,13 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		float weightedInfluence = weight * influence;
 
 		if(transformationType == 1){
-			targetTranslation += normalizedAxis * weightedInfluence;
+			targetTranslation += translationAxis * weightedInfluence;
 		} 
 		else if(transformationType == 2){
-			targetRotation += normalizedAxis * weightedInfluence;
+			targetRotation += translationAxis * weightedInfluence;
 		}
 		else if(transformationType == 3){
-			targetRotation += normalizedAxis * weightedInfluence;
+			targetRotation += translationAxis * weightedInfluence;
 		}
 
 		texIndex.x += influenceCount;

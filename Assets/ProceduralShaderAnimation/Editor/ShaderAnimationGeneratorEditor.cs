@@ -19,9 +19,9 @@ namespace ProceduralShaderAnimation.Editor
             // Draw default inspector after button...
             base.OnInspectorGUI();
             
-            if (GUILayout.Button("Create Texture"))
+            if (GUILayout.Button("Apply Animation"))
             {
-                generator.GenerateAnimationTexture();
+                generator.SetAnimationInfo();
             }
         }
     }
