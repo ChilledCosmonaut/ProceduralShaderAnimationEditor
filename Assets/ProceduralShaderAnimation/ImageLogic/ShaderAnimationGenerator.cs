@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
+    [Serializable]
     internal struct AnimationDataReference
     {
         public Vector3 BoundingOrigin;
@@ -18,6 +20,8 @@ namespace ProceduralShaderAnimation.ImageLogic
         [SerializeField] private AnimationData animationData;
         
         private Material _material;
+        [HideInInspector]
+        [SerializeField]
         private AnimationDataReference _animationDataReference;
 
         private void Start()
@@ -26,6 +30,8 @@ namespace ProceduralShaderAnimation.ImageLogic
             _material.SetVector(BoundingOrigin, _animationDataReference.BoundingOrigin);
             _material.SetVector(BoundingScale, _animationDataReference.BoundingScale);
             _material.SetTexture(AnimationTexture, _animationDataReference.AnimationTexture);
+            
+            Debug.Log(_material.GetVector(BoundingOrigin));
         }
         
         public void SetAnimationInfo()

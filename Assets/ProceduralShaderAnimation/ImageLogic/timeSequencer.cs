@@ -19,8 +19,6 @@ namespace ProceduralShaderAnimation.ImageLogic
         void Start()
         {
             thisRend = GetComponent<Renderer>();
-            Debug.Log(curve.keys);
-            texture.EncodeToEXR();
         }
 
         // Update is called once per frame
