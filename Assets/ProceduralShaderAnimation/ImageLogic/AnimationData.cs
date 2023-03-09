@@ -10,7 +10,7 @@ public class AnimationData : ScriptableObject
     public float animationLength;
     public List<GroupInfo> groupInfos;
     
-    public Texture2D GetDataAsFloatArray()
+    public Texture2D CreateAnimationTexture()
     {
         var contentLength = 0f;
         var floatLists = new List<List<float>>
@@ -57,16 +57,8 @@ public class AnimationData : ScriptableObject
         
         Texture2D tex = new(floatLists[0].Count / 4, floatLists.Count, TextureFormat.RGBAFloat, true);
 
-        tex.SetPixelData(imageData, 0); // mip 0;
+        tex.SetPixelData(imageData, 0);
         tex.Apply(updateMipmaps: false);
-
-        /*var image = tex.EncodeToEXR();
-
-        var dirPath = Application.dataPath + "/SaveImages/";
-        if(!Directory.Exists(dirPath)) {
-            Directory.CreateDirectory(dirPath);
-        }
-        File.WriteAllBytes(dirPath + "Image" + ".exr", image);*/
         
         return tex;
     }

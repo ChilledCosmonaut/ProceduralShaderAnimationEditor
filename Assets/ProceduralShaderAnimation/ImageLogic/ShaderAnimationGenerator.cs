@@ -32,6 +32,8 @@ namespace ProceduralShaderAnimation.ImageLogic
             _material.SetTexture(AnimationTexture, _animationDataReference.AnimationTexture);
             
             Debug.Log(_material.GetVector(BoundingOrigin));
+
+            var tex = _material.GetTexture(AnimationTexture) as Texture2D;
         }
         
         public void SetAnimationInfo()
@@ -42,7 +44,7 @@ namespace ProceduralShaderAnimation.ImageLogic
             {
                 BoundingOrigin = bounds.center,
                 BoundingScale = bounds.extents,
-                AnimationTexture = animationData.GetDataAsFloatArray()
+                AnimationTexture = animationData.CreateAnimationTexture()
             };
         } 
     }

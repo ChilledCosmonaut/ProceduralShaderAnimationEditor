@@ -244,6 +244,8 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	texIndex.x ++;
 	texIndex.y = 0;
 
+	float weight = 0;
+
 	while(texIndex.x < contentLength){
 		uint transformationType = (uint) animationInfo[texIndex].x;
 		texIndex.y ++;
@@ -264,7 +266,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 
 		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis);
 
-		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+		weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
 		texIndex.x += weightCount;
 		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
 
@@ -284,8 +286,8 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		texIndex.y = 0;
 	}
 
-	float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
+	//float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
 
-	displacedVertexPosition = vertexPosition;
+	displacedVertexPosition = contentLength;//vertexPosition;
 }
 #endif //MYHLSLINCLUDE_INCLUDED

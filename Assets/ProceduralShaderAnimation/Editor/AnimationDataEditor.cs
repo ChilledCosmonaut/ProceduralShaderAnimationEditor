@@ -22,7 +22,7 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Generate ImageData"))
             {
-                animationData.GetDataAsFloatArray();
+                animationData.CreateAnimationTexture();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
@@ -7,10 +8,17 @@ namespace ProceduralShaderAnimation.ImageLogic
     public class PolynomialInfluence : FunctionData
     {
         public List<float> controlPoints;
+        public bool useTime;
+        public bool useOffset;
 
         public override List<float> GetDataAsFloatArray()
         {
-            var floatArray = new List<float>{controlPoints.Count, 0, 0, 0};
+            var floatArray = new List<float>
+            {
+                3, 0, 0, 0,
+                Convert.ToSingle(useTime), Convert.ToSingle(useOffset), 0, 0,
+                controlPoints.Count, 0, 0, 0
+            };
 
             foreach (var point in controlPoints)
             {
@@ -20,6 +28,8 @@ namespace ProceduralShaderAnimation.ImageLogic
                 floatArray.Add(0);
             }
 
+            Debug.Log(string.Join(",", floatArray));
+            
             return floatArray;
         }
     }

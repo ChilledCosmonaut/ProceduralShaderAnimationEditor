@@ -15,6 +15,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         {
             return new List<float>
             {
+                1, 0, 0, 0,
                 firstControlPoint.x, firstControlPoint.y, firstControlPoint.z, 0,
                 firstWeight, 0, 0, 0,
                 secondControlPoint.x, secondControlPoint.y, secondControlPoint.z, 0,
