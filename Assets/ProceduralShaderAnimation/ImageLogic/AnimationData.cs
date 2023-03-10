@@ -29,6 +29,8 @@ public class AnimationData : ScriptableObject
             floatLists.AddRange(dataArray);
         }
 
+        Debug.Log(contentLength);
+        
         floatLists[0][4] = contentLength;
 
         int maxLength = 0;

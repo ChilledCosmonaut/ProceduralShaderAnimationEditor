@@ -1,5 +1,4 @@
-﻿using ProceduralShaderAnimation.ImageLogic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.Editor
