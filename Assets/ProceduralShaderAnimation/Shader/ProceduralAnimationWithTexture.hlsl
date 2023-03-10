@@ -119,14 +119,14 @@ float CalculatPolynomialWeight(float3 vertexPosition, uint2 texOffset, Texture2D
 	return CalculatePolynomial(lineDistance, texOffset, animationInfo);
 }
 
-float CalculateSphereWeight(float3 vertexPosition, float3 boxOrigin, float properties){
-	return 0.5 - (sign(distance(vertexPosition, boxOrigin) - properties) * 0.5); // Required to minimize dynamic thread branching
+float CalculateSphereWeight(float3 vertexPosition, float3 boxOrigin, float radius){
+	return 0.5 - (sign(distance(vertexPosition, boxOrigin) - radius) * 0.5); // Required to minimize dynamic thread branching !!Vertices on the edge are half weighted!!
 }
 
 float CalculateBoxWeight(float3 vertexPosition, float3 sphereOrigin, float2 properties){
 	float distanceX = (distance(vertexPosition, sphereOrigin) - properties.x) * -1.0;
 	float distanceY = (distance(vertexPosition, sphereOrigin) - properties.x) * -1.0;
-	return max((sign(distanceX) * 0.5) + (sign(distanceY) * 0.5), 0); // Required to minimize dynamic thread branching
+	return max((sign(distanceX) * 0.5) + (sign(distanceY) * 0.5), 0); // Required to minimize dynamic thread branching !!Vertices on the edge are half weighted!!
 }
 
 float4 CalculatePrimitiveWeight(float3 vertexPosition, uint2 texOffset, uint type, Texture2D animationInfo){
