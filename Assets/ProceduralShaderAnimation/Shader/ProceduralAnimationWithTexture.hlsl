@@ -123,10 +123,11 @@ float CalculateSphereWeight(float3 vertexPosition, float3 boxOrigin, float radiu
 	return 0.5 - (sign(distance(vertexPosition, boxOrigin) - radius) * 0.5); // Required to minimize dynamic thread branching !!Vertices on the edge are half weighted!!
 }
 
-float CalculateBoxWeight(float3 vertexPosition, float3 sphereOrigin, float2 properties){
-	float distanceX = (distance(vertexPosition, sphereOrigin) - properties.x) * -1.0;
-	float distanceY = (distance(vertexPosition, sphereOrigin) - properties.x) * -1.0;
-	return max((sign(distanceX) * 0.5) + (sign(distanceY) * 0.5), 0); // Required to minimize dynamic thread branching !!Vertices on the edge are half weighted!!
+float CalculateBoxWeight(float3 vertexPosition, float3 sphereOrigin, float3 properties){
+	float distanceX = (distance(vertexPosition.x, sphereOrigin.x) - properties.x) * -1.0;
+	float distanceY = (distance(vertexPosition.y, sphereOrigin.y) - properties.y) * -1.0;
+	float distanceZ = (distance(vertexPosition.z, sphereOrigin.z) - properties.z) * -1.0;
+	return max(sign(distanceX) + sign(distanceY) + sign(distanceZ) - 2, 0); // Required to minimize dynamic thread branching !!Vertices on the edge are half weighted!!
 }
 
 float4 CalculatePrimitiveWeight(float3 vertexPosition, uint2 texOffset, uint type, Texture2D animationInfo){
@@ -137,7 +138,7 @@ float4 CalculatePrimitiveWeight(float3 vertexPosition, uint2 texOffset, uint typ
 
 	if(type == 4) return CalculateSphereWeight(vertexPosition, origin, (float) dimensions.x);
 
-	return CalculateBoxWeight(vertexPosition, origin, (float2) dimensions.xy);
+	return CalculateBoxWeight(vertexPosition, origin, dimensions);
 }
 
 float CalculateWeigth(float3 vertexPosition, uint weightCount, uint2 texOffset, Texture2D animationInfo){
@@ -268,6 +269,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis);
 
 		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+		cache = weight;
 		texIndex.y += weightCount;
 		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
 		float weightedInfluence = weight * influence;
@@ -287,6 +289,6 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	}
 
 	float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
-	displacedVertexPosition = targetPosition;
+	displacedVertexPosition = cache;
 }
 #endif //MYHLSLINCLUDE_INCLUDED

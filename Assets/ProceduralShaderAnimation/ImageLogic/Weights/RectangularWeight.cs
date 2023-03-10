@@ -7,15 +7,15 @@ namespace ProceduralShaderAnimation.ImageLogic
     public class RectangularWeight : FunctionData
     {
         public Vector3 origin;
-        public Vector2 diameters;
+        public Vector3 diameters;
 
         public override List<float>  GetDataAsFloatArray()
         {
             return new List<float>
             {  
-                4,             0,           0,        0,
-                origin.x,      origin.y,    origin.z, 0,
-                diameters.x,   diameters.y, 0,        0
+                5,             0,           0,           0,
+                origin.x,      origin.y,    origin.z,    0,
+                diameters.x,   diameters.y, diameters.z, 0
             };
         }
     }
