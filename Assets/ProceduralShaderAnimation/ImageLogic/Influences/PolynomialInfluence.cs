@@ -28,8 +28,6 @@ namespace ProceduralShaderAnimation.ImageLogic
                 floatArray.Add(0);
             }
 
-            Debug.Log(string.Join(",", floatArray));
-            
             return floatArray;
         }
     }

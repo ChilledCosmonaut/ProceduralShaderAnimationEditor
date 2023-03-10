@@ -49,10 +49,6 @@ float4 CalculateSineFactor(float variable, uint2 texOffset, Texture2D animationI
 	texIndex.x ++;
 	float frequency = animationInfo[texIndex].x;
 	texIndex.x ++;
-	float timeUsed = animationInfo[texIndex].x;
-	texIndex.x ++;
-	float offsetUsed = animationInfo[texIndex].x;
-	texIndex.x ++;
 	float bias = animationInfo[texIndex].x;
 
 	return amplitude * sin(frequency * variable) + bias;
@@ -77,6 +73,20 @@ float4 CalculatePolynomialFactor(float variable, uint2 texOffset, Texture2D anim
 	
 	float validVariable = max(variable, 0);
 	return CalculatePolynomial(validVariable, texOffset, animationInfo);
+}
+
+float CalculateLineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+	uint2 texIndex = texOffset;
+	float3 firstPoint = animationInfo[texIndex].xyz;
+	texIndex.x ++;
+	float firstWeight = animationInfo[texIndex].x;
+	texIndex.x ++;
+	float3 secondPoint = animationInfo[texIndex].xyz;
+	texIndex.x ++;
+	float secondWeight = animationInfo[texIndex].x;
+
+	float clampedLineDistance = ClampedLineProjection(vertexPosition, firstPoint, secondPoint);
+	return firstWeight * clampedLineDistance + secondWeight * (1.0-clampedLineDistance);
 }
 
 float CalculateSplineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
@@ -107,20 +117,6 @@ float CalculatPolynomialWeight(float3 vertexPosition, uint2 texOffset, Texture2D
 
 	float lineDistance = PositiveLineProjection(vertexPosition, firstControlPoint, secondControlPoint);
 	return CalculatePolynomial(lineDistance, texOffset, animationInfo);
-}
-
-float CalculateLineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
-	uint2 texIndex = texOffset;
-	float3 firstPoint = animationInfo[texIndex].xyz;
-	texIndex.x ++;
-	float firstWeight = animationInfo[texIndex].x;
-	texIndex.x ++;
-	float3 secondPoint = animationInfo[texIndex].xyz;
-	texIndex.x ++;
-	float secondWeight = animationInfo[texIndex].x;
-
-	float clampedLineDistance = ClampedLineProjection(vertexPosition, firstPoint, secondPoint);
-	return firstWeight * clampedLineDistance + secondWeight * (1.0-clampedLineDistance);
 }
 
 float CalculateSphereWeight(float3 vertexPosition, float3 boxOrigin, float properties){
