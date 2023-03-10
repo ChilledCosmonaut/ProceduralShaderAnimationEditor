@@ -23,9 +23,14 @@ namespace ProceduralShaderAnimation.ImageLogic
         {
             Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;
             Material material = GetComponent<Renderer>().sharedMaterial;
+            Vector3 extents = bounds.extents;
+
+            if (extents.x == 0) extents.x = 1;
+            if (extents.y == 0) extents.y = 1;
+            if (extents.z == 0) extents.z = 1;
             
             material.SetVector(BoundingOrigin, bounds.center);
-            material.SetVector(BoundingScale, bounds.extents);
+            material.SetVector(BoundingScale, extents);
             material.SetTexture(AnimationTexture, animationData.CreateAnimationTexture());
         } 
         

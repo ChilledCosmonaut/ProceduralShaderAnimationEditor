@@ -18,6 +18,6 @@ MonoBehaviour:
     transformationAxis: {x: 0, y: 1, z: 0}
     offsetAxis: {x: 0, y: 0, z: -1}
     weightInfos:
-    - {fileID: 11400000, guid: 8fc1a6d8db90a5845a213b94a8dbbdf2, type: 2}
+    - {fileID: 11400000, guid: 8e7a5c4916f88454ab0d4fc05dac212b, type: 2}
     influenceInfos:
     - {fileID: 11400000, guid: f013d5bf6e3db344d81b7eac85a31037, type: 2}

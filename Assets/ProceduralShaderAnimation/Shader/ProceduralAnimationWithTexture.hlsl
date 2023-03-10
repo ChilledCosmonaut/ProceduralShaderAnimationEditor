@@ -217,12 +217,7 @@ float3 DisplacedPosition(float3 currentPosition, float3 boundingScale, float3 tr
 
 	float4x4 fullRotation = mul(zRotation, mul(yRotation, xRotation));
 
-	float3 scaledTranslation = translation;
-	scaledTranslation.x *= boundingScale.x;
-	//scaledVertexPosition.y /= boundingScale.y; 
-	scaledTranslation.z *= boundingScale.z; 
-
-	return (float3) mul(fullRotation, float4(currentPosition * scale, 0)) + scaledTranslation;
+	return (float3) mul(fullRotation, float4(currentPosition * scale, 0)) + (translation * boundingScale);
 }
 
 void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigin, float3 boundingScale, float time, Texture2D animationInfo,  out float3 displacedVertexPosition){
@@ -230,10 +225,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	float3 targetRotation 	 = {0,0,0};
 	float3 targetScale 		 = {1,1,1};
 
-	float3 scaledVertexPosition = (vertexPosition + boundingScale - boundingOrigin);
-	scaledVertexPosition.x /= boundingScale.x;
-	//scaledVertexPosition.y /= boundingScale.y; 
-	scaledVertexPosition.z /= boundingScale.z; 
+	float3 scaledVertexPosition = (vertexPosition + boundingScale - boundingOrigin) / boundingScale;
 
 	float3 origin = {1, 1, 1};
 
