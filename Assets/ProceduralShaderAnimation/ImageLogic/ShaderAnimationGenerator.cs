@@ -19,33 +19,21 @@ namespace ProceduralShaderAnimation.ImageLogic
         
         [SerializeField] private AnimationData animationData;
         
-        private Material _material;
-        [HideInInspector]
-        [SerializeField]
-        private AnimationDataReference _animationDataReference;
-
-        private void Start()
-        {
-            _material = GetComponent<Renderer>().material;
-            _material.SetVector(BoundingOrigin, _animationDataReference.BoundingOrigin);
-            _material.SetVector(BoundingScale, _animationDataReference.BoundingScale);
-            _material.SetTexture(AnimationTexture, _animationDataReference.AnimationTexture);
-            
-            Debug.Log(_material.GetVector(BoundingOrigin));
-
-            var tex = _material.GetTexture(AnimationTexture) as Texture2D;
-        }
-        
         public void SetAnimationInfo()
         {
             Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;
-
-            _animationDataReference = new AnimationDataReference()
-            {
-                BoundingOrigin = bounds.center,
-                BoundingScale = bounds.extents,
-                AnimationTexture = animationData.CreateAnimationTexture()
-            };
+            Material material = GetComponent<Renderer>().sharedMaterial;
+            
+            material.SetVector(BoundingOrigin, bounds.center);
+            material.SetVector(BoundingScale, bounds.extents);
+            material.SetTexture(AnimationTexture, animationData.CreateAnimationTexture());
         } 
+        
+        public void PrintMeshInfo()
+        {
+            Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
+            
+            Debug.Log($"Bounds extent: {mesh.bounds.extents}, Bounds Origin: {mesh.bounds.center}{Environment.NewLine} Vertices: {string.Join(",", mesh.vertices)}");
+        }
     }
 }

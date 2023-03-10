@@ -314,6 +314,9 @@
         },
         {
             "m_Id": "a9e0accc4bfd4c0a90a55b4e0cd10419"
+        },
+        {
+            "m_Id": "ac52a9c3ea6c48b28959e5bbe3942bce"
         }
     ]
 }
@@ -801,10 +804,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -133.0000457763672,
-            "y": 499.9999694824219,
-            "width": 309.0000915527344,
-            "height": 373.9999694824219
+            "x": -137.0,
+            "y": 500.0,
+            "width": 313.0,
+            "height": 190.0
         }
     },
     "m_Slots": [
@@ -1016,6 +1019,30 @@
     "useTilingAndOffset": false,
     "m_Modifiable": true,
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.ShaderKeyword",
+    "m_ObjectId": "ac52a9c3ea6c48b28959e5bbe3942bce",
+    "m_Guid": {
+        "m_GuidSerialized": "a73be4cd-1191-4a40-9723-118d724d2c69"
+    },
+    "m_Name": "Debug_Symbols",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Debug_Symbols",
+    "m_DefaultReferenceName": "_DEBUG_SYMBOLS",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_KeywordType": 0,
+    "m_KeywordDefinition": 0,
+    "m_KeywordScope": 0,
+    "m_KeywordStages": 63,
+    "m_Entries": [],
+    "m_Value": 1,
+    "m_IsEditable": true
 }
 
 {

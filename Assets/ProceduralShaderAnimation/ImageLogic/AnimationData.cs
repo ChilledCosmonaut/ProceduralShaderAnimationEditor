@@ -62,6 +62,14 @@ public class AnimationData : ScriptableObject
         tex.SetPixelData(imageData, 0);
         tex.Apply(updateMipmaps: false);
         
+        var image = tex.EncodeToEXR(Texture2D.EXRFlags.OutputAsFloat);
+
+        var dirPath = Application.dataPath + "/SaveImages/";
+        if(!Directory.Exists(dirPath)) {
+            Directory.CreateDirectory(dirPath);
+        }
+        File.WriteAllBytes(dirPath + "Image" + ".exr", image);
+        
         return tex;
     }
     
@@ -95,6 +103,7 @@ public struct GroupInfo
             {
                 (float)transformationType, 0, 0, 0,
                 transformationAxis.x, transformationAxis.y, transformationAxis.z, 0,
+                offsetAxis.x, offsetAxis.y, offsetAxis.z, 0,
                 weightInfos.Count, 0, 0, 0,
                 influenceInfos.Count, 0, 0, 0
             }

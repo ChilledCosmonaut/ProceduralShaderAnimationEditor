@@ -23,6 +23,11 @@ namespace ProceduralShaderAnimation.Editor
             {
                 generator.SetAnimationInfo();
             }
+            
+            if (GUILayout.Button("Print Mesh Info"))
+            {
+                generator.PrintMeshInfo();
+            }
         }
     }
 }
