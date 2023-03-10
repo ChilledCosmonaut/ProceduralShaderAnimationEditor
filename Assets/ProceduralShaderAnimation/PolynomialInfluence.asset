@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8483223f40e4b8f8b251c64bac21468, type: 3}
   m_Name: PolynomialInfluence
   m_EditorClassIdentifier: 
-  controlPoints:
-  - 0
-  - 2
-  - 0
-  - -3
+  polynomialOrderPreambles:
+  - 1
   useTime: 0
-  useOffset: 1
+  useOffset: 0

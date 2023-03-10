@@ -15,7 +15,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         {
             var floatArray = new List<float>
             {
-                1,                         0,                           0, 0,
+                2,                         0,                           0, 0,
                 Convert.ToSingle(useTime), Convert.ToSingle(useOffset), 0, 0,
                 splinePoints[0].x,         splinePoints[0].y,           0, 0,
                 splinePoints[1].x,         splinePoints[1].y,           0, 0,

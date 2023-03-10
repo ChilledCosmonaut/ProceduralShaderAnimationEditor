@@ -17,7 +17,7 @@ float ClampedLineProjection(float3 vertexPosition, float3 firstPoint, float3 sec
 float PositiveLineProjection(float3 vertexPosition, float3 firstPoint, float3 secondPoint){
 	float3 lineDirection = normalize(secondPoint - firstPoint);
 	float3 maxDistance = ProjectVectorOntoLineAsScalar(secondPoint, firstPoint, lineDirection);
-	return max(ProjectVectorOntoLineAsScalar(vertexPosition, firstPoint, lineDirection) / maxDistance, 0);
+	return max(ProjectVectorOntoLineAsScalar(vertexPosition, firstPoint, lineDirection), 0);
 }
 
 float CalculateSpline(float time, float2 firstPoint, float2 secondPoint, float2 thirdPoint, float2 fourthPoint){
@@ -116,7 +116,7 @@ float CalculatPolynomialWeight(float3 vertexPosition, uint2 texOffset, Texture2D
 	texIndex.x ++;
 
 	float lineDistance = PositiveLineProjection(vertexPosition, firstControlPoint, secondControlPoint);
-	return CalculatePolynomial(lineDistance, texOffset, animationInfo);
+	return CalculatePolynomial(lineDistance, texIndex, animationInfo);
 }
 
 float CalculateSphereWeight(float3 vertexPosition, float3 boxOrigin, float radius){
@@ -143,26 +143,27 @@ float4 CalculatePrimitiveWeight(float3 vertexPosition, uint2 texOffset, uint typ
 
 float CalculateWeigth(float3 vertexPosition, uint weightCount, uint2 texOffset, Texture2D animationInfo){
 	uint2 texIndex = texOffset;
-	float amountedWeight = 0;
+	float amountedWeight = 1;
 
 	for(uint weightIndex = 0; weightIndex < weightCount; weightIndex++){
 		uint type = (uint) animationInfo[texIndex].x;
 		texIndex.x++;
 
 		if(type == 1){
-			amountedWeight += CalculateLineWeight(vertexPosition, texIndex, animationInfo);
+			amountedWeight *= CalculateLineWeight(vertexPosition, texIndex, animationInfo);
 		} 
 		else if(type == 2){
-			amountedWeight += CalculateSplineWeight(vertexPosition, texIndex, animationInfo);
+			amountedWeight *= CalculateSplineWeight(vertexPosition, texIndex, animationInfo);
 		}
 		else if(type == 3){
-			amountedWeight += CalculatPolynomialWeight(vertexPosition, texIndex, animationInfo);
+			amountedWeight *= CalculatPolynomialWeight(vertexPosition, texIndex, animationInfo);
 		}
 		else if(type == 4 || type == 5){
-			amountedWeight += CalculatePrimitiveWeight(vertexPosition, texIndex, type, animationInfo);
+			amountedWeight *= CalculatePrimitiveWeight(vertexPosition, texIndex, type, animationInfo);
 		}
 
 		texIndex.y ++;
+		texIndex.x = texOffset.x;
 	}
 	return amountedWeight;
 }
@@ -189,6 +190,7 @@ float CalculateInfluence(float3 vertexPosition, float time, float offset, uint i
 		}
 
 		texIndex.y ++;
+		texIndex.x = texOffset.x;
 	}
 
 	return amountedInfluence;
@@ -258,10 +260,10 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		texIndex.y ++;
 		texIndex.x = 0;
 
-		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis);
+		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis) / 2;
 
 		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
-		cache = weight;
+		cache = offset;
 		texIndex.y += weightCount;
 		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
 		float weightedInfluence = weight * influence;
@@ -281,6 +283,6 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	}
 
 	float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
-	displacedVertexPosition = cache;
+	displacedVertexPosition = targetPosition;
 }
 #endif //MYHLSLINCLUDE_INCLUDED
