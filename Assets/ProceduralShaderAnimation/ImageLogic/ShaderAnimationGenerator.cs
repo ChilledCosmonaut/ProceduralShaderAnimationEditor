@@ -17,8 +17,8 @@ namespace ProceduralShaderAnimation.ImageLogic
         private static readonly int BoundingScale = Shader.PropertyToID("_boundingScale");
         private static readonly int AnimationTexture = Shader.PropertyToID("_AnimationTexture");
         
-        [SerializeField] private AnimationData animationData;
-        
+        [SerializeField] public AnimationData animationData;
+
         public void SetAnimationInfo()
         {
             Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;
