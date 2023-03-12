@@ -4,9 +4,8 @@ using UnityEngine;
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [CreateAssetMenu(fileName = "SplineWeight", menuName = "ProceduralShaderAnimation/SplineWeight", order = 1)]
-    public class SplineWeight : FunctionData
+    public class SplineWeight : InterpolationData
     {
-        public Vector3 firstControlPoint, secondControlPoint;
         public Vector2[] splinePoints;
 
         public override List<float>  GetDataAsFloatArray()

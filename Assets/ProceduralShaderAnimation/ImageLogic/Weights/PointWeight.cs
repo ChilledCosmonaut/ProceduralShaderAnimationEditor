@@ -4,11 +4,9 @@ using UnityEngine;
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [CreateAssetMenu(fileName = "PointWeight", menuName = "ProceduralShaderAnimation/PointWeight", order = 1)]
-    public class PointWeight : FunctionData
+    public class PointWeight : InterpolationData
     {
-        public Vector3 firstControlPoint;
         public float firstWeight;
-        public Vector3 secondControlPoint;
         public float secondWeight;
 
         public override List<float>  GetDataAsFloatArray()

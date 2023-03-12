@@ -4,9 +4,8 @@ using UnityEngine;
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [CreateAssetMenu(fileName = "PolynomialWeight", menuName = "ProceduralShaderAnimation/PolynomialWeight", order = 1)]
-    public class PolynomialWeight : FunctionData
+    public class PolynomialWeight : InterpolationData
     {
-        public Vector3 firstControlPoint, secondControlPoint;
         public List<float> polynomialOrderPreambles;
 
         public override List<float>  GetDataAsFloatArray()

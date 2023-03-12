@@ -80,6 +80,11 @@ public abstract class FunctionData : ScriptableObject
     public abstract List<float>  GetDataAsFloatArray();
 }
 
+public abstract class InterpolationData : FunctionData
+{
+    public Vector3 firstControlPoint, secondControlPoint;
+}
+
 [Serializable]
 public enum TransformationType
 {
