@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
@@ -18,13 +17,17 @@ namespace ProceduralShaderAnimation.Editor
         private GameObject boundingBox;
         private List<(GameObject, SphericalWeight)> sphereWeights;
         private List<(GameObject, RectangularWeight)> boxWeights;
+
+        private bool recalculate = false;
         
         private void OnEnable()
         {
             generator = (ShaderAnimationGenerator) target;
             animationData = generator.animationData;
+            currentActiveGroup = animationData.groupInfos[0];
             boxPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ProceduralShaderAnimation/Prefabs/BoxWeight.prefab");
             spherePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ProceduralShaderAnimation/Prefabs/SphereWeight.prefab");
+            SetupGizmos();
         }
 
         void OnDisable()
@@ -48,8 +51,17 @@ namespace ProceduralShaderAnimation.Editor
             }
         }
         
-        private void OnSceneViewGUI(SceneView sv)
+        private void OnSceneGUI()
         {
+            foreach (FunctionData boxWeight in currentActiveGroup.weightInfos)
+            {
+                switch (boxWeight)
+                {
+                    case SplineWeight weight:
+                        DrawSplineGizmo(weight);
+                        break;
+                }
+            };
         }
 
         private void SetupGizmos()
@@ -58,17 +70,19 @@ namespace ProceduralShaderAnimation.Editor
             
             var bounds = generator.GetComponent<MeshFilter>().sharedMesh.bounds;
             
-            Transform boundingTransform = SetupBoundingBox(bounds.center, bounds.extents, generator.transform);
+            SetupBoundingBox(bounds.center, bounds.extents);
 
-            foreach (var boxWeight in currentActiveGroup.weightInfos)
+            foreach (FunctionData boxWeight in currentActiveGroup.weightInfos)
             {
-                if(boxWeight is RectangularWeight) SetupBoxGizmo(boxWeight as RectangularWeight, boundingTransform);
-                else if ()
-            }
-            
-            foreach (SphericalWeight sphereWeight in currentActiveGroup.weightInfos)
-            {
-                SetupSphereGizmo(sphereWeight, boundingTransform);
+                switch (boxWeight)
+                {
+                    case RectangularWeight weight:
+                        SetupBoxGizmo(weight);
+                        break;
+                    case SphericalWeight weight:
+                        SetupSphereGizmo(weight);
+                        break;
+                }
             }
         }
 
@@ -86,45 +100,56 @@ namespace ProceduralShaderAnimation.Editor
         }
 
         private void DestroyGizmos(){
-            Destroy(boundingBox);   
+            DestroyImmediate(boundingBox);   
         }
 
-
-        private Transform SetupBoundingBox(Vector3 origin, Vector3 extents, Transform parentTransform)
+        private void SetupBoundingBox(Vector3 origin, Vector3 extents)
         {
-            var boundingGizmo = PrefabUtility.InstantiatePrefab(boxPrefab, parentTransform) as GameObject;
-            boundingBox = boundingGizmo;
-            
-            if (boundingGizmo == null) return new RectTransform();
+            var boundingGizmo = Instantiate(boxPrefab, generator.transform);
 
             boundingGizmo.transform.position = origin;
             boundingGizmo.transform.localScale = extents;
-
-            return boundingGizmo.transform;
+            
+            boundingBox = boundingGizmo;
         }
         
-        private void SetupBoxGizmo(RectangularWeight weightInfo, Transform parentTransform)
+        private void SetupBoxGizmo(RectangularWeight weightInfo)
         {
-            var boxGizmo = PrefabUtility.InstantiatePrefab(boxPrefab, parentTransform) as GameObject;
-            boxWeights.Add((boxGizmo, weightInfo));
-            
-            if (boxGizmo == null) return;
+            var boxGizmo = Instantiate(boxPrefab, boundingBox.transform);
 
-            boxGizmo.transform.position = weightInfo.origin;
+            boxGizmo.transform.localPosition = weightInfo.origin - Vector3.one;
             boxGizmo.transform.localScale = weightInfo.diameters;
             boxGizmo.transform.hasChanged = false;
+            
+            boxWeights.Add((boxGizmo, weightInfo));
         }
         
-        private void SetupSphereGizmo(SphericalWeight weightInfo, Transform parentTransform)
+        private void SetupSphereGizmo(SphericalWeight weightInfo)
         {
-            var sphereGizmo = PrefabUtility.InstantiatePrefab(spherePrefab, parentTransform) as GameObject;
-            sphereWeights.Add((sphereGizmo, weightInfo));
-            
-            if (sphereGizmo == null) return;
+            var sphereGizmo = Instantiate(spherePrefab, boundingBox.transform);
 
-            sphereGizmo.transform.position = weightInfo.origin;
+            sphereGizmo.transform.position = weightInfo.origin - Vector3.one;
             sphereGizmo.transform.localScale = new Vector3(weightInfo.radius, weightInfo.radius, weightInfo.radius);
             sphereGizmo.transform.hasChanged = false;
+            
+            sphereWeights.Add((sphereGizmo, weightInfo));
+        }
+
+        private void DrawSplineGizmo(SplineWeight weightInfo)
+        {
+            Handles.SphereHandleCap(0, weightInfo.firstControlPoint, Quaternion.identity, 0.2f, EventType.Repaint);
+            Handles.SphereHandleCap(0, weightInfo.secondControlPoint, Quaternion.identity, 0.15f, EventType.Repaint);
+            Handles.DrawLine(weightInfo.firstControlPoint, weightInfo.secondControlPoint, 7);
+            EditorGUI.BeginChangeCheck();
+            Vector3 firstPoint = Handles.PositionHandle(weightInfo.firstControlPoint, Quaternion.identity);
+            Vector3 secondPoint = Handles.PositionHandle(weightInfo.secondControlPoint, Quaternion.identity);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(animationData, "Changed Spline Control Points");
+                weightInfo.firstControlPoint = firstPoint;
+                weightInfo.secondControlPoint = secondPoint;
+                recalculate = true;
+            }
         }
 
         private void UpdateBoxGizmo(GameObject gizmoObject, RectangularWeight data)
