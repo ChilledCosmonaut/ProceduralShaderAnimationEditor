@@ -283,6 +283,6 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	}
 
 	float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
-	displacedVertexPosition = targetPosition;
+	displacedVertexPosition = cache;
 }
 #endif //MYHLSLINCLUDE_INCLUDED

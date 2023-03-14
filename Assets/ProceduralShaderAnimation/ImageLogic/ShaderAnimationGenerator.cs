@@ -16,8 +16,10 @@ namespace ProceduralShaderAnimation.ImageLogic
         private static readonly int BoundingOrigin = Shader.PropertyToID("_boundingOrigin");
         private static readonly int BoundingScale = Shader.PropertyToID("_boundingScale");
         private static readonly int AnimationTexture = Shader.PropertyToID("_AnimationTexture");
-        
+
         [SerializeField] public AnimationData animationData;
+        [SerializeField] private Vector3 boundCenter;
+        [SerializeField] private float boundSize;
 
         public void SetAnimationInfo()
         {

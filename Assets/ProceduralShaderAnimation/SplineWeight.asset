@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2befd625b3744740ad0639d5e6599df1, type: 3}
   m_Name: SplineWeight
   m_EditorClassIdentifier: 
-  firstControlPoint: {x: 0, y: 0, z: 0}
-  secondControlPoint: {x: 0, y: 0, z: 2}
+  firstControlPoint: {x: 0, y: 0, z: 2}
+  secondControlPoint: {x: 0, y: 0, z: 0}
   splinePoints:
   - {x: 0, y: 0}
   - {x: 0.2, y: 0.2}

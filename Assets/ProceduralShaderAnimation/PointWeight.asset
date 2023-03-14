@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b217cec920f4c75aa3edf3bba7b3c3d, type: 3}
   m_Name: PointWeight
   m_EditorClassIdentifier: 
-  firstControlPoint: {x: 0, y: 0, z: 2}
+  firstControlPoint: {x: 1.0348688, y: 1.0245221, z: 2}
+  secondControlPoint: {x: 1.0268415, y: 1, z: 0}
   firstWeight: 1
-  secondControlPoint: {x: 0, y: 0, z: 0}
   secondWeight: 1

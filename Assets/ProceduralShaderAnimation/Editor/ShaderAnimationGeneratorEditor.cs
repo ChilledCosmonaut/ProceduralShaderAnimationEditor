@@ -3,18 +3,23 @@ using System.Linq;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ProceduralShaderAnimation.Editor
 {
     [CustomEditor(typeof(ShaderAnimationGenerator))]
     public class ShaderAnimationGeneratorEditor : UnityEditor.Editor
     {
+        public VisualTreeAsset m_UXML;
+        
         private ShaderAnimationGenerator generator;
         private AnimationData animationData;
         [SerializeField] 
         private GroupInfo currentActiveGroup;
-        private Bounds objectBounds;
+        private Vector3 boundCenter;
+        private float boundSize;
 
         private readonly List<(BoxBoundsHandle, RectangularWeight)> boxWeights = new ();
 
@@ -26,7 +31,9 @@ namespace ProceduralShaderAnimation.Editor
             generator = (ShaderAnimationGenerator) target;
             animationData = generator.animationData;
             currentActiveGroup = animationData.groupInfos[0];
-            objectBounds = generator.GetComponent<MeshFilter>().sharedMesh.bounds;
+            var objectBounds = generator.GetComponent<MeshFilter>().sharedMesh.bounds;
+            boundCenter = objectBounds.center;
+            boundSize = Mathf.Max(Mathf.Max(objectBounds.extents.x, objectBounds.extents.y), objectBounds.extents.z);
             SetupGizmos();
         }
 
@@ -55,7 +62,7 @@ namespace ProceduralShaderAnimation.Editor
         {
             if (!debug) return;
             Handles.color = Color.red;
-            Handles.DrawWireCube(objectBounds.center, objectBounds.extents * 2);
+            Handles.DrawWireCube(boundCenter, Vector3.one * boundSize * 2);
 
             Handles.color = Color.white;
             foreach (FunctionData typelessWeight in currentActiveGroup.weightInfos)
@@ -125,12 +132,12 @@ namespace ProceduralShaderAnimation.Editor
             
             EditorGUI.BeginChangeCheck();
             Vector3 newOrigin = Handles.PositionHandle(TransformIntoWorldSpace(weightInfo.origin), rotation);
-            float scale = Handles.RadiusHandle(rotation, TransformIntoWorldSpace(weightInfo.origin), weightInfo.radius * objectBounds.extents.x);
+            float scale = Handles.RadiusHandle(rotation, TransformIntoWorldSpace(weightInfo.origin), weightInfo.radius * boundSize);
             if (!EditorGUI.EndChangeCheck()) return;
             
             Undo.RecordObject(animationData, "Changed Sphere Weight");
             weightInfo.origin = TransformIntoBoundingSpace(newOrigin);
-            weightInfo.radius = scale / objectBounds.extents.x;
+            weightInfo.radius = scale / boundSize;
             recalculate = true;
         }
 
@@ -139,7 +146,7 @@ namespace ProceduralShaderAnimation.Editor
             var rotation = generator.transform.rotation;
 
             var transformedFirstPoint = TransformIntoWorldSpace(weightInfo.firstControlPoint);
-            var transformedSecondPoint = TransformIntoWorldSpace(weightInfo.firstControlPoint);
+            var transformedSecondPoint = TransformIntoWorldSpace(weightInfo.secondControlPoint);
             
             Handles.SphereHandleCap(0, transformedFirstPoint, rotation, 0.2f, EventType.Repaint);
             Handles.SphereHandleCap(0, transformedSecondPoint, rotation, 0.15f, EventType.Repaint);
@@ -158,22 +165,23 @@ namespace ProceduralShaderAnimation.Editor
 
         private Vector3 TransformIntoBoundingSpace(Vector3 position)
         {
-            return ScaleToBoundingSpace(position) - objectBounds.extents + objectBounds.center;
+            return ScaleToBoundingSpace(new Vector3(position.x + boundSize, position.y + boundSize, position.z + boundSize) - boundCenter);
         }
         
         private Vector3 TransformIntoWorldSpace(Vector3 position)
         {
-            return ScaleToWorldSpace(position) - objectBounds.extents + objectBounds.center;
+            Vector3 displacedVector3 = ScaleToWorldSpace(position) + boundCenter;
+            return new Vector3(displacedVector3.x - boundSize, displacedVector3.y - boundSize, displacedVector3.z - boundSize);
         }
         
         private Vector3 ScaleToBoundingSpace(Vector3 position)
         {
-            return new Vector3(position.x / objectBounds.extents.x, position.y / objectBounds.extents.y, position.z / objectBounds.extents.z);
+            return new Vector3(position.x / boundSize, position.y / boundSize, position.z / boundSize);
         }
         
         private Vector3 ScaleToWorldSpace(Vector3 position)
         {
-            return new Vector3(position.x * objectBounds.extents.x, position.y * objectBounds.extents.y, position.z * objectBounds.extents.z);
+            return new Vector3(position.x * boundSize, position.y * boundSize, position.z * boundSize);
         }
     }
 }
