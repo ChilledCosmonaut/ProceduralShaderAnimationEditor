@@ -1,0 +1,39 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Template name="SphereField" src="project://database/Assets/SphereField.uxml?fileID=9197481963319205126&amp;guid=9070b1ed3f3f6264d973b35f27f80a40&amp;type=3#SphereField" />
+    <Style src="project://database/Assets/Test.uss?fileID=7433441132597879392&amp;guid=22f7e2586650af742a74d7117995ad33&amp;type=3#Test" />
+    <ui:VisualElement name="animationData" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-wrap: nowrap; flex-basis: auto; flex-direction: column; min-width: 128px; height: auto;">
+        <ui:FloatField label="Animation Length" value="0" />
+        <ui:VisualElement name="groupData" class="weight" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <ui:VisualElement name="header" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; height: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 5px;">
+                <ui:Label tabindex="-1" text="Group" display-tooltip-when-elided="true" name="tite" class="header" style="-unity-font-style: bold; font-size: 16px; padding-right: 10px;" />
+                <ui:Button text="Preview" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; white-space: nowrap; width: 70%; height: auto; flex-direction: row; padding-top: 1px; margin-top: 3px; font-size: 16px;" />
+            </ui:VisualElement>
+            <uie:EnumFlagsField label="Transformation Type" type="TransformationType, Assembly-CSharp" />
+            <ui:Vector3Field label="Transformation Axis" />
+            <ui:Vector3Field label="Offset Axis" />
+            <ui:VisualElement name="weightData" class="weight" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:VisualElement name="header" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; height: auto;">
+                    <ui:Label tabindex="-1" text="Weights" display-tooltip-when-elided="true" name="tite" class="header" style="-unity-font-style: bold; font-size: 16px; padding-right: 10px;" />
+                </ui:VisualElement>
+                <ui:BoundsField label="Bounds" />
+                <ui:Instance template="SphereField" name="SphereField" />
+            </ui:VisualElement>
+            <ui:VisualElement name="influenceData" class="weight" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:Label tabindex="-1" text="Influences" display-tooltip-when-elided="true" class="header" style="-unity-font-style: bold; font-size: 16px;" />
+                <ui:VisualElement name="sinusInfluence" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                    <ui:Label tabindex="-1" text="Sinus Function" display-tooltip-when-elided="true" />
+                    <ui:VisualElement name="values" class="unity-bounds-field__center-field" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                        <ui:RadioButton label="Use Time" class="unity-bounds-field__center-field" />
+                        <ui:RadioButton label="Use Offset" class="unity-bounds-field__center-field" />
+                        <ui:FloatField label="Amplitude" value="42,2" class="unity-bounds-field__center-field" />
+                        <ui:FloatField label="Frequency" value="42,2" class="unity-bounds-field__center-field" />
+                        <ui:FloatField label="Bias" value="0" class="unity-bounds-field__center-field" />
+                    </ui:VisualElement>
+                    <ui:Foldout text="Graph View" name="Foldout" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="AnimationControls" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+    <ui:Button text="Add Group" display-tooltip-when-elided="true" />
+</ui:UXML>
