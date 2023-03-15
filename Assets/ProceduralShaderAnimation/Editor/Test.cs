@@ -3,7 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CustomPropertyDrawer(typeof(AnimationData))]
+/*[CustomPropertyDrawer(typeof(AnimationData))]
 public class Test : PropertyDrawer
 {
     public override VisualElement CreatePropertyGUI(SerializedProperty property)
@@ -32,4 +32,4 @@ public class Test : PropertyDrawer
         
         spawnInspector.Add(new InspectorElement(t));
     }
-}
+}*/

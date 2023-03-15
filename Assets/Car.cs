@@ -7,7 +7,5 @@ public class Car : MonoBehaviour
     public Color m_Color = Color.black;
     
     // This car has four tires
-    public Tire m_Tires = new Tire();
-
-    public Horn[] horn = new Horn[4];
+    public AnimationData testTransform;
 }

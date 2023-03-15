@@ -47,11 +47,16 @@ namespace ProceduralShaderAnimation.Editor
         {
             // Create a new VisualElement to be the root of our inspector UI
             VisualElement myInspector = new VisualElement();
-            
-            myInspector.Add(new PropertyField(serializedObject.FindProperty("animationData")));
+
+            var animationDataProperty = new PropertyField(serializedObject.FindProperty("animationData"));
+            myInspector.Add(animationDataProperty);
             
             // Attach Inspector of Animation Data
-            myInspector.Add(new InspectorElement(generator.animationData));
+            var animationDataInspector = new Box();
+            myInspector.Add(animationDataInspector);
+
+            animationDataProperty.RegisterCallback<ChangeEvent<UnityEngine.Object>, VisualElement>(
+                AnimationDataChanged, animationDataInspector);
 
             /*var animationDataProperty = new SerializedObject(serializedObject.FindProperty("animationData").objectReferenceValue);
 
@@ -59,6 +64,17 @@ namespace ProceduralShaderAnimation.Editor
             
             // Return the finished inspector UI
             return myInspector;
+        }
+        
+        void AnimationDataChanged(ChangeEvent<Object> evt, VisualElement transformInspector)
+        {
+            transformInspector.Clear();
+
+            var t = evt.newValue;
+            if (t == null)
+                return;
+        
+            transformInspector.Add(new InspectorElement(t));
         }
         
         private void OnSceneGUI()

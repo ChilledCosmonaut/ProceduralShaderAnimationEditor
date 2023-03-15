@@ -1,25 +1,35 @@
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(Car))]
 public class Car_Inspector : Editor
 {
     public VisualTreeAsset m_InspectorXML;
-    
-    
+
+
     private Car car;
 
     private void OnEnable()
     {
-        car = (Car) target;
+        car = (Car)target;
     }
 
     public override VisualElement CreateInspectorGUI()
     {
         // Create a new VisualElement to be the root of our inspector UI
         VisualElement myInspector = new VisualElement();
-        InspectorElement.FillDefaultInspector(myInspector, serializedObject, this);
+        //InspectorElement.FillDefaultInspector(myInspector, serializedObject, this);
+        var transformProperty = new PropertyField(serializedObject.FindProperty("testTransform"));
+        myInspector.Add(transformProperty);
+
+        var transformInspector = new Box();
+        myInspector.Add(transformInspector);
+
+        transformProperty.RegisterCallback<ChangeEvent<Object>, VisualElement>(
+            TransformChanged, transformInspector);
+
         return myInspector;
 
         // Add a simple label
@@ -44,4 +54,17 @@ public class Car_Inspector : Editor
         // Return the finished inspector UI
         return myInspector;*/
     }
+
+    void TransformChanged(ChangeEvent<Object> evt, VisualElement transformInspector)
+    {
+        transformInspector.Clear();
+
+        var t = evt.newValue;
+        if (t == null)
+            return;
+        
+        transformInspector.Add(new InspectorElement(t));
+    }
+    
+    
 }
