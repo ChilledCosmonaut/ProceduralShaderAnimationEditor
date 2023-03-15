@@ -17,7 +17,11 @@ MonoBehaviour:
   - transformationType: 1
     transformationAxis: {x: 0, y: 1, z: 0}
     offsetAxis: {x: 0, y: 0, z: 1}
-    weightInfos:
-    - {fileID: 11400000, guid: 916ef28325e0371438f9494fc191cae0, type: 2}
-    influenceInfos:
-    - {fileID: 11400000, guid: d3cb6166252017c42b5c0426a139fbe8, type: 2}
+    splineWeights: []
+    pointWeights: []
+    polynomialWeights: []
+    boxWeights: []
+    sphereWeights: []
+    sinusInfluences: []
+    polynomialInfluences: []
+    splineInfluences: []

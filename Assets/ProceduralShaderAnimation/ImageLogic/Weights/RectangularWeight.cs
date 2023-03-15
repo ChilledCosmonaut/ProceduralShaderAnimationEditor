@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    [CreateAssetMenu(fileName = "RectangularWeight", menuName = "ProceduralShaderAnimation/RectangularWeight", order = 1)]
+    [Serializable]
     public class RectangularWeight : FunctionData
     {
         public Vector3 origin;

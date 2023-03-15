@@ -1,21 +1,22 @@
 using System.Collections.Generic;
-using System.Linq;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using InspectorElement = UnityEditor.UIElements.InspectorElement;
 
 namespace ProceduralShaderAnimation.Editor
 {
     [CustomEditor(typeof(ShaderAnimationGenerator))]
     public class ShaderAnimationGeneratorEditor : UnityEditor.Editor
     {
-        public VisualTreeAsset m_UXML;
+        public VisualTreeAsset uxml;
         
         private ShaderAnimationGenerator generator;
         private AnimationData animationData;
+        
         [SerializeField] 
         private GroupInfo currentActiveGroup;
         private Vector3 boundCenter;
@@ -42,40 +43,50 @@ namespace ProceduralShaderAnimation.Editor
             DestroyGizmos();
         }
 
-        public override void OnInspectorGUI()
+        public override VisualElement CreateInspectorGUI()
         {
-            // Draw default inspector after button...
-            base.OnInspectorGUI();
+            // Create a new VisualElement to be the root of our inspector UI
+            VisualElement myInspector = new VisualElement();
             
-            if (GUILayout.Button("Apply Animation"))
-            {
-                generator.SetAnimationInfo();
-            }
+            myInspector.Add(new PropertyField(serializedObject.FindProperty("animationData")));
             
-            if (GUILayout.Button("Print Mesh Info"))
-            {
-                generator.PrintMeshInfo();
-            }
+            // Attach Inspector of Animation Data
+            myInspector.Add(new InspectorElement(generator.animationData));
+
+            /*var animationDataProperty = new SerializedObject(serializedObject.FindProperty("animationData").objectReferenceValue);
+
+            var groupInfo = animationDataProperty.FindProperty("groupInfos");*/
+            
+            // Return the finished inspector UI
+            return myInspector;
         }
         
         private void OnSceneGUI()
         {
             if (!debug) return;
             Handles.color = Color.red;
-            Handles.DrawWireCube(boundCenter, Vector3.one * boundSize * 2);
+            Handles.DrawWireCube(boundCenter, boundSize * 2 * Vector3.one);
 
             Handles.color = Color.white;
-            foreach (FunctionData typelessWeight in currentActiveGroup.weightInfos)
+
+            foreach (var pointWeight in currentActiveGroup.pointWeights)
             {
-                switch (typelessWeight)
-                {
-                    case InterpolationData weight:
-                        DrawInterpolationHandle(weight);
-                        break;
-                    case SphericalWeight weight:
-                        DrawSphereHandle(weight);
-                        break;
-                }
+                DrawInterpolationHandle(pointWeight);
+            }
+            
+            foreach (var splineWeight in currentActiveGroup.splineWeights)
+            {
+                DrawInterpolationHandle(splineWeight);
+            }
+            
+            foreach (var polynomialWeight in currentActiveGroup.polynomialWeights)
+            {
+                DrawInterpolationHandle(polynomialWeight);
+            }
+            
+            foreach (var sphereWeight in currentActiveGroup.sphereWeights)
+            {
+                DrawSphereHandle(sphereWeight);
             }
 
             foreach ((BoxBoundsHandle handle, RectangularWeight info) boxWeight in boxWeights)
@@ -91,7 +102,7 @@ namespace ProceduralShaderAnimation.Editor
         {
             DestroyGizmos();
 
-            foreach (var weight in currentActiveGroup.weightInfos.OfType<RectangularWeight>())
+            foreach (var weight in currentActiveGroup.boxWeights)
                 SetupBoxGizmo(weight);
         }
 
@@ -145,8 +156,8 @@ namespace ProceduralShaderAnimation.Editor
         {
             var rotation = generator.transform.rotation;
 
-            var transformedFirstPoint = TransformIntoWorldSpace(weightInfo.firstControlPoint);
-            var transformedSecondPoint = TransformIntoWorldSpace(weightInfo.secondControlPoint);
+            var transformedFirstPoint = TransformIntoWorldSpace(weightInfo.FirstControlPoint);
+            var transformedSecondPoint = TransformIntoWorldSpace(weightInfo.SecondControlPoint);
             
             Handles.SphereHandleCap(0, transformedFirstPoint, rotation, 0.2f, EventType.Repaint);
             Handles.SphereHandleCap(0, transformedSecondPoint, rotation, 0.15f, EventType.Repaint);
@@ -158,8 +169,8 @@ namespace ProceduralShaderAnimation.Editor
             if (!EditorGUI.EndChangeCheck()) return;
             
             Undo.RecordObject(animationData, "Changed Spline Control Points");
-            weightInfo.firstControlPoint = TransformIntoBoundingSpace(firstPoint);
-            weightInfo.secondControlPoint = TransformIntoBoundingSpace(secondPoint);
+            weightInfo.FirstControlPoint = TransformIntoBoundingSpace(firstPoint);
+            weightInfo.SecondControlPoint = TransformIntoBoundingSpace(secondPoint);
             recalculate = true;
         }
 

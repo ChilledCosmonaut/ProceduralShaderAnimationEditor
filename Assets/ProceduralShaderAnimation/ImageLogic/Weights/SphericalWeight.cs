@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    [CreateAssetMenu(fileName = "SphericalWeight", menuName = "ProceduralShaderAnimation/SphericalWeight", order = 1)]
+    [Serializable]
     public class SphericalWeight : FunctionData
     {
         public Vector3 origin;

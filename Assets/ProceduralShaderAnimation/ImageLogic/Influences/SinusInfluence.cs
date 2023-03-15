@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    [CreateAssetMenu(fileName = "SinusInfluence", menuName = "ProceduralShaderAnimation/SinusInfluence", order = 1)]
+    [Serializable]
     public class SinusInfluence : FunctionData
     {
         public bool useTime;

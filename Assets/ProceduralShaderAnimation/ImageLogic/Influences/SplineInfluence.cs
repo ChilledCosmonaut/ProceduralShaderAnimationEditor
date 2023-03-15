@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    [CreateAssetMenu(fileName = "SplineInfluence", menuName = "ProceduralShaderAnimation/SplineInfluence", order = 1)]
+    [Serializable]
     public class SplineInfluence : FunctionData
     {
         public bool useTime;

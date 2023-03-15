@@ -21,6 +21,8 @@ namespace ProceduralShaderAnimation.ImageLogic
         [SerializeField] private Vector3 boundCenter;
         [SerializeField] private float boundSize;
 
+        public float[] testArray = new float[4];
+
         public void SetAnimationInfo()
         {
             Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;

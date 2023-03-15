@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ProceduralShaderAnimation.ImageLogic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
@@ -75,14 +76,15 @@ public class AnimationData : ScriptableObject
     
 }
 
-public abstract class FunctionData : ScriptableObject
+[Serializable]
+public abstract class FunctionData
 {
     public abstract List<float>  GetDataAsFloatArray();
 }
-
+[Serializable]
 public abstract class InterpolationData : FunctionData
 {
-    public Vector3 firstControlPoint, secondControlPoint;
+    public Vector3 FirstControlPoint, SecondControlPoint;
 }
 
 [Serializable]
@@ -92,16 +94,31 @@ public enum TransformationType
 }
 
 [Serializable]
-public struct GroupInfo
+public class GroupInfo
 {
     public TransformationType transformationType;
     public Vector3 transformationAxis;
     public Vector3 offsetAxis;
-    public List<FunctionData> weightInfos;
-    public List<FunctionData> influenceInfos;
     
+    // Weight Lists...
+    public List<SplineWeight> splineWeights;
+    public List<PointWeight> pointWeights;
+    public List<PolynomialWeight> polynomialWeights;
+    public List<RectangularWeight> boxWeights;
+    public List<SphericalWeight> sphereWeights;
+    
+    // Influence Lists...
+    public List<SinusInfluence> sinusInfluences;
+    public List<PolynomialInfluence> polynomialInfluences;
+    public List<SplineInfluence> splineInfluences;
+
     public List<List<float>> GetDataAsFloatArray()
     {
+        var weightCount = splineWeights.Count + pointWeights.Count + polynomialWeights.Count + boxWeights.Count +
+                          sphereWeights.Count;
+
+        var influenceCount = sinusInfluences.Count + polynomialInfluences.Count + splineInfluences.Count;
+        
         var floatArray = new List<List<float>>
         {
             new()
@@ -109,13 +126,20 @@ public struct GroupInfo
                 (float)transformationType, 0, 0, 0,
                 transformationAxis.x, transformationAxis.y, transformationAxis.z, 0,
                 offsetAxis.x, offsetAxis.y, offsetAxis.z, 0,
-                weightInfos.Count, 0, 0, 0,
-                influenceInfos.Count, 0, 0, 0
+                weightCount, 0, 0, 0,
+                influenceCount, 0, 0, 0
             }
         };
         
-        floatArray.AddRange(weightInfos.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(influenceInfos.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(splineWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(pointWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(polynomialWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(boxWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(sphereWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        
+        floatArray.AddRange(sinusInfluences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(polynomialInfluences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(splineInfluences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
 
         return floatArray;
     }

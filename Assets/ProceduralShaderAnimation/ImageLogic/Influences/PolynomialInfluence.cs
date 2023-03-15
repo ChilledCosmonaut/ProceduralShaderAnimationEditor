@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    [CreateAssetMenu(fileName = "PolynomialInfluence", menuName = "ProceduralShaderAnimation/PolynomialInfluence", order = 1)]
+    [Serializable]
     public class PolynomialInfluence : FunctionData
     {
         public List<float> polynomialOrderPreambles;

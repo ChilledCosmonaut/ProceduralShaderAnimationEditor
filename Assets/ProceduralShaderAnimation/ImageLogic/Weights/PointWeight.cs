@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
-    [CreateAssetMenu(fileName = "PointWeight", menuName = "ProceduralShaderAnimation/PointWeight", order = 1)]
+    [Serializable]
     public class PointWeight : InterpolationData
     {
         public float firstWeight;
@@ -14,9 +14,9 @@ namespace ProceduralShaderAnimation.ImageLogic
             return new List<float>
             {
                 1, 0, 0, 0,
-                firstControlPoint.x, firstControlPoint.y, firstControlPoint.z, 0,
+                FirstControlPoint.x, FirstControlPoint.y, FirstControlPoint.z, 0,
                 firstWeight, 0, 0, 0,
-                secondControlPoint.x, secondControlPoint.y, secondControlPoint.z, 0,
+                SecondControlPoint.x, SecondControlPoint.y, SecondControlPoint.z, 0,
                 secondWeight, 0, 0, 0
             };
         }
