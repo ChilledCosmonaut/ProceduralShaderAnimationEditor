@@ -7,7 +7,10 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class SplineWeight : InterpolationData
     {
-        public Vector2[] splinePoints;
+        public Vector2 firstSplinePoint;
+        public Vector2 secondSplinePoint;
+        public Vector2 thirdSplinePoint;
+        public Vector2 fourthSplinePoint;
 
         public override List<float>  GetDataAsFloatArray()
         {
@@ -16,10 +19,10 @@ namespace ProceduralShaderAnimation.ImageLogic
                 2,                    0,                    0,                    0,
                 FirstControlPoint.x,  FirstControlPoint.y,  FirstControlPoint.z,  0,
                 SecondControlPoint.x, SecondControlPoint.y, SecondControlPoint.z, 0,
-                splinePoints[0].x,    splinePoints[0].y,    0,                    0,
-                splinePoints[1].x,    splinePoints[1].y,    0,                    0,
-                splinePoints[2].x,    splinePoints[2].y,    0,                    0,
-                splinePoints[3].x,    splinePoints[3].y,    0,                    0
+                firstSplinePoint.x,   firstSplinePoint.y,   0,                    0,
+                secondSplinePoint.x,  secondSplinePoint.y,  0,                    0,
+                thirdSplinePoint.x,   thirdSplinePoint.y,   0,                    0,
+                fourthSplinePoint.x,  fourthSplinePoint.y,  0,                    0
             };
         }
     }
