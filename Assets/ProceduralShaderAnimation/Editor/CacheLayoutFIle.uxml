@@ -1,6 +1,5 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <ui:Template name="SphereField" src="project://database/Assets/SphereField.uxml?fileID=9197481963319205126&amp;guid=9070b1ed3f3f6264d973b35f27f80a40&amp;type=3#SphereField" />
-    <Style src="project://database/Assets/Test.uss?fileID=7433441132597879392&amp;guid=22f7e2586650af742a74d7117995ad33&amp;type=3#Test" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Template name="SphereField" src="project://database/Assets/ProceduralShaderAnimation/Editor/SphereField.uxml?fileID=9197481963319205126&amp;guid=9070b1ed3f3f6264d973b35f27f80a40&amp;type=3#SphereField" />
     <ui:VisualElement name="animationData" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-wrap: nowrap; flex-basis: auto; flex-direction: column; min-width: 128px; height: auto;">
         <ui:FloatField label="Animation Length" value="0" />
         <ui:VisualElement name="groupData" class="weight" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
@@ -34,6 +33,4 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="AnimationControls" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-    <ui:Button text="Add Group" display-tooltip-when-elided="true" />
 </ui:UXML>

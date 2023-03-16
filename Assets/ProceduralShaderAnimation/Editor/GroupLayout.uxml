@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="groupData" class="weight" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <uie:EnumFlagsField label="Transformation Type" type="TransformationType, Assembly-CSharp" binding-path="transformationType" name="transformationType" />
+        <ui:Vector3Field label="Transformation Axis" binding-path="transformationAxis" name="transformationAxis" />
+        <ui:Vector3Field label="Offset Axis" name="offsetAxis" binding-path="offsetAxis" />
+        <ui:VisualElement name="weights" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <uie:PropertyField binding-path="splineWeights" />
+            <uie:PropertyField binding-path="pointWeights" />
+            <uie:PropertyField binding-path="polynomialWeights" />
+            <uie:PropertyField binding-path="boxWeights" />
+            <uie:PropertyField binding-path="sphereWeights" />
+        </ui:VisualElement>
+        <ui:VisualElement name="influences" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <uie:PropertyField binding-path="sinusInfluences" />
+            <uie:PropertyField binding-path="polynomialInfluences" />
+            <uie:PropertyField binding-path="splineInfluences" />
+        </ui:VisualElement>
+        <ui:Button text="Display Group Debug Info" display-tooltip-when-elided="true" name="selectForPreview" />
+    </ui:VisualElement>
+</ui:UXML>

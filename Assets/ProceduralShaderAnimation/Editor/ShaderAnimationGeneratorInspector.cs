@@ -10,7 +10,7 @@ using InspectorElement = UnityEditor.UIElements.InspectorElement;
 namespace ProceduralShaderAnimation.Editor
 {
     [CustomEditor(typeof(ShaderAnimationGenerator))]
-    public class ShaderAnimationGeneratorEditor : UnityEditor.Editor
+    public class ShaderAnimationGeneratorInspector : UnityEditor.Editor
     {
         public VisualTreeAsset uxml;
         
@@ -45,24 +45,23 @@ namespace ProceduralShaderAnimation.Editor
 
         public override VisualElement CreateInspectorGUI()
         {
-            // Create a new VisualElement to be the root of our inspector UI
             VisualElement myInspector = new VisualElement();
 
             var animationDataProperty = new PropertyField(serializedObject.FindProperty("animationData"));
             myInspector.Add(animationDataProperty);
             
-            // Attach Inspector of Animation Data
             var animationDataInspector = new Box();
             myInspector.Add(animationDataInspector);
 
-            animationDataProperty.RegisterCallback<ChangeEvent<UnityEngine.Object>, VisualElement>(
+            animationDataProperty.RegisterCallback<ChangeEvent<Object>, VisualElement>(
                 AnimationDataChanged, animationDataInspector);
 
-            /*var animationDataProperty = new SerializedObject(serializedObject.FindProperty("animationData").objectReferenceValue);
-
-            var groupInfo = animationDataProperty.FindProperty("groupInfos");*/
+            var debugInfoPreview = new Button
+            {
+                text = debug ? "Show Debug Info" : "Disable Debug Info"
+            };
+            myInspector.Add(debugInfoPreview);
             
-            // Return the finished inspector UI
             return myInspector;
         }
         
