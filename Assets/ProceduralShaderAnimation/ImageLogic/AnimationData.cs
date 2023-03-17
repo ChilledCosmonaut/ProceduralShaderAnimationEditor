@@ -87,6 +87,7 @@ public abstract class InterpolationData : FunctionData
     public Vector3 FirstControlPoint, SecondControlPoint;
 }
 
+[Flags]
 [Serializable]
 public enum TransformationType
 {

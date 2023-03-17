@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="variables" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+        <ui:Toggle label="Use Time" name="useTime" binding-path="useTime" />
+        <ui:Toggle label="Use Offset" name="useOffset" binding-path="useOffset" />
+    </ui:VisualElement>
+    <ui:Vector2Field label="First Spline Point" name="firstSplinePoint" binding-path="firstSplinePoint" />
+    <ui:Vector2Field label="Second Spline Point" name="secondSplinePoint" binding-path="secondSplinePoint" />
+    <ui:Vector2Field label="Third Spline Point" binding-path="thirdSplinePoint" name="thirdSplinePoint" />
+    <ui:Vector2Field label="Fourth Spline Point" binding-path="fourthSplinePoint" name="fourthSplinePoint" />
+</ui:UXML>

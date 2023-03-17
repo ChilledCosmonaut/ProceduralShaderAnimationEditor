@@ -17,11 +17,37 @@ MonoBehaviour:
   - transformationType: 1
     transformationAxis: {x: 0, y: 1, z: 0}
     offsetAxis: {x: 0, y: 0, z: 1}
-    splineWeights: []
+    splineWeights:
+    - FirstControlPoint: {x: 0, y: 0, z: 0}
+      SecondControlPoint: {x: 0, y: 0, z: 0}
+      firstSplinePoint: {x: 0, y: 0}
+      secondSplinePoint: {x: 0, y: 0}
+      thirdSplinePoint: {x: 0, y: 0}
+      fourthSplinePoint: {x: 0, y: 0}
     pointWeights: []
-    polynomialWeights: []
-    boxWeights: []
+    polynomialWeights:
+    - FirstControlPoint: {x: 0, y: 0, z: 0}
+      SecondControlPoint: {x: 0, y: 0, z: 0}
+      polynomialOrderPreambles:
+      - 0
+    boxWeights:
+    - origin: {x: 0, y: 0, z: 0}
+      diameters: {x: 0, y: 0, z: 0}
     sphereWeights: []
-    sinusInfluences: []
-    polynomialInfluences: []
-    splineInfluences: []
+    sinusInfluences:
+    - useTime: 0
+      useOffset: 0
+      amplitude: 0
+      frequency: 0
+      bias: 0
+    polynomialInfluences:
+    - polynomialOrderPreambles: []
+      useTime: 0
+      useOffset: 0
+    splineInfluences:
+    - useTime: 0
+      useOffset: 0
+      firstSplinePoint: {x: 0, y: 0}
+      secondSplinePoint: {x: 0, y: 0}
+      thirdSplinePoint: {x: 0, y: 0}
+      fourthSplinePoint: {x: 0, y: 0}
