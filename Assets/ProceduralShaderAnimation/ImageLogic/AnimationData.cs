@@ -80,6 +80,8 @@ public class AnimationData : ScriptableObject
 public abstract class FunctionData
 {
     public abstract List<float>  GetDataAsFloatArray();
+
+    public abstract float CalculateYValue(float x);
 }
 [Serializable]
 public abstract class InterpolationData : FunctionData
