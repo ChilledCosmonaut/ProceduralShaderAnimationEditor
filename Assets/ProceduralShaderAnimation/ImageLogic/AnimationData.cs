@@ -76,15 +76,17 @@ public class AnimationData : ScriptableObject
     
 }
 
-[Serializable]
-public abstract class FunctionData
+public interface IData
 {
-    public abstract List<float>  GetDataAsFloatArray();
+    public List<float>  GetDataAsFloatArray();
+}
 
-    public abstract float CalculateYValue(float x);
+public interface IFunctionData : IData
+{
+    public float CalculateYValue(float x);
 }
 [Serializable]
-public abstract class InterpolationData : FunctionData
+public abstract class InterpolationData
 {
     public Vector3 FirstControlPoint, SecondControlPoint;
 }

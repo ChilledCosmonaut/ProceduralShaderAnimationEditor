@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [Serializable]
-    public class PointWeight : InterpolationData
+    public class PointWeight : InterpolationData, IData
     {
         public float firstWeight;
         public float secondWeight;
 
-        public override List<float>  GetDataAsFloatArray()
+        public List<float>  GetDataAsFloatArray()
         {
             return new List<float>
             {

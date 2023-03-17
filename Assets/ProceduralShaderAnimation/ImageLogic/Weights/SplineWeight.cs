@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [Serializable]
-    public class SplineWeight : InterpolationData
+    public class SplineWeight : InterpolationData, IFunctionData
     {
         public Vector2 firstSplinePoint;
         public Vector2 secondSplinePoint;
         public Vector2 thirdSplinePoint;
         public Vector2 fourthSplinePoint;
 
-        public override List<float>  GetDataAsFloatArray()
+        public List<float>  GetDataAsFloatArray()
         {
             return new List<float>
             {  
@@ -24,6 +25,11 @@ namespace ProceduralShaderAnimation.ImageLogic
                 thirdSplinePoint.x,   thirdSplinePoint.y,   0,                    0,
                 fourthSplinePoint.x,  fourthSplinePoint.y,  0,                    0
             };
+        }
+        
+        public float CalculateYValue(float x)
+        {
+            return (math.pow(1 - x,3) * firstSplinePoint + 3 * x * math.pow(1 - x, 2) * secondSplinePoint + 3 * math.pow(x, 2) * (1 - x) * thirdSplinePoint + math.pow(x, 3) * fourthSplinePoint).y;
         }
     }
 }

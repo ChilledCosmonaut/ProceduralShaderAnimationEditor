@@ -7,7 +7,6 @@ namespace ProceduralShaderAnimation.Editor
     [CustomEditor(typeof(AnimationData))]
     public class AnimationDataInspector : UnityEditor.Editor
     {
-
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement dataInspector = new VisualElement();

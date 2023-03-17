@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [Serializable]
-    public class SinusInfluence : FunctionData
+    public class SinusInfluence : IFunctionData
     {
         public bool useTime;
         public bool useOffset;
         public float amplitude, frequency, bias;
 
-        public override List<float> GetDataAsFloatArray()
+        public List<float> GetDataAsFloatArray()
         {
             var floatArray = new List<float>
             {
@@ -23,6 +23,10 @@ namespace ProceduralShaderAnimation.ImageLogic
             };
             
             return floatArray;
+        }
+        public float CalculateYValue(float x)
+        {
+            return amplitude * math.sin(frequency * x) + bias;
         }
     }
 }

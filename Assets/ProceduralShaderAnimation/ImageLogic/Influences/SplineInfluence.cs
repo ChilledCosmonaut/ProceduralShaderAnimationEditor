@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [Serializable]
-    public class SplineInfluence : FunctionData
+    public class SplineInfluence : IFunctionData
     {
         public bool useTime;
         public bool useOffset;
@@ -14,7 +15,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         public Vector2 thirdSplinePoint;
         public Vector2 fourthSplinePoint;
 
-        public override List<float> GetDataAsFloatArray()
+        public List<float> GetDataAsFloatArray()
         {
             var floatArray = new List<float>
             {
@@ -27,6 +28,11 @@ namespace ProceduralShaderAnimation.ImageLogic
             };    
             
             return floatArray;
+        }
+        
+        public float CalculateYValue(float x)
+        {
+            return (math.pow(1 - x,3) * firstSplinePoint + 3 * x * math.pow(1 - x, 2) * secondSplinePoint + 3 * math.pow(x, 2) * (1 - x) * thirdSplinePoint + math.pow(x, 3) * fourthSplinePoint).y;
         }
     }
 }

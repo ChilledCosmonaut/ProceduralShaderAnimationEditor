@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [Serializable]
-    public class PolynomialWeight : InterpolationData
+    public class PolynomialWeight : InterpolationData, IFunctionData
     {
         public List<float> polynomialOrderPreambles;
 
-        public override List<float>  GetDataAsFloatArray()
+        public List<float>  GetDataAsFloatArray()
         {
             var floatArray = new List<float>
             {
@@ -30,6 +31,18 @@ namespace ProceduralShaderAnimation.ImageLogic
             }
 
             return floatArray;
+        }
+        public float CalculateYValue(float x)
+        {
+            float offset = polynomialOrderPreambles[0];
+            float result = offset;
+
+            for(int currentOrder = 1; currentOrder <= polynomialOrderPreambles.Count; currentOrder++){
+                float prefix = polynomialOrderPreambles[currentOrder];
+                result += prefix * math.pow(x, currentOrder);
+            }
+
+            return result;
         }
     }
 }

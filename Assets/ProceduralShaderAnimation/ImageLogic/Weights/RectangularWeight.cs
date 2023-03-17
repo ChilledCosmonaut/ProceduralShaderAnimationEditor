@@ -5,12 +5,12 @@ using UnityEngine;
 namespace ProceduralShaderAnimation.ImageLogic
 {
     [Serializable]
-    public class RectangularWeight : FunctionData
+    public class RectangularWeight : IData
     {
         public Vector3 origin;
         public Vector3 diameters;
 
-        public override List<float>  GetDataAsFloatArray()
+        public List<float>  GetDataAsFloatArray()
         {
             return new List<float>
             {  

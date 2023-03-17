@@ -1,27 +1,21 @@
 using ProceduralShaderAnimation.Editor;
 using Unity.Mathematics;
-using UnityEditor;
+using Unity.Plastic.Newtonsoft.Json.Serialization;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ConcaveFill : EditorWindow
+public class GraphDrawer
 {
     private const float PaddingLeft = 15f;
     private const float PaddingRight = 15f;
     private const float PaddingTop = 15f;
     private const float PaddingBottom = 15f;
-    private readonly FunctionData displayedFunction;
 
-    public ConcaveFill(FunctionData function)
-    {
-        displayedFunction = function;
-    }
-
-    public void CreateGraphVisualization()
+    public static void CreateGraphVisualization(VisualElement rootVisualElement, Func<float, float> function)
     {
         var canvas = new VisualElement();
         canvas.StretchToParentSize();
-        canvas.generateVisualContent += DrawCanvas;
+        canvas.generateVisualContent += ctx => DrawCanvas(ctx, function);
         rootVisualElement.Add(canvas);
 
         var xAxisLabel = new Label("0")
@@ -38,9 +32,9 @@ public class ConcaveFill : EditorWindow
         canvas.Add(yAxisLabel);
     }
 
-    void DrawCanvas(MeshGenerationContext ctx)
+    static void DrawCanvas(MeshGenerationContext ctx, Func<float, float> function)
     {
-        EquationData data = CalculateGraph();
+        EquationData data = CalculateGraph(function);
         
         var painter = ctx.painter2D;
         painter.lineJoin = LineJoin.Round;
@@ -91,7 +85,7 @@ public class ConcaveFill : EditorWindow
         label.style.left = 50;
     }
 
-    private EquationData CalculateGraph()
+    private static EquationData CalculateGraph(Func<float, float> function)
     {
         var data = new EquationData();
 
@@ -99,7 +93,7 @@ public class ConcaveFill : EditorWindow
 
         for (int i = 0; i < 300; i++)
         {
-            data.Add(new Vector2(xValue,  displayedFunction.CalculateYValue(xValue)));
+            data.Add(new Vector2(xValue,  function(xValue)));
             xValue += 2.0f / 300.0f;
         }
 
