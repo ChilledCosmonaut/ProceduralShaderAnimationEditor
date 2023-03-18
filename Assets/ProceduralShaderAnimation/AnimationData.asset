@@ -30,6 +30,10 @@ MonoBehaviour:
       SecondControlPoint: {x: 0, y: 0, z: 0}
       polynomialOrderPreambles:
       - 0
+    - FirstControlPoint: {x: 0, y: 0, z: 0}
+      SecondControlPoint: {x: 0, y: 0, z: 0}
+      polynomialOrderPreambles:
+      - 0
     boxWeights:
     - origin: {x: 0, y: 0, z: 0}
       diameters: {x: 0, y: 0, z: 0}
@@ -41,6 +45,12 @@ MonoBehaviour:
       frequency: 0
       bias: 0
     polynomialInfluences:
+    - polynomialOrderPreambles:
+      - 0
+      - 0
+      - 0
+      useTime: 0
+      useOffset: 0
     - polynomialOrderPreambles: []
       useTime: 0
       useOffset: 0

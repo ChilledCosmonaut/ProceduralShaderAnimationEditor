@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ProceduralShaderAnimation.ImageLogic;
 using Unity.Mathematics;
 using UnityEditor;
@@ -20,14 +21,24 @@ namespace ProceduralShaderAnimation.Editor.InfluenceLayout
             layout.CloneTree(box);
 
             var orderValues = new List<float>();
-            var polynomialOrderValues = property.FindPropertyRelative("polynomialOrderPreambles");
             
-            for (int i = 0; i < polynomialOrderValues.arraySize; i++)
+            try
             {
-                orderValues.Add(polynomialOrderValues.GetArrayElementAtIndex(i).floatValue);
+                var polynomialOrderValues = property.FindPropertyRelative("polynomialOrderPreambles");
+            
+                for (int i = 0; i < polynomialOrderValues.arraySize; i++)
+                {
+                    orderValues.Add(polynomialOrderValues.GetArrayElementAtIndex(i).floatValue);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
 
-            GraphDrawer.CreateGraphVisualization(box, (x) => CalculateYValue(x, orderValues));
+            if (orderValues.Count > 0)
+                GraphDrawer.CreateGraphVisualization(box, (x) => CalculateYValue(x, orderValues));
 
             return propertyDrawer;
         }
