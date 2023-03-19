@@ -73,7 +73,7 @@ namespace ProceduralShaderAnimation.Editor
 
             if (animationData.previewedFunction == null) return;
             
-            EditorGUILayout.LabelField($"Previewing {animationData.previewedFunction.GetName()}");
+            EditorGUILayout.LabelField($"Previewing: {animationData.previewedFunction.GetName()}");
             
             TestDraw(animationData.previewedFunction.CalculateYValue);
         }
@@ -92,6 +92,12 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
 
             EditorGUILayout.LabelField("Weights", header);
+
+            if (GUILayout.Button("Preview in scene"))
+            {
+                animationData.sceneDebugGroupInfo = groupInfo;
+            }
+            
             EditorGUI.indentLevel++;
             for (int weightIndex = 0; weightIndex < groupInfo.weights.Count; weightIndex++)
             {

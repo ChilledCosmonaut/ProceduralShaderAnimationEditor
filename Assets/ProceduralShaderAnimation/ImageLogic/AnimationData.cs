@@ -14,6 +14,8 @@ public class AnimationData : ScriptableObject
     
     [SerializeReference]
     public IFunctionData previewedFunction;
+    [SerializeReference]
+    public GroupInfo sceneDebugGroupInfo;
     
 #endif
     
