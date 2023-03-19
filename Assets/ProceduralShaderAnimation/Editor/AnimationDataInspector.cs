@@ -182,7 +182,12 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Spline", header);
+            EditorGUILayout.LabelField(weightInfo.name, header);
+
+            weightInfo.name = EditorGUILayout.TextField("Name", weightInfo.name);
+            
+            EditorGUILayout.Separator();
+            
             weightInfo.FirstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.FirstControlPoint);
             weightInfo.SecondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.SecondControlPoint);
             
@@ -215,7 +220,12 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Sphere", header);
+            EditorGUILayout.LabelField(weightInfo.name, header);
+
+            weightInfo.name = EditorGUILayout.TextField("Name", weightInfo.name);
+            
+            EditorGUILayout.Separator();
+
             weightInfo.origin = EditorGUILayout.Vector3Field("Origin", weightInfo.origin);
             weightInfo.radius = EditorGUILayout.FloatField("Radius", weightInfo.radius);
             
@@ -234,7 +244,12 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Box", header);
+            EditorGUILayout.LabelField(weightInfo.name, header);
+
+            weightInfo.name = EditorGUILayout.TextField("Name", weightInfo.name);
+            
+            EditorGUILayout.Separator();
+
             weightInfo.origin = EditorGUILayout.Vector3Field("Origin", weightInfo.origin);
             weightInfo.diameters = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.diameters);
             
@@ -253,7 +268,12 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Polynomial", header);
+            EditorGUILayout.LabelField(weightInfo.name, header);
+
+            weightInfo.name = EditorGUILayout.TextField("Name", weightInfo.name);
+            
+            EditorGUILayout.Separator();
+
             weightInfo.FirstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.FirstControlPoint);
             weightInfo.SecondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.SecondControlPoint);
             
@@ -296,7 +316,12 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Linear", header);
+            EditorGUILayout.LabelField(weightInfo.name, header);
+
+            weightInfo.name = EditorGUILayout.TextField("Name", weightInfo.name);
+            
+            EditorGUILayout.Separator();
+
             weightInfo.FirstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.FirstControlPoint);
             weightInfo.SecondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.SecondControlPoint);
             
@@ -315,7 +340,11 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Spline", header);
+            EditorGUILayout.LabelField(influenceInfo.name, header);
+
+            influenceInfo.name = EditorGUILayout.TextField("Name", influenceInfo.name);
+            
+            EditorGUILayout.Separator();
             
             influenceInfo.useOffset = EditorGUILayout.Toggle("Use Offset", influenceInfo.useOffset);
             influenceInfo.useTime = EditorGUILayout.Toggle("Use Time", influenceInfo.useTime);
@@ -349,7 +378,11 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Polynomial", header);
+            EditorGUILayout.LabelField(influenceInfo.name, header);
+
+            influenceInfo.name = EditorGUILayout.TextField("Name", influenceInfo.name);
+            
+            EditorGUILayout.Separator();
             
             influenceInfo.useOffset = EditorGUILayout.Toggle("Use Offset", influenceInfo.useOffset);
             influenceInfo.useTime = EditorGUILayout.Toggle("Use Time", influenceInfo.useTime);
@@ -393,7 +426,11 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Sinus", header);
+            EditorGUILayout.LabelField(influenceInfo.name, header);
+
+            influenceInfo.name = EditorGUILayout.TextField("Name", influenceInfo.name);
+            
+            EditorGUILayout.Separator();
             
             influenceInfo.useOffset = EditorGUILayout.Toggle("Use Offset", influenceInfo.useOffset);
             influenceInfo.useTime = EditorGUILayout.Toggle("Use Time", influenceInfo.useTime);
@@ -433,19 +470,19 @@ namespace ProceduralShaderAnimation.Editor
             switch ((Types) weightType)
             {
                 case Types.Point:
-                    targetGroup.weights.Add(new PointWeight($"Polynomial Weight {targetGroup.weights.Count}"));
+                    targetGroup.weights.Add(new PointWeight($"Point Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Polynomial:
                     targetGroup.weights.Add(new PolynomialWeight($"Polynomial Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Spline:
-                    targetGroup.weights.Add(new SplineWeight($"Polynomial Weight {targetGroup.weights.Count}"));
+                    targetGroup.weights.Add(new SplineWeight($"Spline Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Box:
-                    targetGroup.weights.Add(new RectangularWeight($"Polynomial Weight {targetGroup.weights.Count}"));
+                    targetGroup.weights.Add(new RectangularWeight($"Box Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Sphere:
-                    targetGroup.weights.Add(new SphericalWeight($"Polynomial Weight {targetGroup.weights.Count}"));
+                    targetGroup.weights.Add(new SphericalWeight($"Sphere Weight {targetGroup.weights.Count}"));
                     break;
             }
         }
@@ -455,13 +492,13 @@ namespace ProceduralShaderAnimation.Editor
             switch ((Types) weightType)
             {
                 case Types.Spline:
-                    targetGroup.influences.Add(new SplineInfluence($"Polynomial Influence {targetGroup.weights.Count}"));
+                    targetGroup.influences.Add(new SplineInfluence($"Spline Influence {targetGroup.weights.Count}"));
                     break;
                 case Types.Polynomial:
                     targetGroup.influences.Add(new PolynomialInfluence($"Polynomial Influence {targetGroup.weights.Count}"));
                     break;
                 case Types.Sinus:
-                    targetGroup.influences.Add(new SinusInfluence($"Polynomial Influence {targetGroup.weights.Count}"));
+                    targetGroup.influences.Add(new SinusInfluence($"Sinus Influence {targetGroup.weights.Count}"));
                     break;
             }
         }
