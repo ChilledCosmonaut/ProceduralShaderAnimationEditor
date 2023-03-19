@@ -7,7 +7,7 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class PolynomialInfluence : IFunctionData
     {
-        public List<float> polynomialOrderPreambles;
+        public List<float> polynomialOrderPreambles = new();
         public bool useTime, useOffset;
 
         public List<float> GetDataAsFloatArray()

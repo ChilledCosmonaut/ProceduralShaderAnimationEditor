@@ -8,7 +8,7 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class PolynomialWeight : InterpolationData, IFunctionData
     {
-        public List<float> polynomialOrderPreambles;
+        public List<float> polynomialOrderPreambles = new();
 
         public List<float>  GetDataAsFloatArray()
         {
@@ -19,8 +19,6 @@ namespace ProceduralShaderAnimation.ImageLogic
                 SecondControlPoint.x,           SecondControlPoint.y,        SecondControlPoint.z, 0,
                 polynomialOrderPreambles.Count, 0,                           0,                    0
             };
-            
-            Debug.Log(polynomialOrderPreambles.Count);
 
             foreach (var point in polynomialOrderPreambles)
             {

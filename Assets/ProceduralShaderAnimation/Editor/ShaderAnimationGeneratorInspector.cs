@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -83,25 +84,18 @@ namespace ProceduralShaderAnimation.Editor
             Handles.DrawWireCube(boundCenter, boundSize * 2 * Vector3.one);
 
             Handles.color = Color.white;
-
-            foreach (var pointWeight in currentActiveGroup.pointWeights)
-            {
-                DrawInterpolationHandle(pointWeight);
-            }
             
-            foreach (var splineWeight in currentActiveGroup.splineWeights)
+            foreach (IData typelessWeight in currentActiveGroup.weights)
             {
-                DrawInterpolationHandle(splineWeight);
-            }
-            
-            foreach (var polynomialWeight in currentActiveGroup.polynomialWeights)
-            {
-                DrawInterpolationHandle(polynomialWeight);
-            }
-            
-            foreach (var sphereWeight in currentActiveGroup.sphereWeights)
-            {
-                DrawSphereHandle(sphereWeight);
+                switch (typelessWeight)
+                {
+                    case InterpolationData weight:
+                        DrawInterpolationHandle(weight);
+                        break;
+                    case SphericalWeight weight:
+                        DrawSphereHandle(weight);
+                        break;
+                }
             }
 
             foreach ((BoxBoundsHandle handle, RectangularWeight info) boxWeight in boxWeights)
@@ -117,8 +111,10 @@ namespace ProceduralShaderAnimation.Editor
         {
             DestroyGizmos();
 
-            foreach (var weight in currentActiveGroup.boxWeights)
+            foreach (var weight in currentActiveGroup.weights.Cast<RectangularWeight>())
+            {
                 SetupBoxGizmo(weight);
+            }
         }
 
         private void DestroyGizmos(){

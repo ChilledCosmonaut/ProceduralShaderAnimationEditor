@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ProceduralShaderAnimation.ImageLogic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
@@ -106,46 +105,28 @@ public class GroupInfo
     public Vector3 offsetAxis;
     
     // Weight Lists...
-    public List<SplineWeight> splineWeights;
-    public List<PointWeight> pointWeights;
-    public List<PolynomialWeight> polynomialWeights;
-    public List<RectangularWeight> boxWeights;
-    public List<SphericalWeight> sphereWeights;
+    public List<IData> weights = new();
     
     // Influence Lists...
-    public List<SinusInfluence> sinusInfluences;
-    public List<PolynomialInfluence> polynomialInfluences;
-    public List<SplineInfluence> splineInfluences;
+    public List<IData> influences = new();
 
     public List<List<float>> GetDataAsFloatArray()
     {
-        var weightCount = splineWeights.Count + pointWeights.Count + polynomialWeights.Count + boxWeights.Count +
-                          sphereWeights.Count;
-
-        var influenceCount = sinusInfluences.Count + polynomialInfluences.Count + splineInfluences.Count;
-        
         var floatArray = new List<List<float>>
         {
             new()
             {
-                (float)transformationType, 0, 0, 0,
-                transformationAxis.x, transformationAxis.y, transformationAxis.z, 0,
-                offsetAxis.x, offsetAxis.y, offsetAxis.z, 0,
-                weightCount, 0, 0, 0,
-                influenceCount, 0, 0, 0
+                (float)transformationType, 0,                    0,                    0,
+                transformationAxis.x,      transformationAxis.y, transformationAxis.z, 0,
+                offsetAxis.x,              offsetAxis.y,         offsetAxis.z,         0,
+                weights.Count,             0,                    0,                    0,
+                influences.Count,          0,                    0,                    0
             }
         };
         
-        floatArray.AddRange(splineWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(pointWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(polynomialWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(boxWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(sphereWeights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(weights.Select(weightInfo => weightInfo.GetDataAsFloatArray()));
+        floatArray.AddRange(influences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
         
-        floatArray.AddRange(sinusInfluences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(polynomialInfluences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
-        floatArray.AddRange(splineInfluences.Select(influenceInfo => influenceInfo.GetDataAsFloatArray()));
-
         return floatArray;
     }
 }
