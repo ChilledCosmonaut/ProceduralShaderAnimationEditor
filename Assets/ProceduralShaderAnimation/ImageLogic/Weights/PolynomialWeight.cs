@@ -8,7 +8,13 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class PolynomialWeight : InterpolationData, IFunctionData
     {
+        public string name;
         public List<float> polynomialOrderPreambles = new();
+
+        public PolynomialWeight(string name)
+        {
+            this.name = name;
+        }
 
         public List<float>  GetDataAsFloatArray()
         {
@@ -32,6 +38,8 @@ namespace ProceduralShaderAnimation.ImageLogic
         }
         public float CalculateYValue(float x)
         {
+            if (polynomialOrderPreambles.Count == 0) return 0;
+            
             float offset = polynomialOrderPreambles[0];
             float result = offset;
 
@@ -41,6 +49,10 @@ namespace ProceduralShaderAnimation.ImageLogic
             }
 
             return result;
+        }
+        public string GetName()
+        {
+            return name;
         }
     }
 }

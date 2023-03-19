@@ -7,9 +7,15 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class SinusInfluence : IFunctionData
     {
+        public string name;
         public bool useTime;
         public bool useOffset;
         public float amplitude, frequency, bias;
+        
+        public SinusInfluence(string name)
+        {
+            this.name = name;
+        }
 
         public List<float> GetDataAsFloatArray()
         {
@@ -27,6 +33,10 @@ namespace ProceduralShaderAnimation.ImageLogic
         public float CalculateYValue(float x)
         {
             return amplitude * math.sin(frequency * x) + bias;
+        }
+        public string GetName()
+        {
+            return name;
         }
     }
 }

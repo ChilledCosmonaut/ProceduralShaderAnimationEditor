@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -18,13 +19,15 @@ namespace ProceduralShaderAnimation.Editor
         private ShaderAnimationGenerator generator;
         private AnimationData animationData;
         
-        [SerializeField] 
+        [SerializeField]
+        [CanBeNull]
         private GroupInfo currentActiveGroup;
         private Vector3 boundCenter;
         private float boundSize;
 
         private readonly List<(BoxBoundsHandle, RectangularWeight)> boxWeights = new ();
 
+        [SerializeField]
         private bool debug = true;
         private bool recalculate;
         
@@ -32,7 +35,6 @@ namespace ProceduralShaderAnimation.Editor
         {
             generator = (ShaderAnimationGenerator) target;
             animationData = generator.animationData;
-            currentActiveGroup = animationData.groupInfos[0];
             var objectBounds = generator.GetComponent<MeshFilter>().sharedMesh.bounds;
             boundCenter = objectBounds.center;
             boundSize = Mathf.Max(Mathf.Max(objectBounds.extents.x, objectBounds.extents.y), objectBounds.extents.z);
@@ -51,17 +53,13 @@ namespace ProceduralShaderAnimation.Editor
             var animationDataProperty = new PropertyField(serializedObject.FindProperty("animationData"));
             myInspector.Add(animationDataProperty);
             
+            myInspector.Add(new PropertyField(serializedObject.FindProperty("debug"), "Show debug info"));
+            
             var animationDataInspector = new Box();
             myInspector.Add(animationDataInspector);
 
             animationDataProperty.RegisterCallback<ChangeEvent<Object>, VisualElement>(
                 AnimationDataChanged, animationDataInspector);
-
-            var debugInfoPreview = new Button
-            {
-                text = debug ? "Show Debug Info" : "Disable Debug Info"
-            };
-            myInspector.Add(debugInfoPreview);
             
             return myInspector;
         }
@@ -80,6 +78,8 @@ namespace ProceduralShaderAnimation.Editor
         private void OnSceneGUI()
         {
             if (!debug) return;
+            if(currentActiveGroup?.weights == null) return;
+            
             Handles.color = Color.red;
             Handles.DrawWireCube(boundCenter, boundSize * 2 * Vector3.one);
 
@@ -110,6 +110,8 @@ namespace ProceduralShaderAnimation.Editor
         private void SetupGizmos()
         {
             DestroyGizmos();
+            
+            if(currentActiveGroup?.weights == null) return;
 
             foreach (var weight in currentActiveGroup.weights.Cast<RectangularWeight>())
             {

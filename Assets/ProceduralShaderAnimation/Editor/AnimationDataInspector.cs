@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProceduralShaderAnimation.ImageLogic;
 using Unity.Mathematics;
 using UnityEditor;
@@ -36,6 +37,7 @@ namespace ProceduralShaderAnimation.Editor
         private void OnEnable()
         {
             animationData = (AnimationData)target;
+            animationData.groupInfos = new List<GroupInfo>();
             var shader = Shader.Find("Hidden/Internal-Colored");
             mat = new Material(shader);
 
@@ -56,16 +58,24 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.FloatField("Animation Length", animationData.animationLength);
             
             EditorGUI.indentLevel++;
-            foreach (GroupInfo groupInfo in animationData.groupInfos)
+            for (int groupIndex = 0; groupIndex < animationData.groupInfos.Count; groupIndex++)
             {
-                DisplayGroup(groupInfo);
+                DisplayGroup(animationData.groupInfos[groupIndex]);
             }
             EditorGUI.indentLevel--;
             
+            EditorGUILayout.Separator();
+            
             if (GUILayout.Button("Add Group"))
             {
-                animationData.groupInfos.Add(new GroupInfo());
+                animationData.groupInfos.Add(new GroupInfo($"Group {animationData.groupInfos.Count}"));
             }
+
+            if (animationData.previewedFunction == null) return;
+            
+            EditorGUILayout.LabelField($"Previewing {animationData.previewedFunction.GetName()}");
+            
+            TestDraw(animationData.previewedFunction.CalculateYValue);
         }
 
         private void DisplayGroup(GroupInfo groupInfo)
@@ -73,7 +83,8 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
             GUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Group 1", header);
+            EditorGUILayout.LabelField(groupInfo.name, header);
+            groupInfo.name = EditorGUILayout.TextField("Name", groupInfo.name);
             groupInfo.transformationType = (TransformationType)EditorGUILayout.EnumFlagsField("Transformation Type", groupInfo.transformationType);
             groupInfo.transformationAxis = EditorGUILayout.Vector3Field("Transformation Axis", groupInfo.transformationAxis);
             groupInfo.offsetAxis = EditorGUILayout.Vector3Field("Offset Axis", groupInfo.offsetAxis);
@@ -183,10 +194,11 @@ namespace ProceduralShaderAnimation.Editor
             weightInfo.fourthSplinePoint = EditorGUILayout.Vector2Field("Fourth Spline Point", weightInfo.fourthSplinePoint);
 
             EditorGUILayout.Separator();
-
-            /*EditorGUI.indentLevel -= 2;
-            TestDraw(functionData.CalculateYValue);
-            EditorGUI.indentLevel += 2;*/
+            
+            if (GUILayout.Button("Preview Graph"))
+            {
+                animationData.previewedFunction = weightInfo;
+            }
             
             EditorGUILayout.Separator();
             
@@ -263,10 +275,11 @@ namespace ProceduralShaderAnimation.Editor
             }
 
             EditorGUILayout.Separator();
-
-            /*EditorGUI.indentLevel -= 2;
-            TestDraw(functionData.CalculateYValue);
-            EditorGUI.indentLevel += 2;*/
+            
+            if (GUILayout.Button("Preview Graph"))
+            {
+                animationData.previewedFunction = weightInfo;
+            }
             
             EditorGUILayout.Separator();
             
@@ -315,10 +328,11 @@ namespace ProceduralShaderAnimation.Editor
             influenceInfo.fourthSplinePoint = EditorGUILayout.Vector2Field("Fourth Spline Point", influenceInfo.fourthSplinePoint);
 
             EditorGUILayout.Separator();
-
-            /*EditorGUI.indentLevel -= 2;
-            TestDraw(functionData.CalculateYValue);
-            EditorGUI.indentLevel += 2;*/
+            
+            if (GUILayout.Button("Preview Graph"))
+            {
+                animationData.previewedFunction = influenceInfo;
+            }
             
             EditorGUILayout.Separator();
             
@@ -358,10 +372,11 @@ namespace ProceduralShaderAnimation.Editor
             }
 
             EditorGUILayout.Separator();
-
-            /*EditorGUI.indentLevel -= 2;
-            TestDraw(functionData.CalculateYValue);
-            EditorGUI.indentLevel += 2;*/
+            
+            if (GUILayout.Button("Preview Graph"))
+            {
+                animationData.previewedFunction = influenceInfo;
+            }
             
             EditorGUILayout.Separator();
             
@@ -390,10 +405,11 @@ namespace ProceduralShaderAnimation.Editor
             influenceInfo.bias = EditorGUILayout.FloatField("Bias",   influenceInfo.bias);
 
             EditorGUILayout.Separator();
-
-            /*EditorGUI.indentLevel -= 2;
-            TestDraw(functionData.CalculateYValue);
-            EditorGUI.indentLevel += 2;*/
+            
+            if (GUILayout.Button("Preview Graph"))
+            {
+                animationData.previewedFunction = influenceInfo;
+            }
             
             EditorGUILayout.Separator();
             
@@ -417,19 +433,19 @@ namespace ProceduralShaderAnimation.Editor
             switch ((Types) weightType)
             {
                 case Types.Point:
-                    targetGroup.weights.Add(new PointWeight());
+                    targetGroup.weights.Add(new PointWeight($"Polynomial Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Polynomial:
-                    targetGroup.weights.Add(new PolynomialWeight());
+                    targetGroup.weights.Add(new PolynomialWeight($"Polynomial Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Spline:
-                    targetGroup.weights.Add(new SplineWeight());
+                    targetGroup.weights.Add(new SplineWeight($"Polynomial Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Box:
-                    targetGroup.weights.Add(new RectangularWeight());
+                    targetGroup.weights.Add(new RectangularWeight($"Polynomial Weight {targetGroup.weights.Count}"));
                     break;
                 case Types.Sphere:
-                    targetGroup.weights.Add(new SphericalWeight());
+                    targetGroup.weights.Add(new SphericalWeight($"Polynomial Weight {targetGroup.weights.Count}"));
                     break;
             }
         }
@@ -439,13 +455,13 @@ namespace ProceduralShaderAnimation.Editor
             switch ((Types) weightType)
             {
                 case Types.Spline:
-                    targetGroup.influences.Add(new SplineInfluence());
+                    targetGroup.influences.Add(new SplineInfluence($"Polynomial Influence {targetGroup.weights.Count}"));
                     break;
                 case Types.Polynomial:
-                    targetGroup.influences.Add(new PolynomialInfluence());
+                    targetGroup.influences.Add(new PolynomialInfluence($"Polynomial Influence {targetGroup.weights.Count}"));
                     break;
                 case Types.Sinus:
-                    targetGroup.influences.Add(new SinusInfluence());
+                    targetGroup.influences.Add(new SinusInfluence($"Polynomial Influence {targetGroup.weights.Count}"));
                     break;
             }
         }

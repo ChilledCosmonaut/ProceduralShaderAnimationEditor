@@ -7,8 +7,14 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class PolynomialInfluence : IFunctionData
     {
+        public string name;
         public List<float> polynomialOrderPreambles = new();
         public bool useTime, useOffset;
+        
+        public PolynomialInfluence(string name)
+        {
+            this.name = name;
+        }
 
         public List<float> GetDataAsFloatArray()
         {
@@ -41,6 +47,10 @@ namespace ProceduralShaderAnimation.ImageLogic
             }
 
             return result;
+        }
+        public string GetName()
+        {
+            return name;
         }
     }
 }

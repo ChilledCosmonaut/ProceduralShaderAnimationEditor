@@ -7,8 +7,14 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class SphericalWeight : IData
     {
+        public string name;
         public Vector3 origin;
         public float radius;
+        
+        public SphericalWeight(string name)
+        {
+            this.name = name;
+        }
 
         public List<float>  GetDataAsFloatArray()
         {

@@ -10,6 +10,13 @@ public class AnimationData : ScriptableObject
     public float animationLength;
     public List<GroupInfo> groupInfos;
     
+#if UNITY_EDITOR
+    
+    [SerializeReference]
+    public IFunctionData previewedFunction;
+    
+#endif
+    
     public Texture2D CreateAnimationTexture()
     {
         var contentLength = 0f;
@@ -83,6 +90,8 @@ public interface IData
 public interface IFunctionData : IData
 {
     public float CalculateYValue(float x);
+
+    public string GetName();
 }
 [Serializable]
 public abstract class InterpolationData
@@ -100,15 +109,23 @@ public enum TransformationType
 [Serializable]
 public class GroupInfo
 {
+    public string name;
     public TransformationType transformationType;
     public Vector3 transformationAxis;
     public Vector3 offsetAxis;
     
     // Weight Lists...
+    [SerializeReference]
     public List<IData> weights = new();
     
     // Influence Lists...
+    [SerializeReference]
     public List<IData> influences = new();
+
+    public GroupInfo(string name)
+    {
+        this.name = name;
+    }
 
     public List<List<float>> GetDataAsFloatArray()
     {

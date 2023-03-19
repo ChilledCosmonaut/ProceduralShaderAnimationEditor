@@ -6,8 +6,14 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class PointWeight : InterpolationData, IData
     {
+        public string name;
         public float firstWeight;
         public float secondWeight;
+        
+        public PointWeight(string name)
+        {
+            this.name = name;
+        }
 
         public List<float>  GetDataAsFloatArray()
         {

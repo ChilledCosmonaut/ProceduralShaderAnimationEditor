@@ -7,8 +7,14 @@ namespace ProceduralShaderAnimation.ImageLogic
     [Serializable]
     public class RectangularWeight : IData
     {
+        public string name;
         public Vector3 origin;
         public Vector3 diameters;
+        
+        public RectangularWeight(string name)
+        {
+            this.name = name;
+        }
 
         public List<float>  GetDataAsFloatArray()
         {
