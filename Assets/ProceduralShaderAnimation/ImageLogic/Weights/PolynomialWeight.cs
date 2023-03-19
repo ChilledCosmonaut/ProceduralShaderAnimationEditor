@@ -9,7 +9,7 @@ namespace ProceduralShaderAnimation.ImageLogic
     public class PolynomialWeight : InterpolationData, IFunctionData
     {
         public string name;
-        public List<float> polynomialOrderPreambles = new();
+        public List<float> polynomialOrderPreambles = new(){1};
 
         public PolynomialWeight(string name)
         {
