@@ -29,6 +29,8 @@ namespace ProceduralShaderAnimation.Editor
 
         private EquationData evalData;
 
+        private SerializedObject serializedAnimationData;
+
         private enum Types
         {
             Sinus, Polynomial, Spline, Point, Box, Sphere
@@ -76,6 +78,8 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.LabelField($"Previewing: {animationData.previewedFunction.GetName()}");
             
             TestDraw(animationData.previewedFunction.CalculateYValue);
+            
+            EditorUtility.SetDirty(animationData);
         }
 
         private void DisplayGroup(GroupInfo groupInfo)
@@ -84,11 +88,12 @@ namespace ProceduralShaderAnimation.Editor
             GUILayout.BeginVertical();
 
             EditorGUILayout.LabelField(groupInfo.name, header);
-            groupInfo.name = EditorGUILayout.TextField("Name", groupInfo.name);
-            groupInfo.transformationType = (TransformationType)EditorGUILayout.EnumFlagsField("Transformation Type", groupInfo.transformationType);
-            groupInfo.transformationAxis = EditorGUILayout.Vector3Field("Transformation Axis", groupInfo.transformationAxis);
-            groupInfo.offsetAxis = EditorGUILayout.Vector3Field("Offset Axis", groupInfo.offsetAxis);
             
+            string newName = EditorGUILayout.TextField("Name", groupInfo.name);
+            TransformationType transformationType = (TransformationType)EditorGUILayout.EnumFlagsField("Transformation Type", groupInfo.transformationType);
+            Vector3 transformationAxis = EditorGUILayout.Vector3Field("Transformation Axis", groupInfo.transformationAxis);
+            Vector3 offsetAxis = EditorGUILayout.Vector3Field("Offset Axis", groupInfo.offsetAxis);
+
             EditorGUILayout.Separator();
 
             EditorGUILayout.LabelField("Weights", header);

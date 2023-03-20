@@ -643,6 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c4849bb836b8447a2c568f01495d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   animationData: {fileID: 11400000, guid: 795cb98a588632a41b5d8754de68f1c1, type: 2}
   boundCenter: {x: 0, y: 0, z: 0}
   boundSize: 0
@@ -916,6 +917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c4849bb836b8447a2c568f01495d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   animationData: {fileID: 11400000, guid: 795cb98a588632a41b5d8754de68f1c1, type: 2}
   boundCenter: {x: 0, y: 0, z: 0}
   boundSize: 0

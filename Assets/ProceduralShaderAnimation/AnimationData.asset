@@ -14,50 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationLength: 3
   groupInfos:
-  - transformationType: 1
-    transformationAxis: {x: 0, y: 1, z: 0}
-    offsetAxis: {x: 0, y: 0, z: 1}
-    splineWeights:
-    - FirstControlPoint: {x: 0, y: 0, z: 0}
-      SecondControlPoint: {x: 0, y: 0, z: 0}
-      firstSplinePoint: {x: 0, y: 0}
-      secondSplinePoint: {x: 0, y: 0}
-      thirdSplinePoint: {x: 0, y: 0}
-      fourthSplinePoint: {x: 0, y: 0}
-    pointWeights: []
-    polynomialWeights:
-    - FirstControlPoint: {x: 0, y: 0, z: 0}
-      SecondControlPoint: {x: 0, y: 0, z: 0}
-      polynomialOrderPreambles:
-      - 0
-    - FirstControlPoint: {x: 0, y: 0, z: 0}
-      SecondControlPoint: {x: 0, y: 0, z: 0}
-      polynomialOrderPreambles:
-      - 0
-    boxWeights:
-    - origin: {x: 0, y: 0, z: 0}
-      diameters: {x: 0, y: 0, z: 0}
-    sphereWeights: []
-    sinusInfluences:
-    - useTime: 0
-      useOffset: 0
-      amplitude: 0
-      frequency: 0
-      bias: 0
-    polynomialInfluences:
-    - polynomialOrderPreambles:
-      - 0
-      - 0
-      - 0
-      useTime: 0
-      useOffset: 0
-    - polynomialOrderPreambles: []
-      useTime: 0
-      useOffset: 0
-    splineInfluences:
-    - useTime: 0
-      useOffset: 0
-      firstSplinePoint: {x: 0, y: 0}
-      secondSplinePoint: {x: 0, y: 0}
-      thirdSplinePoint: {x: 0, y: 0}
-      fourthSplinePoint: {x: 0, y: 0}
+  - name: Group 0
+    transformationType: 0
+    transformationAxis: {x: 0, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 0}
+    weights: []
+    influences: []
+  previewedFunction:
+    rid: -2
+  sceneDebugGroupInfo:
+    rid: 2950589393545986048
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2950589393545986048
+      type: {class: GroupInfo, ns: , asm: Assembly-CSharp}
+      data:
+        name: Group 0
+        transformationType: -1
+        transformationAxis: {x: 0, y: 0, z: 0}
+        offsetAxis: {x: 0, y: 0, z: 0}
+        weights:
+        - rid: 2950589393545986049
+        influences: []
+    - rid: 2950589393545986049
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        FirstControlPoint: {x: 0, y: 0, z: 0}
+        SecondControlPoint: {x: 0, y: 0, z: 0}
+        name: Point Weight 0
+        firstWeight: 0
+        secondWeight: 0
