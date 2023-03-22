@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
 public class AnimationData : ScriptableObject
 {
+    public Texture2D animationTexture;
+    
     public float animationLength;
     public List<GroupInfo> groupInfos;
     
@@ -21,10 +21,11 @@ public class AnimationData : ScriptableObject
     public GroupInfo groupPreview;
 
     public Action onBoxesChanged;
+    public Action onTextureChanged;
     
 #endif
     
-    public Texture2D CreateAnimationTexture()
+    public void UpdateAnimationTexture()
     {
         var contentLength = 0f;
         var floatLists = new List<List<float>>
@@ -69,20 +70,14 @@ public class AnimationData : ScriptableObject
 
         var imageData = floatFlattenedList.ToArray();
         
-        Texture2D tex = new(floatLists[0].Count / 4, floatLists.Count, TextureFormat.RGBAFloat, true);
+        animationTexture = new Texture2D(floatLists[0].Count / 4, floatLists.Count, TextureFormat.RGBAFloat, true);
 
-        tex.SetPixelData(imageData, 0);
-        tex.Apply(updateMipmaps: false);
+        animationTexture.SetPixelData(imageData, 0);
+        animationTexture.Apply(updateMipmaps: false);
         
-        var image = tex.EncodeToEXR(Texture2D.EXRFlags.OutputAsFloat);
-
-        var dirPath = Application.dataPath + "/SaveImages/";
-        if(!Directory.Exists(dirPath)) {
-            Directory.CreateDirectory(dirPath);
-        }
-        File.WriteAllBytes(dirPath + "Image" + ".exr", image);
-        
-        return tex;
+#if UNITY_EDITOR
+        onTextureChanged();
+#endif
     }
     
 }

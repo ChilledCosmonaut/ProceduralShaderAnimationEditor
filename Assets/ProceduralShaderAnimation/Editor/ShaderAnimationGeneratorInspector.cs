@@ -30,11 +30,13 @@ namespace ProceduralShaderAnimation.Editor
             boundSize = Mathf.Max(Mathf.Max(objectBounds.extents.x, objectBounds.extents.y), objectBounds.extents.z);
             SetupGizmos();
             animationData.onBoxesChanged += SetupGizmos;
+            animationData.onTextureChanged += generator.SetAnimationInfo;
         }
 
         void OnDisable()
         {
             animationData.onBoxesChanged -= SetupGizmos;
+            animationData.onTextureChanged -= generator.SetAnimationInfo;
             DestroyGizmos();
         }
 
@@ -94,7 +96,7 @@ namespace ProceduralShaderAnimation.Editor
 
             if (!recalculate) return;
             
-            generator.SetAnimationInfo();
+            animationData.UpdateAnimationTexture();
             recalculate = false;
         }
 

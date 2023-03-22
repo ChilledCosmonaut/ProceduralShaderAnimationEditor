@@ -263,7 +263,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis) / 2;
 
 		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
-		cache = offset;
+		cache += weight;
 		texIndex.y += weightCount;
 		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
 		float weightedInfluence = weight * influence;

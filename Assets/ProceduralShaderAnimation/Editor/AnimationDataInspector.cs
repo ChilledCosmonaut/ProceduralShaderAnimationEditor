@@ -72,6 +72,7 @@ namespace ProceduralShaderAnimation.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 EditorUtility.SetDirty(target);
+                animationData.UpdateAnimationTexture();
             }
 
             if (animationData.functionPreview == null) return;

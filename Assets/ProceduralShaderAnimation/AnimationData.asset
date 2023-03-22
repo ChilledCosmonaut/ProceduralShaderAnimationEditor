@@ -12,16 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
   m_Name: AnimationData
   m_EditorClassIdentifier: 
+  animationTexture: {fileID: 0}
   animationLength: 3
   groupInfos:
   - name: Group 0
     transformationType: 0
-    transformationAxis: {x: 0, y: 1, z: 0}
-    offsetAxis: {x: 0, y: 1, z: 0}
+    transformationAxis: {x: 1, y: 1, z: 0}
+    offsetAxis: {x: 1, y: 0, z: 1}
     weights:
-    - rid: 2950589439301910536
+    - rid: 2950589439301910537
     influences:
-    - rid: 2950589439301910532
+    - rid: 2950589439301910538
+    - rid: 2950589439301910539
   - name: Group 1
     transformationType: 0
     transformationAxis: {x: 0, y: 0, z: 0}
@@ -34,25 +36,33 @@ MonoBehaviour:
     transformationAxis: {x: 0, y: 1, z: 0}
     offsetAxis: {x: 0, y: 1, z: 0}
     weights:
-    - rid: 2950589439301910536
-    influences:
-    - rid: 2950589439301910532
+    - rid: 2950589439301910537
+    influences: []
   references:
     version: 2
     RefIds:
-    - rid: 2950589439301910532
-      type: {class: SplineInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
-      data:
-        name: Spline Influence 3
-        useTime: 0
-        useOffset: 1
-        firstSplinePoint: {x: 0, y: 0}
-        secondSplinePoint: {x: 0, y: 0}
-        thirdSplinePoint: {x: 0, y: 0}
-        fourthSplinePoint: {x: 0, y: 0}
-    - rid: 2950589439301910536
+    - rid: 2950589439301910537
       type: {class: RectangularWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
       data:
         name: Box Weight 0
-        origin: {x: 1, y: 1, z: 1}
-        diameters: {x: 1, y: 1, z: 1}
+        origin: {x: 1, y: 1.1935188, z: 1}
+        diameters: {x: 1.2377818, y: 1, z: 1.2270105}
+    - rid: 2950589439301910538
+      type: {class: PolynomialInfluence, ns: ProceduralShaderAnimation.ImageLogic,
+        asm: Assembly-CSharp}
+      data:
+        name: Polynomial Influence 1
+        polynomialOrderPreambles:
+        - 1
+        useTime: 0
+        useOffset: 1
+    - rid: 2950589439301910539
+      type: {class: SplineInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Spline Influence 1
+        useTime: 0
+        useOffset: 1
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 0.2, y: 0.2}
+        thirdSplinePoint: {x: 0.8, y: 0.8}
+        fourthSplinePoint: {x: 1, y: 1}
