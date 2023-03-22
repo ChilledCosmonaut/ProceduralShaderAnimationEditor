@@ -196,7 +196,7 @@ float CalculateInfluence(float3 vertexPosition, float time, float offset, uint i
 	return amountedInfluence;
 }
 
-float3 DisplacedPosition(float3 currentPosition, float3 boundingScale, float3 translation, float3 rotation, float3 scale){
+float3 DisplacedPosition(float3 currentPosition, float boundingScale, float3 translation, float3 rotation, float3 scale){
 	//Rotation
 	float4x4 zRotation = {
 		cos(rotation.z), -sin(rotation.z), 0, 0,
@@ -222,7 +222,7 @@ float3 DisplacedPosition(float3 currentPosition, float3 boundingScale, float3 tr
 	return (float3) mul(fullRotation, float4(currentPosition * scale, 0)) + (translation * boundingScale);
 }
 
-void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigin, float3 boundingScale, float time, Texture2D animationInfo,  out float3 displacedVertexPosition){
+void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigin, float boundingScale, float time, Texture2D animationInfo,  out float3 displacedVertexPosition){
 	float3 targetTranslation = {0,0,0};
 	float3 targetRotation 	 = {0,0,0};
 	float3 targetScale 		 = {1,1,1};

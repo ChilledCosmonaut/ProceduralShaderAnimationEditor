@@ -24,12 +24,6 @@ MonoBehaviour:
     influences:
     - rid: 2950589439301910538
     - rid: 2950589439301910539
-  - name: Group 1
-    transformationType: 0
-    transformationAxis: {x: 0, y: 0, z: 0}
-    offsetAxis: {x: 0, y: 0, z: 0}
-    weights: []
-    influences: []
   groupPreview:
     name: Group 0
     transformationType: 0
@@ -46,7 +40,7 @@ MonoBehaviour:
       data:
         name: Box Weight 0
         origin: {x: 1, y: 1.1935188, z: 1}
-        diameters: {x: 1.2377818, y: 1, z: 1.2270105}
+        diameters: {x: 1, y: 1, z: 1}
     - rid: 2950589439301910538
       type: {class: PolynomialInfluence, ns: ProceduralShaderAnimation.ImageLogic,
         asm: Assembly-CSharp}
