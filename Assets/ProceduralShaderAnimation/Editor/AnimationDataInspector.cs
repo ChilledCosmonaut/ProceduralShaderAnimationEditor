@@ -39,7 +39,6 @@ namespace ProceduralShaderAnimation.Editor
         private void OnEnable()
         {
             animationData = (AnimationData)target;
-            animationData.groupInfos = new List<GroupInfo>();
             var shader = Shader.Find("Hidden/Internal-Colored");
             mat = new Material(shader);
 
