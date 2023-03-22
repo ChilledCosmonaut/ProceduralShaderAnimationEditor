@@ -27,11 +27,6 @@ namespace ProceduralShaderAnimation.Editor
         private AnimationData animationData;
         private EquationData evalData;
 
-        [CanBeNull]
-        private GroupInfo groupPreview = null;
-        [CanBeNull]
-        private IFunctionData functionPreview = null;
-
         private enum Types
         {
             Sinus, Polynomial, Spline, Point, Box, Sphere
@@ -73,11 +68,11 @@ namespace ProceduralShaderAnimation.Editor
                 animationData.groupInfos.Add(new GroupInfo($"Group {animationData.groupInfos.Count}"));
             }
 
-            if (functionPreview == null) return;
+            if (animationData.functionPreview == null) return;
             
-            EditorGUILayout.LabelField($"Previewing: {functionPreview.GetName()}");
+            EditorGUILayout.LabelField($"Previewing: {animationData.functionPreview.GetName()}");
             
-            TestDraw(functionPreview.CalculateYValue);
+            TestDraw(animationData.functionPreview.CalculateYValue);
             
             EditorUtility.SetDirty(target);
         }
@@ -124,7 +119,7 @@ namespace ProceduralShaderAnimation.Editor
 
             if (GUILayout.Button("Preview in scene"))
             {
-                animationData.sceneDebugGroupInfo = groupInfo;
+                animationData.groupPreview = groupInfo;
             }
             
             EditorGUI.indentLevel++;
@@ -237,16 +232,16 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Preview Graph"))
             {
-                functionPreview = weightInfo;
+                animationData.functionPreview = weightInfo;
             }
             
             EditorGUILayout.Separator();
             
             if (GUILayout.Button("Delete Spline Weight"))
             {
-                if (functionPreview == weightInfo)
+                if (animationData.functionPreview == weightInfo)
                 {
-                    functionPreview = null;
+                    animationData.functionPreview = null;
                 }
                 owningGroup.weights.Remove(weightInfo);
             }
@@ -337,7 +332,7 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Preview Graph"))
             {
-                animationData.previewedFunction = weightInfo;
+                animationData.functionPreview = weightInfo;
             }
             
             EditorGUILayout.Separator();
@@ -399,7 +394,7 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Preview Graph"))
             {
-                animationData.previewedFunction = influenceInfo;
+                animationData.functionPreview = influenceInfo;
             }
             
             EditorGUILayout.Separator();
@@ -447,7 +442,7 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Preview Graph"))
             {
-                animationData.previewedFunction = influenceInfo;
+                animationData.functionPreview = influenceInfo;
             }
             
             EditorGUILayout.Separator();
@@ -484,7 +479,7 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Preview Graph"))
             {
-                animationData.previewedFunction = influenceInfo;
+                animationData.functionPreview = influenceInfo;
             }
             
             EditorGUILayout.Separator();

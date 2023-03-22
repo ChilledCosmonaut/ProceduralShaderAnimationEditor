@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
 public class AnimationData : ScriptableObject
@@ -13,9 +15,12 @@ public class AnimationData : ScriptableObject
 #if UNITY_EDITOR
     
     [SerializeReference]
-    public IFunctionData previewedFunction;
+    [CanBeNull]
+    public IFunctionData functionPreview;
+    
     [SerializeReference]
-    public GroupInfo sceneDebugGroupInfo;
+    [CanBeNull]
+    public GroupInfo groupPreview;
     
 #endif
     

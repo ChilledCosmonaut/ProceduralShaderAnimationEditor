@@ -68,14 +68,14 @@ namespace ProceduralShaderAnimation.Editor
         
         private void OnSceneGUI()
         {
-            if(animationData.sceneDebugGroupInfo?.weights == null) return;
+            if(animationData.groupPreview?.weights == null) return;
             
             Handles.color = Color.red;
             Handles.DrawWireCube(boundCenter, boundSize * 2 * Vector3.one);
 
             Handles.color = Color.white;
             
-            foreach (IData typelessWeight in animationData.sceneDebugGroupInfo.weights)
+            foreach (IData typelessWeight in animationData.groupPreview.weights)
             {
                 switch (typelessWeight)
                 {
@@ -101,9 +101,9 @@ namespace ProceduralShaderAnimation.Editor
         {
             DestroyGizmos();
             
-            if(animationData.sceneDebugGroupInfo.weights == null) return;
+            if(animationData.groupPreview?.weights == null) return;
 
-            foreach (var weight in animationData.sceneDebugGroupInfo.weights.Cast<RectangularWeight>())
+            foreach (var weight in animationData.groupPreview.weights.Cast<RectangularWeight>())
             {
                 SetupBoxGizmo(weight);
             }
