@@ -285,7 +285,7 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.Separator();
 
             weightInfo.origin = EditorGUILayout.Vector3Field("Origin", weightInfo.origin);
-            weightInfo.diameters = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.diameters);
+            weightInfo.diameters = EditorGUILayout.Vector3Field("Diameters", weightInfo.diameters);
             
             EditorGUILayout.Separator();
             

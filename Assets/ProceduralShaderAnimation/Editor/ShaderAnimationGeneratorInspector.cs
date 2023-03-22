@@ -120,7 +120,7 @@ namespace ProceduralShaderAnimation.Editor
             var newBoundHandle = new BoxBoundsHandle
             {
                 center = TransformIntoWorldSpace(weightInfo.origin),
-                size = TransformIntoWorldSpace(weightInfo.diameters)
+                size = ScaleToWorldSpace(weightInfo.diameters)
             };
             
             boxWeights.Add((newBoundHandle, weightInfo));
@@ -129,7 +129,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DrawBoxHandle(BoxBoundsHandle boxHandle, RectangularWeight weightInfo)
         {
             boxHandle.center = TransformIntoWorldSpace(weightInfo.origin);
-            boxHandle.size = TransformIntoWorldSpace(weightInfo.diameters);
+            boxHandle.size = ScaleToWorldSpace(weightInfo.diameters);
             
             EditorGUI.BeginChangeCheck();
             Vector3 newOrigin = Handles.PositionHandle(boxHandle.center, generator.transform.rotation);
