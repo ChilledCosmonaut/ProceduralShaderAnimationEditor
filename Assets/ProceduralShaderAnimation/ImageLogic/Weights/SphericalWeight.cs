@@ -8,8 +8,8 @@ namespace ProceduralShaderAnimation.ImageLogic
     public class SphericalWeight : IData
     {
         public string name;
-        public Vector3 origin;
-        public float radius;
+        public Vector3 origin = Vector3.one;
+        public float radius = 1;
         
         public SphericalWeight(string name)
         {

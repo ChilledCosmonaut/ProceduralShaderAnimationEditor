@@ -8,8 +8,8 @@ namespace ProceduralShaderAnimation.ImageLogic
     public class RectangularWeight : IData
     {
         public string name;
-        public Vector3 origin;
-        public Vector3 diameters;
+        public Vector3 origin = Vector3.one;
+        public Vector3 diameters = Vector3.one;
         
         public RectangularWeight(string name)
         {

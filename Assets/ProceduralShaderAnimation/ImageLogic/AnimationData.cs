@@ -100,7 +100,7 @@ public interface IFunctionData : IData
 [Serializable]
 public abstract class InterpolationData
 {
-    public Vector3 FirstControlPoint, SecondControlPoint;
+    public Vector3 FirstControlPoint = Vector3.forward, SecondControlPoint = Vector3.zero;
 }
 
 [Flags]
