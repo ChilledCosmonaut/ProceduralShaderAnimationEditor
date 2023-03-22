@@ -138,7 +138,7 @@ namespace ProceduralShaderAnimation.Editor
             
             Undo.RecordObject(animationData, "Changed Box Weight");
             weightInfo.origin = TransformIntoBoundingSpace(newOrigin);
-            weightInfo.diameters = TransformIntoBoundingSpace(boxHandle.size);
+            weightInfo.diameters = ScaleToBoundingSpace(boxHandle.size);
             recalculate = true;
         }
         
