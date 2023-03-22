@@ -16,34 +16,43 @@ MonoBehaviour:
   groupInfos:
   - name: Group 0
     transformationType: 0
+    transformationAxis: {x: 0, y: 1, z: 0}
+    offsetAxis: {x: 0, y: 1, z: 0}
+    weights:
+    - rid: 2950589439301910536
+    influences:
+    - rid: 2950589439301910532
+  - name: Group 1
+    transformationType: 0
     transformationAxis: {x: 0, y: 0, z: 0}
     offsetAxis: {x: 0, y: 0, z: 0}
     weights: []
     influences: []
-  previewedFunction:
-    rid: -2
-  sceneDebugGroupInfo:
-    rid: 2950589393545986048
+  groupPreview:
+    name: Group 0
+    transformationType: 0
+    transformationAxis: {x: 0, y: 1, z: 0}
+    offsetAxis: {x: 0, y: 1, z: 0}
+    weights:
+    - rid: 2950589439301910536
+    influences:
+    - rid: 2950589439301910532
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 2950589393545986048
-      type: {class: GroupInfo, ns: , asm: Assembly-CSharp}
+    - rid: 2950589439301910532
+      type: {class: SplineInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
       data:
-        name: Group 0
-        transformationType: -1
-        transformationAxis: {x: 0, y: 0, z: 0}
-        offsetAxis: {x: 0, y: 0, z: 0}
-        weights:
-        - rid: 2950589393545986049
-        influences: []
-    - rid: 2950589393545986049
-      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+        name: Spline Influence 3
+        useTime: 0
+        useOffset: 1
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 0, y: 0}
+        thirdSplinePoint: {x: 0, y: 0}
+        fourthSplinePoint: {x: 0, y: 0}
+    - rid: 2950589439301910536
+      type: {class: RectangularWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
       data:
-        FirstControlPoint: {x: 0, y: 0, z: 0}
-        SecondControlPoint: {x: 0, y: 0, z: 0}
-        name: Point Weight 0
-        firstWeight: 0
-        secondWeight: 0
+        name: Box Weight 0
+        origin: {x: 1, y: 1, z: 1}
+        diameters: {x: 1, y: 1, z: 1}
