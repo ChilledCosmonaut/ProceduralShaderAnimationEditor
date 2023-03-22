@@ -87,6 +87,7 @@ namespace ProceduralShaderAnimation.Editor
         
         private void OnSceneGUI()
         {
+            if (!generator.debug) return;
             if(animationData.groupPreview?.weights == null) return;
             
             Handles.color = Color.red;

@@ -644,14 +644,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
+  isNormal: 1
+  materialBackUp: {fileID: 2100000, guid: 37746fc50f9bfeb4489e8381914c0297, type: 2}
   animationData: {fileID: 11400000, guid: 795cb98a588632a41b5d8754de68f1c1, type: 2}
-  boundCenter: {x: 0, y: 0, z: 0}
-  boundSize: 0
-  testArray:
-  - 0
-  - 0
-  - 0
-  - 0
 --- !u!114 &962804873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,7 +703,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 37746fc50f9bfeb4489e8381914c0297, type: 2}
+  - {fileID: 2100000, guid: 80c038a3ca260cc4298c84419d78203b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -918,14 +913,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
+  isNormal: 1
+  materialBackUp: {fileID: 0}
   animationData: {fileID: 11400000, guid: 795cb98a588632a41b5d8754de68f1c1, type: 2}
-  boundCenter: {x: 0, y: 0, z: 0}
-  boundSize: 0
-  testArray:
-  - 0
-  - 0
-  - 0
-  - 0
 --- !u!1 &1823688464
 GameObject:
   m_ObjectHideFlags: 0

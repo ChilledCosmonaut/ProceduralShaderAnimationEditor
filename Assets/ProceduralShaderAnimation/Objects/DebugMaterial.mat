@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DebugMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: c6334b4ed35be184cb7cf17921c80cf0,
+  m_Shader: {fileID: -6465566751694194690, guid: 6eecd21c0ea04da41847420d1baadc6b,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -243,6 +243,7 @@ Material:
     - _ZWrite: 1
     - _boundingScale: 4.5790477
     - _delta: 0
+    - _groupOffset: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}

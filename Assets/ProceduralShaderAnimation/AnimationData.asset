@@ -15,54 +15,27 @@ MonoBehaviour:
   animationTexture: {fileID: 0}
   animationLength: 3
   groupInfos:
-  - name: Group 0
-    transformationType: 0
-    transformationAxis: {x: 1, y: 1, z: 0}
-    offsetAxis: {x: 1, y: 0, z: 1}
+  - name: Group 1
+    transformationType: 1
+    transformationAxis: {x: 0, y: 0, z: 1}
+    offsetAxis: {x: 0, y: 0, z: 1}
     weights:
-    - rid: 2950589439301910541
-    influences:
-    - rid: 2950589439301910538
-    - rid: 2950589439301910539
+    - rid: 2950589439301910542
+    influences: []
   groupPreview:
-    name: Group 0
-    transformationType: 0
-    transformationAxis: {x: 1, y: 1, z: 0}
-    offsetAxis: {x: 1, y: 0, z: 1}
-    weights:
-    - rid: 2950589439301910541
-    influences:
-    - rid: 2950589439301910538
-    - rid: 2950589439301910539
+    name: Group 1
+    transformationType: 1
+    transformationAxis: {x: 0, y: 0, z: 1}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights: []
+    influences: []
+  debugOffset: 0
   references:
     version: 2
     RefIds:
-    - rid: 2950589439301910538
-      type: {class: PolynomialInfluence, ns: ProceduralShaderAnimation.ImageLogic,
-        asm: Assembly-CSharp}
+    - rid: 2950589439301910542
+      type: {class: SphericalWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
       data:
-        name: Polynomial Influence 1
-        polynomialOrderPreambles:
-        - 1
-        useTime: 0
-        useOffset: 1
-    - rid: 2950589439301910539
-      type: {class: SplineInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
-      data:
-        name: Spline Influence 1
-        useTime: 0
-        useOffset: 1
-        firstSplinePoint: {x: 0, y: 0}
-        secondSplinePoint: {x: 0.2, y: 0.2}
-        thirdSplinePoint: {x: 0.8, y: 0.8}
-        fourthSplinePoint: {x: 1, y: 1}
-    - rid: 2950589439301910541
-      type: {class: SplineWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
-      data:
-        firstControlPoint: {x: 1, y: 1, z: 2}
-        secondControlPoint: {x: 1, y: 1, z: 0}
-        name: Spline Weight 0
-        firstSplinePoint: {x: 0, y: 0}
-        secondSplinePoint: {x: 0.2, y: 0.2}
-        thirdSplinePoint: {x: 0.8, y: 0.8}
-        fourthSplinePoint: {x: 1, y: 1}
+        name: Sphere Weight 0
+        origin: {x: 1, y: 1, z: 1}
+        radius: 0.5

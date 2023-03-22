@@ -11,7 +11,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         private static readonly int GroupOffset = Shader.PropertyToID("_groupOffset");
 
 #if UNITY_EDITOR
-        public bool debug;
+        public bool debug, isNormal = true;
 
         [SerializeField]
         [HideInInspector]
@@ -39,12 +39,19 @@ namespace ProceduralShaderAnimation.ImageLogic
 #if UNITY_EDITOR
         public void SwitchToDebugMaterial()
         {
+            if (!isNormal) return;
             Material debugMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/ProceduralShaderAnimation/Objects/DebugMaterial.mat");
             materialBackUp = GetComponent<Renderer>().sharedMaterial;
             GetComponent<Renderer>().sharedMaterial = debugMaterial;
+            isNormal = false;
         }
         
-        public void SwitchToStandardMaterial() => GetComponent<Renderer>().sharedMaterial = materialBackUp;
+        public void SwitchToStandardMaterial()
+        {
+            if (isNormal) return;
+            GetComponent<Renderer>().sharedMaterial = materialBackUp;
+            isNormal = true;
+        }
 #endif
     }
 }
