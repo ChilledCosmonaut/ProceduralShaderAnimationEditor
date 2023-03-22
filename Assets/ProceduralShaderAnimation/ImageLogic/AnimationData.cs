@@ -114,9 +114,9 @@ public enum TransformationType
 public class GroupInfo
 {
     public string name;
-    public TransformationType transformationType;
-    public Vector3 transformationAxis;
-    public Vector3 offsetAxis;
+    public TransformationType transformationType = TransformationType.Translation;
+    public Vector3 transformationAxis = Vector3.forward;
+    public Vector3 offsetAxis = Vector3.forward;
     
     // Weight Lists...
     [SerializeReference]
