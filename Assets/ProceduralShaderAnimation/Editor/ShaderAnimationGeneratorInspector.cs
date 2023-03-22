@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -30,10 +29,12 @@ namespace ProceduralShaderAnimation.Editor
             boundCenter = objectBounds.center;
             boundSize = Mathf.Max(Mathf.Max(objectBounds.extents.x, objectBounds.extents.y), objectBounds.extents.z);
             SetupGizmos();
+            animationData.onBoxesChanged += SetupGizmos;
         }
 
         void OnDisable()
         {
+            animationData.onBoxesChanged -= SetupGizmos;
             DestroyGizmos();
         }
 

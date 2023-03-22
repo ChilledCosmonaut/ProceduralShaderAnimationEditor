@@ -13,11 +13,9 @@ public class AnimationData : ScriptableObject
     
 #if UNITY_EDITOR
     
-    [SerializeReference]
     [CanBeNull]
     public IFunctionData functionPreview;
     
-    [SerializeReference]
     [CanBeNull]
     public GroupInfo groupPreview;
 

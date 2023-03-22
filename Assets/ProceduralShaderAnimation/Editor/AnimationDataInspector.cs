@@ -292,6 +292,7 @@ namespace ProceduralShaderAnimation.Editor
             if (GUILayout.Button("Delete Box Weight"))
             {
                 owningGroup.weights.Remove(weightInfo);
+                animationData.onBoxesChanged();
             }
 
             GUILayout.EndVertical();
@@ -514,6 +515,7 @@ namespace ProceduralShaderAnimation.Editor
                     break;
                 case Types.Box:
                     targetGroup.weights.Add(new RectangularWeight($"Box Weight {targetGroup.weights.Count}"));
+                    animationData.onBoxesChanged();
                     break;
                 case Types.Sphere:
                     targetGroup.weights.Add(new SphericalWeight($"Sphere Weight {targetGroup.weights.Count}"));
