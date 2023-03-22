@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using ProceduralShaderAnimation.ImageLogic;
 using Unity.Mathematics;
 using UnityEditor;
@@ -20,16 +21,16 @@ namespace ProceduralShaderAnimation.Editor
 
         private const int evaluationSteps = 300;
 
-        private GUIStyle header;
-
-        
-        private AnimationData animationData;
-
         private Material mat;
 
+        private GUIStyle header;
+        private AnimationData animationData;
         private EquationData evalData;
 
-        private SerializedObject serializedAnimationData;
+        [CanBeNull]
+        private GroupInfo groupPreview = null;
+        [CanBeNull]
+        private IFunctionData functionPreview = null;
 
         private enum Types
         {
@@ -56,7 +57,7 @@ namespace ProceduralShaderAnimation.Editor
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.FloatField("Animation Length", animationData.animationLength);
+            animationData.animationLength = EditorGUILayout.FloatField("Animation Length", animationData.animationLength);
             
             EditorGUI.indentLevel++;
             for (int groupIndex = 0; groupIndex < animationData.groupInfos.Count; groupIndex++)
@@ -72,26 +73,50 @@ namespace ProceduralShaderAnimation.Editor
                 animationData.groupInfos.Add(new GroupInfo($"Group {animationData.groupInfos.Count}"));
             }
 
-            if (animationData.previewedFunction == null) return;
+            if (functionPreview == null) return;
             
-            EditorGUILayout.LabelField($"Previewing: {animationData.previewedFunction.GetName()}");
+            EditorGUILayout.LabelField($"Previewing: {functionPreview.GetName()}");
             
-            TestDraw(animationData.previewedFunction.CalculateYValue);
+            TestDraw(functionPreview.CalculateYValue);
             
-            EditorUtility.SetDirty(animationData);
+            EditorUtility.SetDirty(target);
+        }
+
+        private GUIStyle CreateCustomBoxBackground(Color backgroundColor)
+        {
+            var consoleBackground = new Texture2D(1, 1, TextureFormat.RGBAFloat, false); 
+            consoleBackground.SetPixel(0, 0, backgroundColor);
+            consoleBackground.Apply();
+            
+            return new GUIStyle(GUIStyle.none)
+            {
+                fontSize = 24,
+                normal =
+                {
+                    textColor = Color.white,
+                    background = consoleBackground
+                },
+                border =
+                {
+                    bottom = 2,
+                    left = 2,
+                    right = 2,
+                    top = 2
+                }
+            };
         }
 
         private void DisplayGroup(GroupInfo groupInfo)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.box);
 
             EditorGUILayout.LabelField(groupInfo.name, header);
             
-            string newName = EditorGUILayout.TextField("Name", groupInfo.name);
-            TransformationType transformationType = (TransformationType)EditorGUILayout.EnumFlagsField("Transformation Type", groupInfo.transformationType);
-            Vector3 transformationAxis = EditorGUILayout.Vector3Field("Transformation Axis", groupInfo.transformationAxis);
-            Vector3 offsetAxis = EditorGUILayout.Vector3Field("Offset Axis", groupInfo.offsetAxis);
+            groupInfo.name = EditorGUILayout.TextField("Name", groupInfo.name);
+            groupInfo.transformationType = (TransformationType)EditorGUILayout.EnumFlagsField("Transformation Type", groupInfo.transformationType);
+            groupInfo.transformationAxis = EditorGUILayout.Vector3Field("Transformation Axis", groupInfo.transformationAxis);
+            groupInfo.offsetAxis = EditorGUILayout.Vector3Field("Offset Axis", groupInfo.offsetAxis);
 
             EditorGUILayout.Separator();
 
@@ -190,7 +215,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplaySplineWeight(SplineWeight weightInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(weightInfo.name, header);
 
@@ -212,13 +237,17 @@ namespace ProceduralShaderAnimation.Editor
             
             if (GUILayout.Button("Preview Graph"))
             {
-                animationData.previewedFunction = weightInfo;
+                functionPreview = weightInfo;
             }
             
             EditorGUILayout.Separator();
             
             if (GUILayout.Button("Delete Spline Weight"))
             {
+                if (functionPreview == weightInfo)
+                {
+                    functionPreview = null;
+                }
                 owningGroup.weights.Remove(weightInfo);
             }
 
