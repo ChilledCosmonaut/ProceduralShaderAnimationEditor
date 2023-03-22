@@ -9,7 +9,7 @@ namespace ProceduralShaderAnimation.ImageLogic
     {
         public string name;
         public List<float> polynomialOrderPreambles = new(){1};
-        public bool useTime, useOffset;
+        public bool useTime, useOffset = true;
         
         public PolynomialInfluence(string name)
         {

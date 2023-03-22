@@ -10,11 +10,11 @@ namespace ProceduralShaderAnimation.ImageLogic
     {
         public string name;
         public bool useTime;
-        public bool useOffset;
-        public Vector2 firstSplinePoint;
-        public Vector2 secondSplinePoint;
-        public Vector2 thirdSplinePoint;
-        public Vector2 fourthSplinePoint;
+        public bool useOffset = true;
+        public Vector2 firstSplinePoint = Vector2.zero;
+        public Vector2 secondSplinePoint = new(0.2f, 0.2f);
+        public Vector2 thirdSplinePoint = new(0.8f, 0.8f);
+        public Vector2 fourthSplinePoint = Vector2.one;
         
         public SplineInfluence(string name)
         {

@@ -11,7 +11,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         public string name;
         public Vector2 firstSplinePoint = Vector2.zero;
         public Vector2 secondSplinePoint = new(0.2f, 0.2f);
-        public Vector2 thirdSplinePoint= new(0.8f, 0.8f);
+        public Vector2 thirdSplinePoint = new(0.8f, 0.8f);
         public Vector2 fourthSplinePoint = Vector2.one;
         
         public SplineWeight(string name)

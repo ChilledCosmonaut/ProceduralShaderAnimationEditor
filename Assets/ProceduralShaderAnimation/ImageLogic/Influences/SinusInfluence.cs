@@ -9,8 +9,8 @@ namespace ProceduralShaderAnimation.ImageLogic
     {
         public string name;
         public bool useTime;
-        public bool useOffset;
-        public float amplitude, frequency, bias;
+        public bool useOffset = true;
+        public float amplitude = 1, frequency = 1, bias = 1;
         
         public SinusInfluence(string name)
         {
