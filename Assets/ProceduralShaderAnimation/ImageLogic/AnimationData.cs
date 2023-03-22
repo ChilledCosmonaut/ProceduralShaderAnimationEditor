@@ -19,6 +19,7 @@ public class AnimationData : ScriptableObject
     
     [CanBeNull]
     public GroupInfo groupPreview;
+    public int debugOffset;
 
     public Action onBoxesChanged;
     public Action onTextureChanged;

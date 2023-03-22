@@ -46,8 +46,11 @@ namespace ProceduralShaderAnimation.Editor
 
             var animationDataProperty = new PropertyField(serializedObject.FindProperty("animationData"));
             myInspector.Add(animationDataProperty);
+
+            PropertyField debugToggle = new PropertyField(serializedObject.FindProperty("debug"), "Show debug info");
+            myInspector.Add(debugToggle);
             
-            myInspector.Add(new PropertyField(serializedObject.FindProperty("debug"), "Show debug info"));
+            debugToggle.RegisterCallback<ChangeEvent<bool>>(ToggleDebugMaterial);
             
             var animationDataInspector = new Box();
             myInspector.Add(animationDataInspector);
@@ -58,7 +61,7 @@ namespace ProceduralShaderAnimation.Editor
             return myInspector;
         }
         
-        void AnimationDataChanged(ChangeEvent<Object> evt, VisualElement transformInspector)
+        private void AnimationDataChanged(ChangeEvent<Object> evt, VisualElement transformInspector)
         {
             transformInspector.Clear();
 
@@ -67,6 +70,19 @@ namespace ProceduralShaderAnimation.Editor
                 return;
         
             transformInspector.Add(new InspectorElement(t));
+        }
+
+        private void ToggleDebugMaterial(ChangeEvent<bool> toggleEvent)
+        {
+            bool toggleState = toggleEvent.newValue;
+
+            if (toggleState)
+            {
+                generator.SwitchToDebugMaterial();
+                return;
+            }
+            
+            generator.SwitchToStandardMaterial();
         }
         
         private void OnSceneGUI()

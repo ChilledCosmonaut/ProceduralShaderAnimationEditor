@@ -240,8 +240,6 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	texIndex.y ++;
 	texIndex.x = 0;
 
-	float3 cache = {0,0,0};
-
 	while(texIndex.y < contentLength){
 		uint transformationType = (uint) animationInfo[texIndex].x;
 		texIndex.x ++;
@@ -263,7 +261,6 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis) / 2;
 
 		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
-		cache += weight;
 		texIndex.y += weightCount;
 		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
 		float weightedInfluence = weight * influence;
@@ -283,6 +280,46 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	}
 
 	float3 targetPosition = DisplacedPosition(vertexPosition, boundingScale, targetTranslation, targetRotation, targetScale);
-	displacedVertexPosition = cache;
+	displacedVertexPosition = targetPosition;
+}
+
+void DebugInfo_float(float3 vertexPosition, float3 boundingOrigin, float boundingScale, float time, float groupOffset, Texture2D animationInfo, out float3 displacedVertexPosition){
+
+	float3 scaledVertexPosition = (vertexPosition + boundingScale - boundingOrigin) / boundingScale;
+
+	float3 origin = {1, 1, 1};
+
+	uint2 texIndex = {0, 0};
+
+	float animationLength = animationInfo[texIndex].x;
+	texIndex.x ++;
+	uint contentLength = (uint) animationInfo[texIndex].x;
+
+	texIndex.y ++;
+	texIndex.x = 0;
+	texIndex.y += groupOffset;
+
+	uint transformationType = (uint) animationInfo[texIndex].x;
+	texIndex.x ++;
+
+	float3 translationAxis = normalize(animationInfo[texIndex].xyz);
+	texIndex.x++;
+
+	float3 offsetAxis = animationInfo[texIndex].xyz;
+	float3 currentOrigin = origin - offsetAxis;
+	texIndex.x ++;
+
+	uint weightCount = (uint) animationInfo[texIndex].x;
+	texIndex.x ++;
+
+	uint influenceCount = (uint) animationInfo[texIndex].x;
+	texIndex.y ++;
+	texIndex.x = 0;
+
+	float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis) / 2;
+
+	float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+
+	displacedVertexPosition = weight;
 }
 #endif //MYHLSLINCLUDE_INCLUDED

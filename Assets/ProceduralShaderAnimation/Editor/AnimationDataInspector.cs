@@ -125,6 +125,7 @@ namespace ProceduralShaderAnimation.Editor
             if (GUILayout.Button("Preview in scene"))
             {
                 animationData.groupPreview = groupInfo;
+                UpdateDebugOffset();
             }
             
             EditorGUI.indentLevel++;
@@ -207,9 +208,22 @@ namespace ProceduralShaderAnimation.Editor
             if (GUILayout.Button("Remove Group"))
             {
                 animationData.groupInfos.Remove(groupInfo);
+                UpdateDebugOffset();
             }
             
             GUILayout.EndVertical();
+        }
+
+        private void UpdateDebugOffset()
+        {
+            for (int groupIndex = 0; groupIndex < animationData.groupInfos.Count; groupIndex++)
+            {
+                if (animationData.groupPreview != animationData.groupInfos[groupIndex]) continue;
+
+                animationData.debugOffset = groupIndex;
+            }
+            
+            Debug.Log(animationData.debugOffset);
         }
 
         private void DisplaySplineWeight(SplineWeight weightInfo, GroupInfo owningGroup)

@@ -241,6 +241,7 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+    - _boundingScale: 4.5790477
     - _delta: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
