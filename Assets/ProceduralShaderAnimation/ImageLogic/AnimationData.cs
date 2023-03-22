@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
 public class AnimationData : ScriptableObject
@@ -100,7 +101,8 @@ public interface IFunctionData : IData
 [Serializable]
 public abstract class InterpolationData
 {
-    public Vector3 FirstControlPoint = Vector3.forward, SecondControlPoint = Vector3.zero;
+    public Vector3 firstControlPoint = Vector3.forward;
+    public Vector3 secondControlPoint = Vector3.zero;
 }
 
 [Flags]

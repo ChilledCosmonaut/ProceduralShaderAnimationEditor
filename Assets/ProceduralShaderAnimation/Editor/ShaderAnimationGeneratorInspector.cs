@@ -161,8 +161,8 @@ namespace ProceduralShaderAnimation.Editor
         {
             var rotation = generator.transform.rotation;
 
-            var transformedFirstPoint = TransformIntoWorldSpace(weightInfo.FirstControlPoint);
-            var transformedSecondPoint = TransformIntoWorldSpace(weightInfo.SecondControlPoint);
+            var transformedFirstPoint = TransformIntoWorldSpace(weightInfo.firstControlPoint);
+            var transformedSecondPoint = TransformIntoWorldSpace(weightInfo.secondControlPoint);
             
             Handles.SphereHandleCap(0, transformedFirstPoint, rotation, 0.2f, EventType.Repaint);
             Handles.SphereHandleCap(0, transformedSecondPoint, rotation, 0.15f, EventType.Repaint);
@@ -174,8 +174,8 @@ namespace ProceduralShaderAnimation.Editor
             if (!EditorGUI.EndChangeCheck()) return;
             
             Undo.RecordObject(animationData, "Changed Spline Control Points");
-            weightInfo.FirstControlPoint = TransformIntoBoundingSpace(firstPoint);
-            weightInfo.SecondControlPoint = TransformIntoBoundingSpace(secondPoint);
+            weightInfo.firstControlPoint = TransformIntoBoundingSpace(firstPoint);
+            weightInfo.secondControlPoint = TransformIntoBoundingSpace(secondPoint);
             recalculate = true;
         }
 

@@ -24,8 +24,8 @@ namespace ProceduralShaderAnimation.ImageLogic
             return new List<float>
             {  
                 2,                    0,                    0,                    0,
-                FirstControlPoint.x,  FirstControlPoint.y,  FirstControlPoint.z,  0,
-                SecondControlPoint.x, SecondControlPoint.y, SecondControlPoint.z, 0,
+                firstControlPoint.x,  firstControlPoint.y,  firstControlPoint.z,  0,
+                secondControlPoint.x, secondControlPoint.y, secondControlPoint.z, 0,
                 firstSplinePoint.x,   firstSplinePoint.y,   0,                    0,
                 secondSplinePoint.x,  secondSplinePoint.y,  0,                    0,
                 thirdSplinePoint.x,   thirdSplinePoint.y,   0,                    0,

@@ -52,6 +52,7 @@ namespace ProceduralShaderAnimation.Editor
 
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
             animationData.animationLength = EditorGUILayout.FloatField("Animation Length", animationData.animationLength);
             
             EditorGUI.indentLevel++;
@@ -68,13 +69,16 @@ namespace ProceduralShaderAnimation.Editor
                 animationData.groupInfos.Add(new GroupInfo($"Group {animationData.groupInfos.Count}"));
             }
 
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(target);
+            }
+
             if (animationData.functionPreview == null) return;
             
             EditorGUILayout.LabelField($"Previewing: {animationData.functionPreview.GetName()}");
             
             TestDraw(animationData.functionPreview.CalculateYValue);
-            
-            EditorUtility.SetDirty(target);
         }
 
         private GUIStyle CreateCustomBoxBackground(Color backgroundColor)
@@ -218,8 +222,8 @@ namespace ProceduralShaderAnimation.Editor
             
             EditorGUILayout.Separator();
             
-            weightInfo.FirstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.FirstControlPoint);
-            weightInfo.SecondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.SecondControlPoint);
+            weightInfo.firstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.firstControlPoint);
+            weightInfo.secondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.secondControlPoint);
             
             EditorGUILayout.Separator();
             
@@ -309,8 +313,8 @@ namespace ProceduralShaderAnimation.Editor
             
             EditorGUILayout.Separator();
 
-            weightInfo.FirstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.FirstControlPoint);
-            weightInfo.SecondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.SecondControlPoint);
+            weightInfo.firstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.firstControlPoint);
+            weightInfo.secondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.secondControlPoint);
             
             EditorGUILayout.Separator();
 
@@ -357,8 +361,8 @@ namespace ProceduralShaderAnimation.Editor
             
             EditorGUILayout.Separator();
 
-            weightInfo.FirstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.FirstControlPoint);
-            weightInfo.SecondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.SecondControlPoint);
+            weightInfo.firstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.firstControlPoint);
+            weightInfo.secondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.secondControlPoint);
             
             EditorGUILayout.Separator();
             
