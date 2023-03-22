@@ -103,9 +103,10 @@ namespace ProceduralShaderAnimation.Editor
             
             if(animationData.groupPreview?.weights == null) return;
 
-            foreach (var weight in animationData.groupPreview.weights.Cast<RectangularWeight>())
+            foreach (IData typelessWeight in animationData.groupPreview.weights)
             {
-                SetupBoxGizmo(weight);
+                if (typelessWeight is not RectangularWeight rectangularWeight) continue;
+                SetupBoxGizmo(rectangularWeight);
             }
         }
 

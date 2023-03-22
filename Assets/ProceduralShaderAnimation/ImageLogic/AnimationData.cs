@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
 public class AnimationData : ScriptableObject
@@ -21,6 +20,8 @@ public class AnimationData : ScriptableObject
     [SerializeReference]
     [CanBeNull]
     public GroupInfo groupPreview;
+
+    public Action onBoxesChanged;
     
 #endif
     
