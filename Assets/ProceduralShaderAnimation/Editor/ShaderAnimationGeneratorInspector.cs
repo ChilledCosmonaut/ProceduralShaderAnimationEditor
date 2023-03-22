@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using ProceduralShaderAnimation.ImageLogic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -14,21 +13,13 @@ namespace ProceduralShaderAnimation.Editor
     [CustomEditor(typeof(ShaderAnimationGenerator))]
     public class ShaderAnimationGeneratorInspector : UnityEditor.Editor
     {
-        public VisualTreeAsset uxml;
-        
         private ShaderAnimationGenerator generator;
         private AnimationData animationData;
         
-        [SerializeField]
-        [CanBeNull]
-        private GroupInfo currentActiveGroup;
         private Vector3 boundCenter;
         private float boundSize;
 
         private readonly List<(BoxBoundsHandle, RectangularWeight)> boxWeights = new ();
-
-        [SerializeField]
-        private bool debug = true;
         private bool recalculate;
         
         private void OnEnable()
@@ -77,15 +68,14 @@ namespace ProceduralShaderAnimation.Editor
         
         private void OnSceneGUI()
         {
-            if (!debug) return;
-            if(currentActiveGroup?.weights == null) return;
+            if(animationData.sceneDebugGroupInfo?.weights == null) return;
             
             Handles.color = Color.red;
             Handles.DrawWireCube(boundCenter, boundSize * 2 * Vector3.one);
 
             Handles.color = Color.white;
             
-            foreach (IData typelessWeight in currentActiveGroup.weights)
+            foreach (IData typelessWeight in animationData.sceneDebugGroupInfo.weights)
             {
                 switch (typelessWeight)
                 {
@@ -111,9 +101,9 @@ namespace ProceduralShaderAnimation.Editor
         {
             DestroyGizmos();
             
-            if(currentActiveGroup?.weights == null) return;
+            if(animationData.sceneDebugGroupInfo.weights == null) return;
 
-            foreach (var weight in currentActiveGroup.weights.Cast<RectangularWeight>())
+            foreach (var weight in animationData.sceneDebugGroupInfo.weights.Cast<RectangularWeight>())
             {
                 SetupBoxGizmo(weight);
             }

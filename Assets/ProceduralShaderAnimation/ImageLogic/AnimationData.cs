@@ -37,8 +37,6 @@ public class AnimationData : ScriptableObject
             contentLength += dataArray.Count;
             floatLists.AddRange(dataArray);
         }
-
-        Debug.Log(contentLength);
         
         floatLists[0][4] = contentLength;
 
