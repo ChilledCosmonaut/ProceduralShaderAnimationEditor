@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlopAnimation
   m_EditorClassIdentifier: 
   animationTexture: {fileID: 0}
-  animationLength: 0
+  animationLength: 1
   groupInfos:
   - name: Scale Group
     transformationType: 2
