@@ -6,9 +6,6 @@ namespace ProceduralShaderAnimation.ImageLogic
     {
         private Renderer thisRend;
 
-        [SerializeField]
-        private AnimationCurve curve;
-
         private Texture2D texture;
 
         private float time = 0;
@@ -25,7 +22,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         void Update()
         {
             time += Time.deltaTime;
-            thisRend.material.SetFloat(Delta, time / 1.5f);
+            thisRend.material.SetFloat(Delta, time);
         }
     }
 }

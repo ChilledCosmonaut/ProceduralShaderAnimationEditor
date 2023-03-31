@@ -168,7 +168,7 @@ float CalculateWeigth(float3 vertexPosition, uint weightCount, uint2 texOffset, 
 	return amountedWeight;
 }
 
-float CalculateInfluence(float3 vertexPosition, float time, float offset, uint influenceCount, uint2 texOffset, Texture2D animationInfo){
+float CalculateInfluence(float3 vertexPosition, float time, float offset, float duration, uint influenceCount, uint2 texOffset, Texture2D animationInfo){
 	uint2 texIndex = texOffset;
 	float amountedInfluence = 0;
 
@@ -178,12 +178,14 @@ float CalculateInfluence(float3 vertexPosition, float time, float offset, uint i
 		float2 variableParticipation = animationInfo[texIndex].xy;
 		texIndex.x++;
 		float variable = time * variableParticipation.x + offset * variableParticipation.y;
+		float scaledVariable = variable;
 
 		if(type == 1){
 			amountedInfluence += CalculateSineFactor(variable, texIndex, animationInfo);
 		} 
 		else if(type == 2){
-			amountedInfluence += CalculateSplineFactor(variable, texIndex, animationInfo);
+			if(duration != 0) scaledVariable = time / duration * variableParticipation.x + offset * variableParticipation.y;
+			amountedInfluence += CalculateSplineFactor(scaledVariable, texIndex, animationInfo);
 		}
 		else if(type == 3){
 			amountedInfluence += CalculatePolynomialFactor(variable, texIndex, animationInfo);
@@ -227,6 +229,8 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	float3 targetRotation 	 = {0,0,0};
 	float3 targetScale 		 = {1,1,1};
 
+	float validatedTime = time;
+
 	float3 scaledVertexPosition = (vertexPosition + boundingScale - boundingOrigin) / boundingScale;
 
 	float3 origin = {1, 1, 1};
@@ -236,6 +240,8 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 	float animationLength = animationInfo[texIndex].x;
 	texIndex.x ++;
 	uint contentLength = (uint) animationInfo[texIndex].x;
+
+	if(animationLength != 0) validatedTime = validatedTime % animationLength;
 
 	texIndex.y ++;
 	texIndex.x = 0;
@@ -262,7 +268,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 
 		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
 		texIndex.y += weightCount;
-		float influence = CalculateInfluence(scaledVertexPosition, time, offset, influenceCount, texIndex, animationInfo);
+		float influence = CalculateInfluence(scaledVertexPosition, validatedTime, offset, animationLength, influenceCount, texIndex, animationInfo);
 		float weightedInfluence = weight * influence;
 
 		if(transformationType == 1){
@@ -272,7 +278,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 			targetRotation += translationAxis * weightedInfluence;
 		}
 		else if(transformationType == 3){
-			targetRotation += translationAxis * weightedInfluence;
+			targetScale += translationAxis * weightedInfluence;
 		}
 
 		texIndex.y += influenceCount;

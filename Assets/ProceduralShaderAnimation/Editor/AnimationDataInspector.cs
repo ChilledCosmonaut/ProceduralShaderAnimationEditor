@@ -54,6 +54,8 @@ namespace ProceduralShaderAnimation.Editor
         {
             EditorGUI.BeginChangeCheck();
             animationData.animationLength = EditorGUILayout.FloatField("Animation Length", animationData.animationLength);
+
+            EditorGUILayout.Slider( "Current Time", 1, 0, animationData.animationLength);
             
             EditorGUI.indentLevel++;
             for (int groupIndex = 0; groupIndex < animationData.groupInfos.Count; groupIndex++)
@@ -378,6 +380,11 @@ namespace ProceduralShaderAnimation.Editor
 
             weightInfo.firstControlPoint = EditorGUILayout.Vector3Field("First Control Point", weightInfo.firstControlPoint);
             weightInfo.secondControlPoint = EditorGUILayout.Vector3Field("Second Control Point", weightInfo.secondControlPoint);
+            
+            EditorGUILayout.Separator();
+
+            weightInfo.firstWeight = EditorGUILayout.FloatField("First Weight", weightInfo.firstWeight);
+            weightInfo.secondWeight = EditorGUILayout.FloatField("Second Weight", weightInfo.secondWeight);
             
             EditorGUILayout.Separator();
             

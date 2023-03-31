@@ -62,6 +62,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GatherTexture2D_767a1e201b1944aebc9944e728b3d10a_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 1848c9747c639b74a91df7db1043976f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -92,6 +96,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ProceduralShaderAnimations_7f5fd39c755e453286b0c09f1fc9ebce_AnimationTexture_895087108:
         m_Texture: {fileID: 2800000, guid: 10cc0705811c6c049aa4c4bf6673d32e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_07b3556d66bd45808b86c24127c764d6_Texture_1:
+        m_Texture: {fileID: 2800000, guid: ccae8899d77e16f44aa6d620cdc8b70e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_cf30484b30cb45c2a53b2a1c1aea01ea_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 1848c9747c639b74a91df7db1043976f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -245,6 +257,7 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+    - _boundingScale: 0.5
     - _delta: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

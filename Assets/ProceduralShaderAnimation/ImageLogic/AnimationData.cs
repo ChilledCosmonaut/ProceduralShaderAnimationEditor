@@ -77,7 +77,7 @@ public class AnimationData : ScriptableObject
         animationTexture.Apply(updateMipmaps: false);
         
 #if UNITY_EDITOR
-        onTextureChanged();
+        onTextureChanged?.Invoke();
 #endif
     }
     
@@ -105,7 +105,7 @@ public abstract class InterpolationData
 [Serializable]
 public enum TransformationType
 {
-    Rotation, Translation, Scale
+    Translation, Rotation, Scale
 }
 
 [Serializable]
@@ -135,7 +135,7 @@ public class GroupInfo
         {
             new()
             {
-                (float)transformationType, 0,                    0,                    0,
+                (float)transformationType + 1, 0,                    0,                    0,
                 transformationAxis.x,      transformationAxis.y, transformationAxis.z, 0,
                 offsetAxis.x,              offsetAxis.y,         offsetAxis.z,         0,
                 weights.Count,             0,                    0,                    0,

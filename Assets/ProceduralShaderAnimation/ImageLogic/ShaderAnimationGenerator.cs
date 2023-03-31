@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +19,13 @@ namespace ProceduralShaderAnimation.ImageLogic
         private Material materialBackUp;
 #endif
 
-        [SerializeField] public AnimationData animationData;
+        public AnimationData animationData;
+
+        private void Start()
+        {
+            animationData.UpdateAnimationTexture();
+            SetAnimationInfo();
+        }
 
         public void SetAnimationInfo()
         {
