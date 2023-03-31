@@ -1,9 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:VisualElement name="variables" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
-        <ui:Toggle label="Use Time" name="useTime" binding-path="useTime" />
-        <ui:Toggle label="Use Offset" name="useOffset" binding-path="useOffset" />
-    </ui:VisualElement>
-    <uie:PropertyField label="Amplitude" binding-path="amplitude" name="amplitude" />
-    <uie:PropertyField name="frequency" binding-path="frequency" label="Frequency" />
-    <uie:PropertyField name="bias" binding-path="bias" label="Bias" />
-</ui:UXML>

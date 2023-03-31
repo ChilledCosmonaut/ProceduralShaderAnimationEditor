@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "AnimationData", menuName = "ProceduralShaderAnimation/AnimationInfo", order = 1)]
@@ -71,16 +72,26 @@ public class AnimationData : ScriptableObject
 
         var imageData = floatFlattenedList.ToArray();
         
-        animationTexture = new Texture2D(floatLists[0].Count / 4, floatLists.Count, TextureFormat.RGBAFloat, true);
-
-        animationTexture.SetPixelData(imageData, 0);
-        animationTexture.Apply(updateMipmaps: false);
+        GenerateAnimationTexture(imageData, floatLists);
         
 #if UNITY_EDITOR
         onTextureChanged?.Invoke();
 #endif
     }
-    
+
+    private void GenerateAnimationTexture(float[] imageData, List<List<float>> formatList)
+    {
+        string textureName = $"Assets/ProceduralShaderAnimation/AnimationTextures/{Guid.NewGuid()}.asset";
+        if (animationTexture != null) textureName = AssetDatabase.GetAssetPath(animationTexture);
+        
+        animationTexture = new Texture2D(formatList[0].Count / 4, formatList.Count, TextureFormat.RGBAFloat, true);
+
+        animationTexture.SetPixelData(imageData, 0);
+        animationTexture.Apply(updateMipmaps: false);
+        
+        AssetDatabase.CreateAsset(animationTexture, textureName);
+        animationTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(textureName);
+    }
 }
 
 public interface IData

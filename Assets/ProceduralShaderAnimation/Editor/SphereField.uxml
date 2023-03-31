@@ -1,9 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
-    <ui:VisualElement name="SphereField" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-        <ui:Label tabindex="-1" text="Sphere Weight" display-tooltip-when-elided="true" />
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-            <ui:Vector3Field label="Center" name="center-Input" class="unity-bounds-field__center-field" />
-            <ui:FloatField label="Radius" value="42,2" name="radius-Input" class="unity-bounds-field__center_field unity-bounds-field__center-field" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-</ui:UXML>

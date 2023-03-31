@@ -30,13 +30,13 @@ namespace ProceduralShaderAnimation.Editor
             boundSize = Mathf.Max(Mathf.Max(objectBounds.extents.x, objectBounds.extents.y), objectBounds.extents.z);
             SetupGizmos();
             animationData.onBoxesChanged += SetupGizmos;
-            animationData.onTextureChanged += generator.SetAnimationInfo;
+            animationData.onTextureChanged += generator.SetSharedAnimationInfo;
         }
 
         void OnDisable()
         {
             animationData.onBoxesChanged -= SetupGizmos;
-            animationData.onTextureChanged -= generator.SetAnimationInfo;
+            animationData.onTextureChanged -= generator.SetSharedAnimationInfo;
             DestroyGizmos();
         }
 
@@ -49,6 +49,14 @@ namespace ProceduralShaderAnimation.Editor
 
             PropertyField debugToggle = new PropertyField(serializedObject.FindProperty("debug"), "Show debug info");
             myInspector.Add(debugToggle);
+
+            Slider floatSlider = new Slider("Current Time Step", 0, animationData.animationLength)
+            {
+                value = animationData.animationLength
+            };
+            myInspector.Add(floatSlider);
+            
+            floatSlider.RegisterCallback<ChangeEvent<float>>(UpdateTimeStep);
             
             debugToggle.RegisterCallback<ChangeEvent<bool>>(ToggleDebugMaterial);
             
@@ -59,6 +67,12 @@ namespace ProceduralShaderAnimation.Editor
                 AnimationDataChanged, animationDataInspector);
             
             return myInspector;
+        }
+
+        private void UpdateTimeStep(ChangeEvent<float> evt)
+        {
+            generator.TimeStep = evt.newValue;
+            generator.SetSharedAnimationInfo();
         }
         
         private void AnimationDataChanged(ChangeEvent<Object> evt, VisualElement transformInspector)

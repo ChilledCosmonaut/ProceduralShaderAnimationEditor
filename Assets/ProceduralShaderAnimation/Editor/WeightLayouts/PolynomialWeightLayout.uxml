@@ -1,5 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:Vector3Field label="First Control Point" name="firstControlPoint" binding-path="FirstControlPoint" />
-    <ui:Vector3Field label="Second Control Point" name="secondControlPoint" binding-path="SecondControlPoint" />
-    <uie:PropertyField label="Order Preambles" binding-path="polynomialOrderPreambles" />
-</ui:UXML>

@@ -22,22 +22,43 @@ namespace ProceduralShaderAnimation.ImageLogic
         public AnimationData animationData;
         
         private Renderer materialRenderer;
+        [SerializeField]
         private float time;
+        public float TimeStep
+        {
+            get => time;
+            set
+            {
+                if (time != 0) time = value % animationData.animationLength;
+                time = value;
+            }
+        }
 
         private void Start()
         {
             animationData.UpdateAnimationTexture();
-            SetAnimationInfo();
+            SetUniqueAnimationInfo();
             materialRenderer = GetComponent<Renderer>();
         }
         
         void Update()
         {
-            time += Time.deltaTime;
-            materialRenderer.material.SetFloat(Delta, time);
+            TimeStep += Time.deltaTime;
+            materialRenderer.material.SetFloat(Delta, TimeStep);
         }
 
-        public void SetAnimationInfo()
+        private void SetUniqueAnimationInfo()
+        {
+            Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;
+            Material material = GetComponent<Renderer>().material;
+            float extents = Mathf.Max(Mathf.Max(bounds.extents.x, bounds.extents.y), bounds.extents.z);
+
+            material.SetVector(BoundingOrigin, bounds.center);
+            material.SetFloat(BoundingScale, extents);
+            material.SetTexture(AnimationTexture, animationData.animationTexture);
+        }
+
+        public void SetSharedAnimationInfo()
         {
             Bounds bounds = GetComponent<MeshFilter>().sharedMesh.bounds;
             Material material = GetComponent<Renderer>().sharedMaterial;
@@ -47,8 +68,9 @@ namespace ProceduralShaderAnimation.ImageLogic
             material.SetFloat(BoundingScale, extents);
             material.SetTexture(AnimationTexture, animationData.animationTexture);
 #if UNITY_EDITOR
-            if (!debug) return;
+            material.SetFloat(Delta, TimeStep);
             
+            if (!debug) return;
             material.SetFloat(GroupOffset, animationData.debugOffset);
 #endif
         }
@@ -57,7 +79,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         public void SwitchToDebugMaterial()
         {
             if (!isNormal) return;
-            Material debugMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/ProceduralShaderAnimation/Objects/DebugMaterial.mat");
+            Material debugMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/ProceduralShaderAnimation/Shader/DebugMaterial.mat");
             materialBackUp = GetComponent<Renderer>().sharedMaterial;
             GetComponent<Renderer>().sharedMaterial = debugMaterial;
             isNormal = false;

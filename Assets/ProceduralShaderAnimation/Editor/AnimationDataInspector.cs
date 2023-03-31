@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using ProceduralShaderAnimation.ImageLogic;
 using Unity.Mathematics;
 using UnityEditor;
@@ -51,8 +49,6 @@ namespace ProceduralShaderAnimation.Editor
         {
             EditorGUI.BeginChangeCheck();
             animationData.animationLength = EditorGUILayout.FloatField("Animation Length", animationData.animationLength);
-
-            EditorGUILayout.Slider( "Current Time", 1, 0, animationData.animationLength);
             
             EditorGUI.indentLevel++;
             for (int groupIndex = 0; groupIndex < animationData.groupInfos.Count; groupIndex++)

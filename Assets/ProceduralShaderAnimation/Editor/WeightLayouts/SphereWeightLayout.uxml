@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:VisualElement name="SphereField" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-        <ui:Vector3Field label="Center" name="center-Input" binding-path="origin" />
-        <ui:FloatField label="Radius" value="42,2" name="radius-Input" binding-path="radius" />
-    </ui:VisualElement>
-</ui:UXML>
