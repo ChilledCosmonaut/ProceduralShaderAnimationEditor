@@ -299,28 +299,26 @@ void DebugInfo_float(float3 vertexPosition, float3 boundingOrigin, float boundin
 
 	texIndex.y ++;
 	texIndex.x = 0;
-	texIndex.y += groupOffset;
 
-	uint transformationType = (uint) animationInfo[texIndex].x;
-	texIndex.x ++;
+	float weight = 0;
+	int groupCount = 0;
 
-	float3 translationAxis = normalize(animationInfo[texIndex].xyz);
-	texIndex.x++;
+	while(texIndex.y < contentLength){
+		texIndex.x += 3;
 
-	float3 offsetAxis = animationInfo[texIndex].xyz;
-	float3 currentOrigin = origin - offsetAxis;
-	texIndex.x ++;
+		uint weightCount = (uint) animationInfo[texIndex].x;
+		texIndex.x ++;
 
-	uint weightCount = (uint) animationInfo[texIndex].x;
-	texIndex.x ++;
+		uint influenceCount = (uint) animationInfo[texIndex].x;
+		texIndex.y ++;
+		texIndex.x = 0;
 
-	uint influenceCount = (uint) animationInfo[texIndex].x;
-	texIndex.y ++;
-	texIndex.x = 0;
-
-	float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis) / 2;
-
-	float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+		if(groupCount == groupOffset) weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+		texIndex.y += weightCount;
+		texIndex.y += influenceCount;
+		texIndex.x = 0;
+		groupCount++;
+	}
 
 	displacedVertexPosition = weight;
 }

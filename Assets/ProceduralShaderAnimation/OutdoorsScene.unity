@@ -960,7 +960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &962804872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1267,7 +1267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8067293833979941328
 Transform:
   m_ObjectHideFlags: 0
@@ -1339,8 +1339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debug: 0
   isNormal: 1
-  materialBackUp: {fileID: -3033667219593020291, guid: 36d0853dfad0e25408718d98df44d6d9,
-    type: 3}
+  materialBackUp: {fileID: 2100000, guid: 4c0654d49d8627f4482a29b87587bd31, type: 2}
   animationData: {fileID: 11400000, guid: e06c26761d8e48547a57345e42021247, type: 2}
   time: 0
 --- !u!4 &8675402190298997347

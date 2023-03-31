@@ -26,14 +26,14 @@ MonoBehaviour:
     - rid: 2950589623646814212
   groupPreview:
     name: Wind Stiffness
-    transformationType: 1
-    transformationAxis: {x: 0, y: 0, z: 1}
+    transformationType: 0
+    transformationAxis: {x: 0, y: 1, z: 0}
     offsetAxis: {x: 0, y: 0, z: 1}
     weights:
     - rid: 2950589623646814208
     influences:
-    - rid: 2950589623646814209
     - rid: 2950589623646814210
+    - rid: 2950589623646814212
   debugOffset: 0
   references:
     version: 2
@@ -48,15 +48,6 @@ MonoBehaviour:
         secondSplinePoint: {x: 0.4, y: 0.6}
         thirdSplinePoint: {x: 0.8, y: 1}
         fourthSplinePoint: {x: 1, y: 1}
-    - rid: 2950589623646814209
-      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
-      data:
-        name: Sinus Influence 1
-        useTime: 1
-        useOffset: 0
-        amplitude: 0.1
-        frequency: 1.1
-        bias: 1
     - rid: 2950589623646814210
       type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
       data:
