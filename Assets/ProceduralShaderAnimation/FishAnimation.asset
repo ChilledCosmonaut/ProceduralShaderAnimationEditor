@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
+  m_Name: FishAnimation
+  m_EditorClassIdentifier: 
+  animationTexture: {fileID: 0}
+  animationLength: 0
+  groupInfos:
+  - name: Twist
+    transformationType: 1
+    transformationAxis: {x: 0, y: 0, z: 1}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589639985463297
+    influences:
+    - rid: 2950589639985463298
+  - name: Shift Group
+    transformationType: 0
+    transformationAxis: {x: -1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589639985463305
+    influences:
+    - rid: 2950589639985463306
+  - name: Yaw Group
+    transformationType: 1
+    transformationAxis: {x: 0, y: 1, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589639985463307
+    influences:
+    - rid: 2950589639985463308
+  - name: Displacement Group
+    transformationType: 0
+    transformationAxis: {x: -1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589639985463309
+    influences:
+    - rid: 2950589639985463310
+  groupPreview:
+    name: Move Group
+    transformationType: 1
+    transformationAxis: {x: -1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589639985463303
+    influences:
+    - rid: 2950589639985463304
+  debugOffset: 3
+  references:
+    version: 2
+    RefIds:
+    - rid: 2950589639985463297
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 1, y: 0.85862684, z: 0}
+        secondControlPoint: {x: 1, y: 0.87938, z: 2}
+        name: Twist Mask
+        firstWeight: 0.556863
+        secondWeight: 1
+    - rid: 2950589639985463298
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Twist SIne
+        useTime: 1
+        useOffset: 1
+        amplitude: 0.3
+        frequency: -5
+        bias: 0
+    - rid: 2950589639985463303
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 1, y: 0.8586268, z: 0}
+        secondControlPoint: {x: 1, y: 0.87938, z: 2}
+        name: Move Weight
+        firstWeight: 0.098039
+        secondWeight: 1
+    - rid: 2950589639985463304
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Move Influence
+        useTime: 1
+        useOffset: 0
+        amplitude: 0.1
+        frequency: 5
+        bias: 0
+    - rid: 2950589639985463305
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 1, y: 0.8586268, z: 0}
+        secondControlPoint: {x: 1, y: 0.87938, z: 2}
+        name: Shift Weight
+        firstWeight: 0.105882
+        secondWeight: 1
+    - rid: 2950589639985463306
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Shift Sine
+        useTime: 1
+        useOffset: 1
+        amplitude: 0.38
+        frequency: 5
+        bias: 0
+    - rid: 2950589639985463307
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 1, y: 0.8586268, z: 0}
+        secondControlPoint: {x: 1, y: 0.87938, z: 2}
+        name: Yaw Weight
+        firstWeight: 0.094118
+        secondWeight: 1
+    - rid: 2950589639985463308
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Yaw Sine
+        useTime: 1
+        useOffset: 0
+        amplitude: 0.25
+        frequency: 5
+        bias: 0
+    - rid: 2950589639985463309
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 1, y: 0.8586268, z: 0}
+        secondControlPoint: {x: 1, y: 0.87938, z: 2}
+        name: Displacement Weight
+        firstWeight: 0.098039
+        secondWeight: 1
+    - rid: 2950589639985463310
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Displacement Sine
+        useTime: 1
+        useOffset: 0
+        amplitude: 0.1
+        frequency: 5
+        bias: 0

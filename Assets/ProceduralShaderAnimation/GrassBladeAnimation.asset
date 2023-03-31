@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
+  m_Name: GrassBladeAnimation
+  m_EditorClassIdentifier: 
+  animationTexture: {fileID: 0}
+  animationLength: 3
+  groupInfos:
+  - name: Wind Stiffness
+    transformationType: 0
+    transformationAxis: {x: 0, y: 1, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589623646814208
+    influences:
+    - rid: 2950589623646814210
+    - rid: 2950589623646814212
+  groupPreview:
+    name: Wind Stiffness
+    transformationType: 1
+    transformationAxis: {x: 0, y: 0, z: 1}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 2950589623646814208
+    influences:
+    - rid: 2950589623646814209
+    - rid: 2950589623646814210
+  debugOffset: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 2950589623646814208
+      type: {class: SplineWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 1, y: 1, z: 0}
+        secondControlPoint: {x: 1, y: 1, z: 2}
+        name: Blade Stiffness
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 0.4, y: 0.6}
+        thirdSplinePoint: {x: 0.8, y: 1}
+        fourthSplinePoint: {x: 1, y: 1}
+    - rid: 2950589623646814209
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Sinus Influence 1
+        useTime: 1
+        useOffset: 0
+        amplitude: 0.1
+        frequency: 1.1
+        bias: 1
+    - rid: 2950589623646814210
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Wind Flutering
+        useTime: 1
+        useOffset: 1
+        amplitude: 0.03
+        frequency: 10
+        bias: 0
+    - rid: 2950589623646814212
+      type: {class: PolynomialInfluence, ns: ProceduralShaderAnimation.ImageLogic,
+        asm: Assembly-CSharp}
+      data:
+        name: Polynomial Influence 1
+        polynomialOrderPreambles:
+        - 1.5
+        useTime: 0
+        useOffset: 0
