@@ -11,15 +11,12 @@ namespace ProceduralShaderAnimation.Editor
     [CustomEditor(typeof(AnimationData))]
     public class AnimationDataInspector : UnityEditor.Editor
     {
-        private const float defaultLenght = 2.0f;
-        private const float defaultValue = 1.0f;
+        private const float PaddingLeft = 10f;
+        private const float PaddingRight = 2f;
+        private const float PaddingTop = 15f;
+        private const float PaddingBottom = 15f;
 
-        private const float paddingLeft = 10f;
-        private const float paddingRight = 2f;
-        private const float paddingTop = 15f;
-        private const float paddingBottom = 15f;
-
-        private const int evaluationSteps = 300;
+        private const int EvaluationSteps = 300;
 
         private Material mat;
 
@@ -82,30 +79,6 @@ namespace ProceduralShaderAnimation.Editor
             EditorGUILayout.LabelField($"Previewing: {animationData.functionPreview.GetName()}");
             
             TestDraw(animationData.functionPreview.CalculateYValue);
-        }
-
-        private GUIStyle CreateCustomBoxBackground(Color backgroundColor)
-        {
-            var consoleBackground = new Texture2D(1, 1, TextureFormat.RGBAFloat, false); 
-            consoleBackground.SetPixel(0, 0, backgroundColor);
-            consoleBackground.Apply();
-            
-            return new GUIStyle(GUIStyle.none)
-            {
-                fontSize = 24,
-                normal =
-                {
-                    textColor = Color.white,
-                    background = consoleBackground
-                },
-                border =
-                {
-                    bottom = 2,
-                    left = 2,
-                    right = 2,
-                    top = 2
-                }
-            };
         }
 
         private void DisplayGroup(GroupInfo groupInfo)
@@ -273,7 +246,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplaySphereWeight(SphericalWeight weightInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(weightInfo.name, header);
 
@@ -297,7 +270,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplayBoxWeight(RectangularWeight weightInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(weightInfo.name, header);
 
@@ -322,7 +295,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplayPolynomialWeight(PolynomialWeight weightInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(weightInfo.name, header);
 
@@ -370,7 +343,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplayPointWeight(PointWeight weightInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(weightInfo.name, header);
 
@@ -399,7 +372,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplaySplineInfluence(SplineInfluence influenceInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(influenceInfo.name, header);
 
@@ -437,7 +410,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplayPolynomialInfluence(PolynomialInfluence influenceInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(influenceInfo.name, header);
 
@@ -485,7 +458,7 @@ namespace ProceduralShaderAnimation.Editor
         private void DisplaySinusInfluence(SinusInfluence influenceInfo, GroupInfo owningGroup)
         {
             EditorGUILayout.Separator();
-            GUILayout.BeginVertical();
+            GUILayout.BeginVertical(GUI.skin.textArea);
 
             EditorGUILayout.LabelField(influenceInfo.name, header);
 
@@ -578,8 +551,8 @@ namespace ProceduralShaderAnimation.Editor
                 GL.Clear(true, false, Color.black);
                 mat.SetPass(0);
 
-                float rectWidth = rect.width - paddingLeft - paddingRight;
-                float rectHeight = rect.height - paddingTop - paddingBottom;
+                float rectWidth = rect.width - PaddingLeft - PaddingRight;
+                float rectHeight = rect.height - PaddingTop - PaddingBottom;
 
                 float x_AxisOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 0);
                 float defaultValueOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 1); ;
@@ -588,15 +561,15 @@ namespace ProceduralShaderAnimation.Editor
                 GL.Begin(GL.LINES);
                 GL.Color(new Color(1, 1, 1, 1));
                 // draw Y axis
-                GL.Vertex3(paddingLeft, paddingTop, 0);
-                GL.Vertex3(paddingLeft, rect.height - paddingBottom, 0);
+                GL.Vertex3(PaddingLeft, PaddingTop, 0);
+                GL.Vertex3(PaddingLeft, rect.height - PaddingBottom, 0);
                 // draw X axis
-                GL.Vertex3(paddingLeft, rect.height - x_AxisOffset - paddingBottom, 0);
-                GL.Vertex3(rect.width - paddingRight, rect.height - x_AxisOffset - paddingBottom, 0);
+                GL.Vertex3(PaddingLeft, rect.height - x_AxisOffset - PaddingBottom, 0);
+                GL.Vertex3(rect.width - PaddingRight, rect.height - x_AxisOffset - PaddingBottom, 0);
                 // draw default values
                 GL.Color(Color.green);
-                GL.Vertex3(paddingLeft, Mathf.Clamp(rect.height - defaultValueOffset - paddingBottom, paddingTop, rect.height - paddingBottom), 0);
-                GL.Vertex3(rect.width - paddingRight, Mathf.Clamp(rect.height - defaultValueOffset - paddingBottom, paddingTop, rect.height - paddingBottom), 0);
+                GL.Vertex3(PaddingLeft, Mathf.Clamp(rect.height - defaultValueOffset - PaddingBottom, PaddingTop, rect.height - PaddingBottom), 0);
+                GL.Vertex3(rect.width - PaddingRight, Mathf.Clamp(rect.height - defaultValueOffset - PaddingBottom, PaddingTop, rect.height - PaddingBottom), 0);
                 GL.End();
 
                 /*// evaluate func values
@@ -660,8 +633,8 @@ namespace ProceduralShaderAnimation.Editor
                 GL.Clear(true, false, Color.black);
                 mat.SetPass(0);
 
-                float rectWidth = rect.width - paddingLeft - paddingRight;
-                float rectHeight = rect.height - paddingTop - paddingBottom;
+                float rectWidth = rect.width - PaddingLeft - PaddingRight;
+                float rectHeight = rect.height - PaddingTop - PaddingBottom;
 
                 float x_AxisOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 0);
                 float defaultValueOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 1); ;
@@ -670,11 +643,11 @@ namespace ProceduralShaderAnimation.Editor
                 GL.Begin(GL.LINES);
                 GL.Color(new Color(1, 1, 1, 1));
                 // draw Y axis
-                GL.Vertex3(paddingLeft, paddingTop, 0);
-                GL.Vertex3(paddingLeft, rect.height - paddingBottom, 0);
+                GL.Vertex3(PaddingLeft, PaddingTop, 0);
+                GL.Vertex3(PaddingLeft, rect.height - PaddingBottom, 0);
                 // draw X axis
-                GL.Vertex3(paddingLeft, rect.height - x_AxisOffset - paddingBottom, 0);
-                GL.Vertex3(rect.width - paddingRight, rect.height - x_AxisOffset - paddingBottom, 0);
+                GL.Vertex3(PaddingLeft, rect.height - x_AxisOffset - PaddingBottom, 0);
+                GL.Vertex3(rect.width - PaddingRight, rect.height - x_AxisOffset - PaddingBottom, 0);
                 // draw default values
                 /*GL.Color(Color.green);
                 GL.Vertex3(paddingLeft, Mathf.Clamp(rect.height - defaultValueOffset - paddingBottom, paddingTop, rect.height - paddingBottom), 0);
@@ -697,7 +670,7 @@ namespace ProceduralShaderAnimation.Editor
                     float x_remap = math.remap(evalData.XMin, evalData.XMax, 0, rectWidth, point.x);
                     float y_remap = math.remap(evalData.YMin, evalData.YMax, 0, rectHeight, point.y);
 
-                    GL.Vertex3(paddingLeft + x_remap, rect.height - y_remap - paddingBottom, 0.0f);
+                    GL.Vertex3(PaddingLeft + x_remap, rect.height - y_remap - PaddingBottom, 0.0f);
                 }
                 GL.End();
 
@@ -706,9 +679,9 @@ namespace ProceduralShaderAnimation.Editor
 
                 // draw values
                 float squareSize = 10;
-                EditorGUI.LabelField(new Rect(rect.x + paddingLeft - squareSize, Mathf.Clamp(rect.y + rect.height - defaultValueOffset - paddingBottom - squareSize / 2, rect.y + paddingTop, rect.y + rect.height - paddingBottom), squareSize, squareSize), evalData.YMax.ToString("#.##")); // heigt "1" mark
-                EditorGUI.LabelField(new Rect(rect.x + paddingLeft - squareSize, rect.y + rect.height - x_AxisOffset - paddingBottom + (squareSize * 0.2f), squareSize, squareSize), "0"); // height "0" mark
-                EditorGUI.LabelField(new Rect(rect.x + rect.width - paddingRight - squareSize, rect.y + rect.height - x_AxisOffset - paddingBottom + (squareSize * 0.2f), squareSize, squareSize), evalData.XMax.ToString("#.##")); // max lenght mark
+                EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareSize, Mathf.Clamp(rect.y + rect.height - defaultValueOffset - PaddingBottom - squareSize / 2, rect.y + PaddingTop, rect.y + rect.height - PaddingBottom), squareSize, squareSize), evalData.YMax.ToString("#.##")); // heigt "1" mark
+                EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareSize, rect.y + rect.height - x_AxisOffset - PaddingBottom + (squareSize * 0.2f), squareSize, squareSize), "0"); // height "0" mark
+                EditorGUI.LabelField(new Rect(rect.x + rect.width - PaddingRight - squareSize, rect.y + rect.height - x_AxisOffset - PaddingBottom + (squareSize * 0.2f), squareSize, squareSize), evalData.XMax.ToString("#.##")); // max lenght mark
             }
         }
         
@@ -718,7 +691,7 @@ namespace ProceduralShaderAnimation.Editor
 
             float xValue = 0;
 
-            for (int i = 0; i < evaluationSteps; i++)
+            for (int i = 0; i < EvaluationSteps; i++)
             {
                 evalData.Add(new Vector2(xValue,  function(xValue)));
                 xValue += 1.0f / 300.0f;

@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ namespace ProceduralShaderAnimation.ImageLogic
         private static readonly int BoundingScale = Shader.PropertyToID("_boundingScale");
         private static readonly int AnimationTexture = Shader.PropertyToID("_AnimationTexture");
         private static readonly int GroupOffset = Shader.PropertyToID("_groupOffset");
+        private static readonly int Delta = Shader.PropertyToID("_delta");
 
 #if UNITY_EDITOR
         public bool debug, isNormal = true;
@@ -20,11 +20,21 @@ namespace ProceduralShaderAnimation.ImageLogic
 #endif
 
         public AnimationData animationData;
+        
+        private Renderer materialRenderer;
+        private float time;
 
         private void Start()
         {
             animationData.UpdateAnimationTexture();
             SetAnimationInfo();
+            materialRenderer = GetComponent<Renderer>();
+        }
+        
+        void Update()
+        {
+            time += Time.deltaTime;
+            materialRenderer.material.SetFloat(Delta, time);
         }
 
         public void SetAnimationInfo()
