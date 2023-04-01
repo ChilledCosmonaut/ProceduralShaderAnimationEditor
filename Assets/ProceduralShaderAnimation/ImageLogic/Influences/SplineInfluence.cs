@@ -36,9 +36,11 @@ namespace ProceduralShaderAnimation.ImageLogic
             return floatArray;
         }
         
-        public float CalculateYValue(float x)
+        public Vector2 CalculateYValue(float x, float time)
         {
-            return (math.pow(1 - x,3) * firstSplinePoint + 3 * x * math.pow(1 - x, 2) * secondSplinePoint + 3 * math.pow(x, 2) * (1 - x) * thirdSplinePoint + math.pow(x, 3) * fourthSplinePoint).y;
+            float sanitizedX = x / time;
+            float yValue = (math.pow(1 - sanitizedX,3) * firstSplinePoint + 3 * sanitizedX * math.pow(1 - sanitizedX, 2) * secondSplinePoint + 3 * math.pow(sanitizedX, 2) * (1 - sanitizedX) * thirdSplinePoint + math.pow(sanitizedX, 3) * fourthSplinePoint).y;
+            return new Vector2(sanitizedX, yValue);
         }
         public string GetName()
         {

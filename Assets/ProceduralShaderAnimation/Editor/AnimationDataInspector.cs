@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using ProceduralShaderAnimation.ImageLogic;
 using Unity.Mathematics;
 using UnityEditor;
@@ -73,8 +74,12 @@ namespace ProceduralShaderAnimation.Editor
             if (animationData.functionPreview == null) return;
             
             EditorGUILayout.LabelField($"Previewing: {animationData.functionPreview.GetName()}");
+
+            float graphTimeSequence = animationData.animationLength;
+
+            if (graphTimeSequence == 0) graphTimeSequence = 1;
             
-            TestDraw(animationData.functionPreview.CalculateYValue);
+            GraphDrawer.DrawGraph(animationData.functionPreview.CalculateYValue, evalData, mat, 300, graphTimeSequence);
         }
 
         private void DisplayGroup(GroupInfo groupInfo)
@@ -531,166 +536,6 @@ namespace ProceduralShaderAnimation.Editor
                 case Types.Sinus:
                     targetGroup.influences.Add(new SinusInfluence($"Sinus Influence {targetGroup.weights.Count}"));
                     break;
-            }
-        }
-
-        private void GraphDrawer(Unity.Plastic.Newtonsoft.Json.Serialization.Func<float, float> function)
-        {
-            Rect rect = GUILayoutUtility.GetRect(10, 1000, 200, 200);
-            EditorGUI.IndentedRect(rect);
-            Debug.Log($"Width:{rect.width}, Height:{rect.height}");
-            if (Event.current.type == EventType.Repaint)
-            {
-                GUI.BeginClip(rect);
-                GL.PushMatrix();
-
-                GL.Clear(true, false, Color.black);
-                mat.SetPass(0);
-
-                float rectWidth = rect.width - PaddingLeft - PaddingRight;
-                float rectHeight = rect.height - PaddingTop - PaddingBottom;
-
-                float x_AxisOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 0);
-                float defaultValueOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 1); ;
-
-                // draw base graph
-                GL.Begin(GL.LINES);
-                GL.Color(new Color(1, 1, 1, 1));
-                // draw Y axis
-                GL.Vertex3(PaddingLeft, PaddingTop, 0);
-                GL.Vertex3(PaddingLeft, rect.height - PaddingBottom, 0);
-                // draw X axis
-                GL.Vertex3(PaddingLeft, rect.height - x_AxisOffset - PaddingBottom, 0);
-                GL.Vertex3(rect.width - PaddingRight, rect.height - x_AxisOffset - PaddingBottom, 0);
-                // draw default values
-                GL.Color(Color.green);
-                GL.Vertex3(PaddingLeft, Mathf.Clamp(rect.height - defaultValueOffset - PaddingBottom, PaddingTop, rect.height - PaddingBottom), 0);
-                GL.Vertex3(rect.width - PaddingRight, Mathf.Clamp(rect.height - defaultValueOffset - PaddingBottom, PaddingTop, rect.height - PaddingBottom), 0);
-                GL.End();
-
-                /*// evaluate func values
-                /*if (evalData.IsEmpty)#1# CalculateGraph(function);
-
-                // re-evaluate func values after input values changed
-                /*if (f != f0 || z != z0 || r != r0)
-                {
-                    InitFunction();
-                    EvaluateFunction();
-                }#1#
-
-                // draw graph
-                GL.Begin(GL.LINE_STRIP);
-                GL.Color(Color.cyan);
-                for (int i = 0; i < evalData.Length; i++)
-                {
-                    Vector2 point = evalData.GetItem(i);
-
-                    float x_remap = math.remap(evalData.XMin, evalData.XMax, 0, rectWidth, point.x);
-                    float y_remap = math.remap(evalData.YMin, evalData.YMax, 0, rectHeight, point.y);
-
-                    GL.Vertex3(paddingLeft + x_remap, rect.height - y_remap - paddingBottom, 0.0f);
-                }
-                GL.End();
-
-                GL.PopMatrix();
-                GUI.EndClip();
-
-                // draw values
-                float squareSize = 10;
-                EditorGUI.LabelField(new Rect(rect.x + paddingLeft - squareSize, Mathf.Clamp(rect.y + rect.height - defaultValueOffset - paddingBottom - squareSize / 2, rect.y + paddingTop, rect.y + rect.height - paddingBottom), squareSize, squareSize), "1"); // heigt "1" mark
-                EditorGUI.LabelField(new Rect(rect.x + paddingLeft - squareSize, rect.y + rect.height - x_AxisOffset - paddingBottom + (squareSize * 0.2f), squareSize, squareSize), "0"); // height "0" mark
-                EditorGUI.LabelField(new Rect(rect.x + rect.width - paddingRight - squareSize, rect.y + rect.height - x_AxisOffset - paddingBottom + (squareSize * 0.2f), squareSize, squareSize), "2"); // max lenght mark*/
-            }
-        }
-        
-        private static EquationData CalculateGraph(Unity.Plastic.Newtonsoft.Json.Serialization.Func<float, float> function)
-        {
-            var data = new EquationData();
-
-            float xValue = 0;
-
-            for (int i = 0; i < 300; i++)
-            {
-                data.Add(new Vector2(xValue,  function(xValue)));
-                xValue += 2.0f / 300.0f;
-            }
-
-            return data;
-        }
-
-        private void TestDraw(Unity.Plastic.Newtonsoft.Json.Serialization.Func<float, float> function)
-        {
-            Rect rect = GUILayoutUtility.GetRect(10, 1000, 200, 200);
-            if (Event.current.type == EventType.Repaint)
-            {
-                GUI.BeginClip(rect);
-                GL.PushMatrix();
-
-                GL.Clear(true, false, Color.black);
-                mat.SetPass(0);
-
-                float rectWidth = rect.width - PaddingLeft - PaddingRight;
-                float rectHeight = rect.height - PaddingTop - PaddingBottom;
-
-                float x_AxisOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 0);
-                float defaultValueOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, 1); ;
-
-                // draw base graph
-                GL.Begin(GL.LINES);
-                GL.Color(new Color(1, 1, 1, 1));
-                // draw Y axis
-                GL.Vertex3(PaddingLeft, PaddingTop, 0);
-                GL.Vertex3(PaddingLeft, rect.height - PaddingBottom, 0);
-                // draw X axis
-                GL.Vertex3(PaddingLeft, rect.height - x_AxisOffset - PaddingBottom, 0);
-                GL.Vertex3(rect.width - PaddingRight, rect.height - x_AxisOffset - PaddingBottom, 0);
-                // draw default values
-                /*GL.Color(Color.green);
-                GL.Vertex3(paddingLeft, Mathf.Clamp(rect.height - defaultValueOffset - paddingBottom, paddingTop, rect.height - paddingBottom), 0);
-                GL.Vertex3(rect.width - paddingRight, Mathf.Clamp(rect.height - defaultValueOffset - paddingBottom, paddingTop, rect.height - paddingBottom), 0);*/
-                GL.End();
-
-                // evaluate func values
-                if (evalData.IsEmpty) EvaluateFunction(function);
-
-                // re-evaluate func values after input values changed
-                EvaluateFunction(function);
-                
-                // draw graph
-                GL.Begin(GL.LINE_STRIP);
-                GL.Color(Color.cyan);
-                for (int i = 0; i < evalData.Length; i++)
-                {
-                    Vector2 point = evalData.GetItem(i);
-
-                    float x_remap = math.remap(evalData.XMin, evalData.XMax, 0, rectWidth, point.x);
-                    float y_remap = math.remap(evalData.YMin, evalData.YMax, 0, rectHeight, point.y);
-
-                    GL.Vertex3(PaddingLeft + x_remap, rect.height - y_remap - PaddingBottom, 0.0f);
-                }
-                GL.End();
-
-                GL.PopMatrix();
-                GUI.EndClip();
-
-                // draw values
-                float squareSize = 10;
-                EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareSize, Mathf.Clamp(rect.y + rect.height - defaultValueOffset - PaddingBottom - squareSize / 2, rect.y + PaddingTop, rect.y + rect.height - PaddingBottom), squareSize, squareSize), evalData.YMax.ToString("#.##")); // heigt "1" mark
-                EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareSize, rect.y + rect.height - x_AxisOffset - PaddingBottom + (squareSize * 0.2f), squareSize, squareSize), "0"); // height "0" mark
-                EditorGUI.LabelField(new Rect(rect.x + rect.width - PaddingRight - squareSize, rect.y + rect.height - x_AxisOffset - PaddingBottom + (squareSize * 0.2f), squareSize, squareSize), evalData.XMax.ToString("#.##")); // max lenght mark
-            }
-        }
-        
-        private void EvaluateFunction(Unity.Plastic.Newtonsoft.Json.Serialization.Func<float, float> function)
-        {
-            evalData.Clear();
-
-            float xValue = 0;
-
-            for (int i = 0; i < EvaluationSteps; i++)
-            {
-                evalData.Add(new Vector2(xValue,  function(xValue)));
-                xValue += 1.0f / 300.0f;
             }
         }
     }

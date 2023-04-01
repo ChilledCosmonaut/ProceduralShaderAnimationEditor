@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
@@ -36,17 +37,19 @@ namespace ProceduralShaderAnimation.ImageLogic
             return floatArray;
         }
         
-        public float CalculateYValue(float x)
+        public Vector2 CalculateYValue(float x, float time)
         {
+            if (polynomialOrderPreambles.Count == 0) return Vector2.zero;
+            
             float offset = polynomialOrderPreambles[0];
             float result = offset;
 
-            for(int currentOrder = 1; currentOrder <= polynomialOrderPreambles.Count; currentOrder++){
+            for(int currentOrder = 1; currentOrder < polynomialOrderPreambles.Count; currentOrder++){
                 float prefix = polynomialOrderPreambles[currentOrder];
                 result += prefix * math.pow(x, currentOrder);
             }
 
-            return result;
+            return new Vector2(x,result);
         }
         public string GetName()
         {

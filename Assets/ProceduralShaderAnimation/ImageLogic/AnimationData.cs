@@ -101,7 +101,7 @@ public interface IData
 
 public interface IFunctionData : IData
 {
-    public float CalculateYValue(float x);
+    public Vector2 CalculateYValue(float x, float time);
 
     public string GetName();
 }

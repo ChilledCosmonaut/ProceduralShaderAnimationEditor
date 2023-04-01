@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
   m_Name: PlopAnimation
   m_EditorClassIdentifier: 
-  animationTexture: {fileID: 0}
+  animationTexture: {fileID: 2800000, guid: 9cc9e14e543cf5343b9b9ee044640ae8, type: 2}
   animationLength: 2
   groupInfos:
   - name: Scale Group

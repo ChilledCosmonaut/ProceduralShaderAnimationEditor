@@ -1,102 +1,96 @@
+using System.Globalization;
 using ProceduralShaderAnimation.Editor;
 using Unity.Mathematics;
 using Unity.Plastic.Newtonsoft.Json.Serialization;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class GraphDrawer
+public static class GraphDrawer
 {
-    private const float PaddingLeft = 15f;
-    private const float PaddingRight = 15f;
+    private const float PaddingLeft = 10f;
+    private const float PaddingRight = 2f;
     private const float PaddingTop = 15f;
     private const float PaddingBottom = 15f;
 
-    public static void CreateGraphVisualization(VisualElement rootVisualElement, Func<float, float> function)
-    {
-        var canvas = new VisualElement();
-        canvas.StretchToParentSize();
-        canvas.generateVisualContent += ctx => DrawCanvas(ctx, function);
-        rootVisualElement.Add(canvas);
-
-        var xAxisLabel = new Label("0")
+    public static void DrawGraph(Func<float, float, Vector2> function, EquationData evalData, Material mat, int evaluationSteps, float time)
         {
-            name = "xAxis",
-            style = { position = Position.Absolute}
-        };
-        var yAxisLabel = new Label("2") { 
-            name = "yAxis",
-            style = { position = Position.Absolute} 
-        };
-        
-        canvas.Add(xAxisLabel);
-        canvas.Add(yAxisLabel);
-    }
+            Rect rect = GUILayoutUtility.GetRect(10, 1000, 200, 200);
+            if (Event.current.type == EventType.Repaint)
+            {
+                GUI.BeginClip(rect);
+                GL.PushMatrix();
 
-    static void DrawCanvas(MeshGenerationContext ctx, Func<float, float> function)
-    {
-        EquationData data = CalculateGraph(function);
-        
-        var painter = ctx.painter2D;
-        painter.lineJoin = LineJoin.Round;
-        painter.lineCap = LineCap.Round;
-
-        var canvasRect = ctx.visualElement.layout;
-
-        painter.strokeColor = Color.green;
-        painter.lineWidth = 2;
-        painter.BeginPath();
-
-        float rectWidth = canvasRect.width - PaddingLeft - PaddingRight;
-        float rectHeight = canvasRect.height - PaddingTop - PaddingBottom;
-        float xAxisOffset = canvasRect.height * math.remap(data.YMin, data.YMax, 0, 1, 0);
-        
-        Vector2 startPoint = data.GetItem(0);
+                GL.Clear(true, false, Color.black);
+                mat.SetPass(0);
                 
-        float startXRemap = math.remap(data.XMin, data.XMax, 0, rectWidth, startPoint.x);
-        float startYRemap = math.remap(data.YMin, data.YMax, 0, rectHeight, startPoint.y);
-        var startResult = new Vector2(PaddingLeft + startXRemap, canvasRect.height - startYRemap - PaddingBottom);
-        painter.MoveTo(startResult);
-        
-        for (int i = 1; i < 300; i++)
-        { 
-            Vector2 point = data.GetItem(i);
+                EvaluateFunction(function, evalData, evaluationSteps, time);
+
+                float rectWidth = rect.width - PaddingLeft - PaddingRight;
+                float rectHeight = rect.height - PaddingTop - PaddingBottom;
+
+                float baseValue = 0;
+
+                if (evalData.YMin > 0) baseValue = evalData.YMin;
+                else if (evalData.YMax < 0) baseValue = evalData.YMax;
+                    
+                float baseOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, baseValue);
+                float maxValueOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, evalData.YMax);
+                float minValueOffset = rectHeight * math.remap(evalData.YMin, evalData.YMax, 0, 1, evalData.YMin);
+
+                // draw base graph
+                GL.Begin(GL.LINES);
+                GL.Color(new Color(1, 1, 1, 1));
+                // draw Y axis
+                GL.Vertex3(PaddingLeft, PaddingTop, 0);
+                GL.Vertex3(PaddingLeft, rect.height - PaddingBottom, 0);
+                // draw X axis
+                GL.Vertex3(PaddingLeft, rect.height - baseOffset - PaddingBottom, 0);
+                GL.Vertex3(rect.width - PaddingRight, rect.height - baseOffset - PaddingBottom, 0);
+                GL.End();
                 
-            float xRemap = math.remap(data.XMin, data.XMax, 0, rectWidth, point.x);
-            float yRemap = math.remap(data.YMin, data.YMax, 0, rectHeight, point.y);
-            var result = new Vector2(PaddingLeft + xRemap, canvasRect.height - yRemap - PaddingBottom);
-            painter.LineTo(result);
+                // draw graph
+                GL.Begin(GL.LINE_STRIP);
+                GL.Color(Color.cyan);
+                for (int i = 0; i < evalData.Length; i++)
+                {
+                    Vector2 point = evalData.GetItem(i);
+
+                    float x_remap = math.remap(evalData.XMin, evalData.XMax, 0, rectWidth, point.x);
+                    float y_remap = math.remap(evalData.YMin, evalData.YMax, 0, rectHeight, point.y);
+
+                    GL.Vertex3(PaddingLeft + x_remap, rect.height - y_remap - PaddingBottom, 0.0f);
+                }
+                GL.End();
+
+                GL.PopMatrix();
+                GUI.EndClip();
+
+                // draw values
+                float squareHeight = 10;
+                float squareWidth = 20;
+                //Numbers Base Line
+                EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareWidth, rect.y + rect.height - baseOffset - PaddingBottom + (squareHeight * 0.2f), squareWidth, squareHeight), baseValue.ToString(CultureInfo.InvariantCulture));
+                EditorGUI.LabelField(new Rect(rect.x + rect.width - PaddingRight - squareWidth, rect.y + rect.height - baseOffset - PaddingBottom + (squareHeight * 0.2f), squareWidth, squareHeight), evalData.XMax.ToString("#.#")); // max lenght mark
+
+                if (baseValue <= 0)
+                    EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareWidth, Mathf.Clamp(rect.y + rect.height - minValueOffset - PaddingBottom - squareHeight / 2, rect.y + PaddingTop, rect.y + rect.height - PaddingBottom), squareWidth, squareHeight), evalData.YMin.ToString("#.#")); // Min Label
+                
+                if (baseValue >= 0)
+                    EditorGUI.LabelField(new Rect(rect.x + PaddingLeft - squareWidth, Mathf.Clamp(rect.y + rect.height - maxValueOffset - PaddingBottom - squareHeight / 2, rect.y + PaddingTop, rect.y + rect.height - PaddingBottom), squareWidth, squareHeight), evalData.YMax.ToString("#.#")); // Max Label
+            }
         }
-        painter.Stroke();
-
-        painter.strokeColor = Color.white;
-        painter.lineWidth = 5;
-        // draw Y and X axis
-        painter.BeginPath();
-        painter.MoveTo(new Vector2(PaddingLeft, PaddingTop));
-        painter.LineTo(new Vector2(PaddingLeft, canvasRect.height - PaddingBottom));
-        painter.Stroke();
-        painter.BeginPath();
-        painter.LineTo(new Vector2(PaddingLeft, canvasRect.height - xAxisOffset - PaddingBottom));
-        painter.LineTo(new Vector2(canvasRect.width - PaddingRight, canvasRect.height - xAxisOffset - PaddingBottom));
-        painter.Stroke();
-
-        var label = ctx.visualElement.Q<Label>("xAxis");
-
-        label.style.left = 50;
-    }
-
-    private static EquationData CalculateGraph(Func<float, float> function)
-    {
-        var data = new EquationData();
-
-        float xValue = 0;
-
-        for (int i = 0; i < 300; i++)
+        
+        private static void EvaluateFunction(Func<float, float, Vector2> function, EquationData evalData, int evaluationSteps, float time)
         {
-            data.Add(new Vector2(xValue,  function(xValue)));
-            xValue += 2.0f / 300.0f;
-        }
+            evalData.Clear();
 
-        return data;
-    }
+            float xValue = 0;
+
+            for (int i = 0; i < evaluationSteps; i++)
+            {
+                var resultData = function(xValue, time);
+                evalData.Add(resultData);
+                xValue += time / evaluationSteps;
+            }
+        }
 }

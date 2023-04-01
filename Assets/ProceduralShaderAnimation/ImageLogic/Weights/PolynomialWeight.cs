@@ -36,9 +36,9 @@ namespace ProceduralShaderAnimation.ImageLogic
 
             return floatArray;
         }
-        public float CalculateYValue(float x)
+        public Vector2 CalculateYValue(float x, float time)
         {
-            if (polynomialOrderPreambles.Count == 0) return 0;
+            if (polynomialOrderPreambles.Count == 0) return Vector2.zero;
             
             float offset = polynomialOrderPreambles[0];
             float result = offset;
@@ -48,7 +48,7 @@ namespace ProceduralShaderAnimation.ImageLogic
                 result += prefix * math.pow(x, currentOrder);
             }
 
-            return result;
+            return new Vector2(x, result);
         }
         public string GetName()
         {

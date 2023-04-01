@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace ProceduralShaderAnimation.ImageLogic
 {
@@ -30,9 +31,9 @@ namespace ProceduralShaderAnimation.ImageLogic
             
             return floatArray;
         }
-        public float CalculateYValue(float x)
+        public Vector2 CalculateYValue(float x, float time)
         {
-            return amplitude * math.sin(frequency * x) + bias;
+            return new Vector2(x,amplitude * math.sin(frequency * x) + bias);
         }
         public string GetName()
         {
