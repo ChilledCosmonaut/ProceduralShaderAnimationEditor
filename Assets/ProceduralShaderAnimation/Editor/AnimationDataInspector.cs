@@ -311,7 +311,7 @@ namespace ProceduralShaderAnimation.Editor
 
             for (int order = 0; order < weightInfo.polynomialOrderPreambles.Count; order++)
             {
-                weightInfo.polynomialOrderPreambles[order] = EditorGUILayout.FloatField($"Preamble {order}", weightInfo.polynomialOrderPreambles[order]);
+                weightInfo.polynomialOrderPreambles[order] = EditorGUILayout.FloatField($"Coefficient {order}", weightInfo.polynomialOrderPreambles[order]);
             }
 
             if (GUILayout.Button("Increase Order"))
@@ -426,7 +426,7 @@ namespace ProceduralShaderAnimation.Editor
 
             for (int order = 0; order < influenceInfo.polynomialOrderPreambles.Count; order++)
             {
-                influenceInfo.polynomialOrderPreambles[order] = EditorGUILayout.FloatField($"Preamble {order}", influenceInfo.polynomialOrderPreambles[order]);
+                influenceInfo.polynomialOrderPreambles[order] = EditorGUILayout.FloatField($"Coefficient {order}", influenceInfo.polynomialOrderPreambles[order]);
             }
 
             if (GUILayout.Button("Increase Order"))
