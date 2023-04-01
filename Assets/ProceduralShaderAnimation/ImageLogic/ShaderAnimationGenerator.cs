@@ -29,7 +29,7 @@ namespace ProceduralShaderAnimation.ImageLogic
             get => time;
             set
             {
-                if (time != 0) time = value % animationData.animationLength;
+                if (animationData.animationLength != 0) time = value % animationData.animationLength;
                 time = value;
             }
         }
