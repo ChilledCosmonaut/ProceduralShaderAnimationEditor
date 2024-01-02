@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d24fdc146aaa3f45bbe652b83bdaf50, type: 3}
+  m_Name: FishAnimation
+  m_EditorClassIdentifier: 
+  animationTexture: {fileID: 2800000, guid: b692888ee7afd044c8506c67df8a5bc2, type: 2}
+  animationLength: 1
+  groupInfos:
+  - name: Pull
+    transformationType: 0
+    transformationAxis: {x: 1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 1950170908298051587
+    - rid: 1950170908298051588
+    influences:
+    - rid: 1950170908298051589
+  - name: Vibration Upper
+    transformationType: 0
+    transformationAxis: {x: 1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 1950170908298051590
+    - rid: 1950171205037981696
+    influences:
+    - rid: 1950170908298051591
+  - name: Pull Squish
+    transformationType: 2
+    transformationAxis: {x: 0, y: 0, z: 0.5}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights: []
+    influences:
+    - rid: 1950170908298051592
+  - name: Vibration Lower
+    transformationType: 0
+    transformationAxis: {x: 1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: -1}
+    weights:
+    - rid: 1950171205037981697
+    - rid: 1950171205037981698
+    influences:
+    - rid: 1950171205037981699
+  groupPreview:
+    name: Vibration Upper
+    transformationType: 0
+    transformationAxis: {x: 1, y: 0, z: 0}
+    offsetAxis: {x: 0, y: 0, z: 1}
+    weights:
+    - rid: 1950170908298051590
+    - rid: 1950171205037981696
+    influences:
+    - rid: 1950170908298051591
+  debugOffset: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 1950170908298051587
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 0, y: 0, z: 2}
+        secondControlPoint: {x: 0, y: 0, z: 1}
+        name: Pull Weight 1
+        firstWeight: 1
+        secondWeight: 0
+    - rid: 1950170908298051588
+      type: {class: PointWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 0, y: 0, z: 1}
+        secondControlPoint: {x: 0, y: 0, z: 0}
+        name: Pull Weight 2
+        firstWeight: 0
+        secondWeight: 1
+    - rid: 1950170908298051589
+      type: {class: SplineInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Pull Movement
+        useTime: 1
+        useOffset: 0
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 2, y: 2}
+        thirdSplinePoint: {x: 0.8, y: -0.3}
+        fourthSplinePoint: {x: 0.9, y: 0}
+    - rid: 1950170908298051590
+      type: {class: SplineWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 0, y: 0, z: 2}
+        secondControlPoint: {x: 0, y: 0, z: 0}
+        name: Spline Weight 0
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 0.5, y: 1}
+        thirdSplinePoint: {x: 0.5, y: 1}
+        fourthSplinePoint: {x: 0, y: 0}
+    - rid: 1950170908298051591
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Vibration
+        useTime: 1
+        useOffset: 1
+        amplitude: 0.01
+        frequency: 30
+        bias: 0
+    - rid: 1950170908298051592
+      type: {class: SplineInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Spline Influence 0
+        useTime: 1
+        useOffset: 0
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 2, y: -1}
+        thirdSplinePoint: {x: 0.8, y: 0}
+        fourthSplinePoint: {x: 0.9, y: 0}
+    - rid: 1950171205037981696
+      type: {class: RectangularWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Box Weight 1
+        origin: {x: 1, y: 1, z: 1.5}
+        diameters: {x: 0.5, y: 0.5, z: 0.5}
+    - rid: 1950171205037981697
+      type: {class: SplineWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        firstControlPoint: {x: 0, y: 0, z: 2}
+        secondControlPoint: {x: 0, y: 0, z: 0}
+        name: Spline Weight 0
+        firstSplinePoint: {x: 0, y: 0}
+        secondSplinePoint: {x: 0.98, y: 0}
+        thirdSplinePoint: {x: 0.99, y: 0.2}
+        fourthSplinePoint: {x: 1, y: 0}
+    - rid: 1950171205037981698
+      type: {class: RectangularWeight, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Lower Bounding Box
+        origin: {x: 1, y: 1, z: 0.5}
+        diameters: {x: 0.5, y: 0.5, z: 0.5}
+    - rid: 1950171205037981699
+      type: {class: SinusInfluence, ns: ProceduralShaderAnimation.ImageLogic, asm: Assembly-CSharp}
+      data:
+        name: Sinus Influence 2
+        useTime: 1
+        useOffset: 1
+        amplitude: 0.01
+        frequency: -30
+        bias: 0

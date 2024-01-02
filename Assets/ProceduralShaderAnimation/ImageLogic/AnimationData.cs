@@ -24,7 +24,6 @@ public class AnimationData : ScriptableObject
 
     public Action onBoxesChanged;
     public Action onTextureChanged;
-    
 #endif
     
     public void UpdateAnimationTexture()

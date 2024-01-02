@@ -40,15 +40,15 @@ MonoBehaviour:
     influences:
     - rid: 2950589639985463317
   groupPreview:
-    name: Body Displacement
-    transformationType: 0
-    transformationAxis: {x: 0, y: 1, z: 0}
+    name: Left Wing
+    transformationType: 1
+    transformationAxis: {x: 0, y: 0, z: 1}
     offsetAxis: {x: 0, y: 0, z: 1}
     weights:
-    - rid: 2950589639985463316
+    - rid: 2950589639985463312
     influences:
-    - rid: 2950589639985463317
-  debugOffset: 2
+    - rid: 2950589639985463313
+  debugOffset: 0
   references:
     version: 2
     RefIds:

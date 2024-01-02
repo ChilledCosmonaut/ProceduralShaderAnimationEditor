@@ -14,33 +14,8 @@ float ClampedLineProjection(float3 vertexPosition, float3 firstPoint, float3 sec
 	return clamp(ProjectVectorOntoLineAsScalar(vertexPosition, firstPoint, lineDirection) / maxDistance, 0, 1);
 }
 
-float PositiveLineProjection(float3 vertexPosition, float3 firstPoint, float3 secondPoint){
-	float3 lineDirection = normalize(secondPoint - firstPoint);
-	float3 maxDistance = ProjectVectorOntoLineAsScalar(secondPoint, firstPoint, lineDirection);
-	return max(ProjectVectorOntoLineAsScalar(vertexPosition, firstPoint, lineDirection), 0);
-}
-
 float CalculateSpline(float time, float2 firstPoint, float2 secondPoint, float2 thirdPoint, float2 fourthPoint){
 	return (pow(1 - time,3) * firstPoint + 3 * time * pow(1 - time, 2) * secondPoint + 3 * pow(time, 2) * (1 - time) * thirdPoint + pow(time, 3) * fourthPoint).y;
-}
-
-float CalculatePolynomial(float variable, uint2 texOffset, Texture2D animationInfo){
-	uint2 texIndex = texOffset;
-
-	float polynomialOrder = animationInfo[texIndex].x;
-	texIndex.x ++;
-
-	float offset = animationInfo[texIndex].x;
-	texIndex.x ++;
-	float result = offset;
-
-	for(int currentOrder = 1; currentOrder <= polynomialOrder; currentOrder++){
-		float prefix = animationInfo[texIndex].x;
-		texIndex.x ++;
-		result += prefix * pow(variable, currentOrder);
-	}
-
-	return result;
 }
 
 float4 CalculateSineFactor(float variable, uint2 texOffset, Texture2D animationInfo){
@@ -68,14 +43,7 @@ float4 CalculateSplineFactor(float variable, uint2 texOffset, Texture2D animatio
 	return CalculateSpline(validVariable, firstSplinePoint, secondSplinePoint, thirdSplinePoint, fourthSplinePoint);
 }
 
-float4 CalculatePolynomialFactor(float variable, uint2 texOffset, Texture2D animationInfo){
-	uint2 texIndex = texOffset;
-	
-	float validVariable = max(variable, 0);
-	return CalculatePolynomial(validVariable, texOffset, animationInfo);
-}
-
-float CalculateLineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+float CalculateLineWeight(float variable, uint2 texOffset, Texture2D animationInfo){
 	uint2 texIndex = texOffset;
 	float3 firstPoint = animationInfo[texIndex].xyz;
 	texIndex.x ++;
@@ -85,16 +53,11 @@ float CalculateLineWeight(float3 vertexPosition, uint2 texOffset, Texture2D anim
 	texIndex.x ++;
 	float secondWeight = animationInfo[texIndex].x;
 
-	float clampedLineDistance = ClampedLineProjection(vertexPosition, firstPoint, secondPoint);
-	return firstWeight * clampedLineDistance + secondWeight * (1.0-clampedLineDistance);
+	return firstWeight * clamp(variable, 0, 1) + secondWeight * clamp(1.0-variable, 0, 1);
 }
 
-float CalculateSplineWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
+float CalculateSplineWeight(float variable, uint2 texOffset, Texture2D animationInfo){
 	uint2 texIndex = texOffset;
-	float3 firstControlPoint = animationInfo[texIndex].xyz;
-	texIndex.x ++;
-	float3 secondControlPoint = animationInfo[texIndex].xyz;
-	texIndex.x ++;
 
 	float2 firstSplinePoint = animationInfo[texIndex].xy;
 	texIndex.x ++;
@@ -104,19 +67,7 @@ float CalculateSplineWeight(float3 vertexPosition, uint2 texOffset, Texture2D an
 	texIndex.x ++;
 	float2 fourthSplinePoint = animationInfo[texIndex].xy;
 
-	float clampedLineDistance = ClampedLineProjection(vertexPosition, firstControlPoint, secondControlPoint);
-	return CalculateSpline(clampedLineDistance, firstSplinePoint, secondSplinePoint, thirdSplinePoint, fourthSplinePoint);
-}
-
-float CalculatPolynomialWeight(float3 vertexPosition, uint2 texOffset, Texture2D animationInfo){
-	uint2 texIndex = texOffset;
-	float3 firstControlPoint = animationInfo[texIndex].xyz;
-	texIndex.x ++;
-	float3 secondControlPoint = animationInfo[texIndex].xyz;
-	texIndex.x ++;
-
-	float lineDistance = PositiveLineProjection(vertexPosition, firstControlPoint, secondControlPoint);
-	return CalculatePolynomial(lineDistance, texIndex, animationInfo);
+	return CalculateSpline(variable, firstSplinePoint, secondSplinePoint, thirdSplinePoint, fourthSplinePoint);
 }
 
 float CalculateSphereWeight(float3 vertexPosition, float3 boxOrigin, float radius){
@@ -141,26 +92,37 @@ float4 CalculatePrimitiveWeight(float3 vertexPosition, uint2 texOffset, uint typ
 	return CalculateBoxWeight(vertexPosition, origin, dimensions);
 }
 
-float CalculateWeigth(float3 vertexPosition, uint weightCount, uint2 texOffset, Texture2D animationInfo){
+float CalculateWeigth(float3 vertexPosition, float time, float offset, float duration, uint weightCount, uint2 texOffset, Texture2D animationInfo){
 	uint2 texIndex = texOffset;
 	float amountedWeight = 1;
 
 	for(uint weightIndex = 0; weightIndex < weightCount; weightIndex++){
 		uint type = (uint) animationInfo[texIndex].x;
 		texIndex.x++;
+		float2 variableParticipation = animationInfo[texIndex].xy;
+		texIndex.x++;
+		
+		float3 firstPoint = animationInfo[texIndex].xyz;
+		texIndex.x ++;
+		float3 secondPoint = animationInfo[texIndex].xyz;
+		texIndex.x ++;
+
+		float clampedLineDistance = ClampedLineProjection(vertexPosition, firstPoint, secondPoint);
+
+		float variable = time * variableParticipation.x + clampedLineDistance * variableParticipation.y;
+		float scaledVariable = variable;
+		if(duration != 0) scaledVariable = time / duration * variableParticipation.x + offset * variableParticipation.y;
 
 		if(type == 1){
-			amountedWeight *= CalculateLineWeight(vertexPosition, texIndex, animationInfo);
+			amountedWeight *= CalculateLineWeight(scaledVariable, texIndex, animationInfo);
 		} 
 		else if(type == 2){
-			amountedWeight *= CalculateSplineWeight(vertexPosition, texIndex, animationInfo);
-		}
-		else if(type == 3){
-			amountedWeight *= CalculatPolynomialWeight(vertexPosition, texIndex, animationInfo);
+			amountedWeight *= CalculateSplineWeight(scaledVariable, texIndex, animationInfo);
 		}
 		else if(type == 4 || type == 5){
 			amountedWeight *= CalculatePrimitiveWeight(vertexPosition, texIndex, type, animationInfo);
 		}
+
 
 		texIndex.y ++;
 		texIndex.x = texOffset.x;
@@ -186,9 +148,6 @@ float CalculateInfluence(float3 vertexPosition, float time, float offset, float 
 		else if(type == 2){
 			if(duration != 0) scaledVariable = time / duration * variableParticipation.x + offset * variableParticipation.y;
 			amountedInfluence += CalculateSplineFactor(scaledVariable, texIndex, animationInfo);
-		}
-		else if(type == 3){
-			amountedInfluence += CalculatePolynomialFactor(variable, texIndex, animationInfo);
 		}
 
 		texIndex.y ++;
@@ -262,7 +221,7 @@ void ProceduralShaderAnimation_float(float3 vertexPosition, float3 boundingOrigi
 
 		float offset = ProjectVectorOntoLineAsScalar(scaledVertexPosition, currentOrigin, offsetAxis) / 2;
 
-		float weight = CalculateWeigth(scaledVertexPosition, weightCount, texIndex, animationInfo);
+		float weight = CalculateWeigth(scaledVertexPosition, time, offset, animationLength, weightCount, texIndex, animationInfo);
 		texIndex.y += weightCount;
 		float influence = CalculateInfluence(scaledVertexPosition, time, offset, animationLength, influenceCount, texIndex, animationInfo);
 		float weightedInfluence = weight * influence;
